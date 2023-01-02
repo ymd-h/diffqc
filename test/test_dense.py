@@ -53,5 +53,24 @@ class TestPauliX(unittest.TestCase):
         xx = dense.PauliX(dense.PauliX(z, w), w)
         np.testing.assert_allclose(z, xx)
 
+class TestPauliY(unittest.TestCase):
+    def test_pauliY(self):
+        w = jnp.arange(1)
+        z = dense.zero(1, jnp.complex64)
+        y = dense.PauliY(z, w)
+        np.testing.assert_allclose(y, [0+0j, 0+1j])
+
+    def test_1(self):
+        w = jnp.arange(1)
+        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        y = dense.PauliY(o, w)
+        np.testing.assert_allclose(y, [-1j, 0])
+
+    def test_twice(self):
+        w = jnp.arange(1)
+        z = dense.zero(1, jnp.complex64)
+        yy = dense.PauliY(dense.PauliY(z, w), w)
+        np.testing.assert_allclose(yy, z)
+
 if __name__ == "__main__":
     unittest.main()
