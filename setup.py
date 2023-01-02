@@ -6,7 +6,10 @@ setup(name="diffq",
       version="0.0.0",
       packages=find_packages(),
       install_requires=["jax", "jaxlib"],
-      extras_require = {"pennylane": ["pennylane"]},
+      extras_require = {
+          "pennylane": ["pennylane"],
+          "test": ["numpy"],
+      },
       entry_points = {
           "pennylane.plugins": [
               "diffq.qubit = diffq.pennylane:JaxQubitDevice",
