@@ -22,6 +22,18 @@ class TestToState(unittest.TestCase):
         self.assertEqual(jnp.sum(s), 1+0j)
 
 class TestHadamard(unittest.TestCase):
+    def test_H(self):
+        w = jnp.arange(1)
+        z = dense.zero(1, jnp.complex64)
+        h = dense.Hadamard(z, w)
+        np.testing.assert_allclose(h, [1/jnp.sqrt(2), 1/jnp.sqrt(2)])
+
+    def test_1(self):
+        w = jnp.arange(1)
+        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        h = dense.Hadamard(o, w)
+        np.testing.assert_allclose(h, [1/jnp.sqrt(2), -1/jnp.sqrt(2)])
+
     def test_twice(self):
         w = jnp.arange(1)
         z = dense.zero(2, jnp.complex64)
