@@ -130,5 +130,18 @@ class TestSX(unittest.TestCase):
         sx = dense.SX(o, w)
         np.testing.assert_allclose(sx, [0.5*(1-1j), 0.5*(1+1j)])
 
+class TestCNOT(unittest.TestCase):
+    def test_CNOT(self):
+        w = jnp.arange(2)
+        z = dense.zero(2, jnp.complex64)
+        cn = dense.CNOT(z, w)
+        np.testing.assert_allclose(cn, z)
+
+    def test_1(self):
+        w = jnp.arange(2)
+        o = dense.PauliX(dense.zero(2, jnp.complex64), jnp.arange(1))
+        cn = dense.CNOT(o, w)
+        np.testing.assert_allclose(cn, dense.PauliX(o, jnp.ones((1,), dtype=jnp.int32)))
+
 if __name__ == "__main__":
     unittest.main()
