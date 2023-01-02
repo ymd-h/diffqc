@@ -5,7 +5,7 @@ import jax
 import jax.numpy as jnp
 import pennylane as qml
 
-from pennylane_jaxqubit import op
+from diffq import op
 
 
 class JaxQubitDevice(qml.QubitDevice):

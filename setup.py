@@ -1,12 +1,14 @@
 from setuptools import setup, find_packages
 
 
-setup(name="pennylane-jaxqubit",
+setup(name="diffq",
+      description="Diiferentiable Quantum Simulator",
       version="0.0.0",
       packages=find_packages(),
-      install_requires=["pennylane", "jax", "jaxlib"],
+      install_requires=["jax", "jaxlib"],
+      extras_require = {"pennylane": ["pennylane"]},
       entry_points = {
           "pennylane.plugins": [
-              "jax.qubit = pennylane_jaxqubit:JaxQubitDevice",
+              "diffq.qubit = diffq.pennylane:JaxQubitDevice",
           ]
       })
