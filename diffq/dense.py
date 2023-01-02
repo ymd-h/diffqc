@@ -14,18 +14,20 @@ def to_state(x):
 
 
 # Internal Functions
+BUG = "BUG: {} quantum operation is called with wrong wires: {}"
+
 def op1(c, wires, op):
-    assert wires.shape == (1,), f"BUG: 1 quantum operation is called with wrong wires: {wires.shape}"
+    assert wires.shape == (1,), BUG.format(1, wires.shape)
     i = wires.at[0].get()
     return jnp.moveaxis(jnp.tensordot(op, c, ((1,), (i,))), 0, i)
 
 def op2(c, wires, op):
-    assert wires.shape == (2,), f"BUG: 2 quantum operation is called with wrong wires: {wires.shape}"
+    assert wires.shape == (2,), BUG.format(2, wires.shape)
     op2x2 = jnp.reshape(op, (2,2,2,2))
     return jnp.moveaxis(jnp.tensordot(op2x2, c, axes=((2,3), wires)), (0,1), wires)
 
 def op3(c, wires, op):
-    assert wires.shape == (3,), f"BUG: 3 quantum operation is called with wrong wires: {wires.shape}"
+    assert wires.shape == (3,), BUG.format(3, wires.shape)
     op2x3 = jnp.reshape(op, (2,2,2,2,2))
     return jnp.moveaxis(jnp.tensordot(op2x3, c, axes=((2,3,4), wires)), (0,1,2), wires)
 
