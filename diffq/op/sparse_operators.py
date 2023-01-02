@@ -24,7 +24,7 @@ def to_state(x):
         c = c.at[:].add(ps(idx))
         return c, None
 
-    state, _ = return jax.lax.scan(f, jnp.zeros(2 ** n), x)
+    state, _ = jax.lax.scan(f, jnp.zeros(2 ** n), x)
     return state
 
 
