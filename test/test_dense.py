@@ -21,6 +21,13 @@ class TestToState(unittest.TestCase):
         self.assertEqual(s[0], 1+0j)
         self.assertEqual(jnp.sum(s), 1+0j)
 
+class TestHadamard(unittest.TestCase):
+    def test_twice(self):
+        w = jnp.arange(1)
+        z = dense.zero(2, jnp.complex64)
+        zz = dense.Hadamard(dense.Hadamard(z, w), w)
+        np.testing.assert_allclose(z, zz)
+
 
 if __name__ == "__main__":
     unittest.main()
