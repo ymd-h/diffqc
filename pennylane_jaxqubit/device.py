@@ -91,20 +91,20 @@ class JaxQubitDevice(qml.QubitDevice):
             raise ValueError(f"Unknown mode: {mode}")
 
     def apply(self, operations: List[qml.operation.Operation], **kwargs):
-        f = lambda x: x
+        f = lambda: self.op.zeros(len(self.wires), jnp.complex64)
 
         for op in operations:
             if op.name == "Identity":
                 continue
 
             opf = getattr(self.op, op.name)
-            f = lambda x: opf(f(x),
-                              jnp.asarray(op.wires),
-                              *tuple(jnp.asarray(p) for p in op.parameters))
+            f = lambda: opf(f(),
+                            jnp.asarray(op.wires),
+                            *tuple(jnp.asarray(p) for p in op.parameters))
 
-        f = lambda x: self.op.to_state(f(x))
+        f = lambda: self.op.to_state(f())
 
-        self._state = jax.jit(f)(self.op.zero(len(self.wires), jnp.complex64))
+        self._state = jax.jit(f)()
         return np.array(self._state, copy=True)
 
     def analytic_probability(self, wires: Union[None,
