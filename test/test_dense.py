@@ -28,6 +28,12 @@ class TestHadamard(unittest.TestCase):
         zz = dense.Hadamard(dense.Hadamard(z, w), w)
         np.testing.assert_allclose(z, zz)
 
+class TestPauliX(unittest.TestCase):
+    def test_pauliX(self):
+        w = jnp.arange(1)
+        z = dense.zero(2, jnp.complex64)
+        x = dense.PauliX(z, w)
+        np.testing.assert_allclose(x[:, 0], [0+0j, 1+0j])
 
 if __name__ == "__main__":
     unittest.main()
