@@ -91,5 +91,18 @@ class TestPauliZ(unittest.TestCase):
         zz = dense.PauliZ(dense.PauliZ(z, w), w)
         np.testing.assert_allclose(zz, z)
 
+class TestS(unittest.TestCase):
+    def test_S(self):
+        w = jnp.arange(1)
+        z = dense.zero(1, jnp.complex64)
+        s = dense.S(z, w)
+        np.testing.assert_allclose(s, [1, 0])
+
+    def test_1(self):
+        w = jnp.arange(1)
+        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        s = dense.S(o, w)
+        np.testing.assert_allclose(s, [0, 1j])
+
 if __name__ == "__main__":
     unittest.main()
