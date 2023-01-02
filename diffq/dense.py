@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 
-from . import _operator as _op
+from . import _operators as _op
 
 # StateVec Shape: [qubits...]
 def zero(nqubits, dtype):
