@@ -9,8 +9,8 @@ def H(dtype):
                         [1, -1]], dtype=dtype) * jnp.sqrt(0.5)
 
 def sigmaX(dtype):
-    return jnp.asarray([[1,  1],
-                        [1, -1]], dtype=dtype)
+    return jnp.asarray([[0,  1],
+                        [1,  0]], dtype=dtype)
 
 def sigmaY(dtype):
     return jnp.asarray([[ 0, -1j],
