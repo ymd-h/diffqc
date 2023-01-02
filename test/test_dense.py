@@ -156,5 +156,18 @@ class TestCZ(unittest.TestCase):
         cz = dense.CZ(o, w)
         np.testing.assert_allclose(cz, dense.PauliZ(o, jnp.ones((1,), dtype=jnp.int32)))
 
+class TestCY(unittest.TestCase):
+    def test_CY(self):
+        w = jnp.arange(2)
+        z = dense.zero(2, jnp.complex64)
+        cy = dense.CY(z, w)
+        np.testing.assert_allclose(cy, z)
+
+    def test_1(self):
+        w = jnp.arange(2)
+        o = dense.PauliX(dense.zero(2, jnp.complex64), jnp.arange(1))
+        cy = dense.CY(o, w)
+        np.testing.assert_allclose(cy, dense.PauliY(o, jnp.ones((1,), dtype=jnp.int32)))
+
 if __name__ == "__main__":
     unittest.main()
