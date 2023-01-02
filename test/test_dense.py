@@ -104,5 +104,18 @@ class TestS(unittest.TestCase):
         s = dense.S(o, w)
         np.testing.assert_allclose(s, [0, 1j])
 
+class TestT(unittest.TestCase):
+    def test_T(self):
+        w = jnp.arange(1)
+        z = dense.zero(1, jnp.complex64)
+        t = dense.T(z, w)
+        np.testing.assert_allclose(t, [1, 0])
+
+    def test_1(self):
+        w = jnp.arange(1)
+        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        t = dense.T(o, w)
+        np.testing.assert_allclose(t, [0, jnp.exp(0.25j * jnp.pi)])
+
 if __name__ == "__main__":
     unittest.main()
