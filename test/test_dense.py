@@ -274,5 +274,17 @@ class TestToffoli(unittest.TestCase):
         np.testing.assert_allclose(dense.Toffoli(s110, w),
                                    dense.PauliX(s110, jnp.arange(1)+2))
 
+class TestRot(unittest.TestCase):
+    def test_000(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        for name, s, ans in [["s0", s0, [1, 0]],
+                             ["s1", s1, [0, 1]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, 0, 0, 0)),
+                                           ans)
+
 if __name__ == "__main__":
     unittest.main()
