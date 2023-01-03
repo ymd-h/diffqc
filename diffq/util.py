@@ -8,8 +8,8 @@ __all__ = [
 ]
 
 
-def prob(state):
-    return jnp.square(jnp.abs(state))
+def prob(state, dtype=jnp.float64):
+    return jnp.asarray(jnp.square(jnp.abs(state)), dtype=dtype)
 
 
 def marginal_prob(probs, integrage_wires):
