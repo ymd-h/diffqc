@@ -189,5 +189,36 @@ class TestSWAP(unittest.TestCase):
         ss = dense.SWAP(dense.SWAP(o, w), w)
         np.testing.assert_allclose(ss, o)
 
+class TestISWAP(unittest.TestCase):
+    def test_00(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s = dense.ISWAP(s00, w)
+        np.testing.assert_allclose(s, s00)
+
+    def test_01(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.ones((1,), dtype=jnp.int32))
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s = dense.ISWAP(s01, w)
+        np.testing.assert_allclose(s, 1j * s10)
+
+    def test_10(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.ones((1,), dtype=jnp.int32))
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s = dense.ISWAP(s10, w)
+        np.testing.assert_allclose(s, 1j * s01)
+
+    def test_11(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s11 = dense.PauliX(dense.PauliX(s00, jnp.arange(1)),
+                           jnp.ones((1,), dtype=jnp.int32))
+        s = dense.ISWAP(s11, w)
+        np.testing.assert_allclose(s, s11)
+
 if __name__ == "__main__":
     unittest.main()
