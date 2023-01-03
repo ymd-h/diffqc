@@ -57,7 +57,7 @@ def SISWAP(dtype):
     return jnp.asarray([[1,              0,              0, 0],
                         [0,      inv_sqrt2, 1j * inv_sqrt2, 0],
                         [0, 1j * inv_sqrt2,      inv_sqrt2, 0],
-                        [0,              0,              0, 0]],
+                        [0,              0,              0, 1]],
                        dtype=dtype)
 
 # Parametric
