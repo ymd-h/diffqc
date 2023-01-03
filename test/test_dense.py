@@ -220,5 +220,22 @@ class TestISWAP(unittest.TestCase):
         s = dense.ISWAP(s11, w)
         np.testing.assert_allclose(s, s11)
 
+class TestECR(unittest.TestCase):
+    def test_ECR(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.ones((1,), dtype=jnp.int32))
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s11 = dense.PauliX(s01, jnp.arange(1))
+
+        for s, ans in [[s00, [0, 0, 1, -1j]],
+                       [s01, [0, 0, -1j, 1]],
+                       [s10, [1, 1j, 0, 0]],
+                       [s11, [1j, 1, 0, 0]]]:
+            with self.subTest(state=s):
+                np.testing.assert_allclose(dense.to_state(dense.ECR(s, w)),
+                                           jnp.asarray(ans)/jnp.sqrt(2))
+
+
 if __name__ == "__main__":
     unittest.main()
