@@ -261,5 +261,18 @@ class TestCSWAP(unittest.TestCase):
         np.testing.assert_allclose(dense.CSWAP(s101, w),
                                    dense.SWAP(s101, jnp.arange(2)+1))
 
+class TestToffoli(unittest.TestCase):
+    def test_Toffoli(self):
+        w = jnp.arange(3)
+        s001 = dense.PauliX(dense.zero(3, jnp.complex64), jnp.arange(1)+2)
+        np.testing.assert_allclose(dense.Toffoli(s001, w), s001)
+
+        s011 = dense.PauliX(s001, jnp.arange(1)+1)
+        np.testing.assert_allclose(dense.Toffoli(s011, w), s011)
+
+        s110 = dense.SWAP(s011, jnp.asarray([0,2], dtype=jnp.int32))
+        np.testing.assert_allclose(dense.Toffoli(s110, w),
+                                   dense.PauliX(s110, jnp.arange(1)+2))
+
 if __name__ == "__main__":
     unittest.main()
