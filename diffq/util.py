@@ -36,4 +36,4 @@ def sample(key, probs, shape):
 
 def expval(probs, wire):
     p = _qubit_shape(probs)
-    return jnp.sum(jnp.take(p, (1,), axis=wire))
+    return jnp.sum(jnp.take(p, jnp.ones((1,), dtype=jnp.int32), axis=wire))
