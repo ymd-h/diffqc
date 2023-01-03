@@ -431,5 +431,21 @@ class TestPhaseShift(unittest.TestCase):
                 np.testing.assert_allclose(dense.to_state(dense.PhaseShift(s, w, p)),
                                            ans)
 
+class TestControlledPhaseShift(unittest.TestCase):
+    def test_CPS(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.arange(1)+1)
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s11 = dense.PauliX(s01, jnp.arange(1))
+
+        p = jnp.pi
+        for name, s, ans in [["s00", s00, s00],
+                             ["s01", s01, s01],
+                             ["s10", s10, dense.PhaseShift(s10, jnp.arange(1)+1, p)],
+                             ["s11", s11, dense.PhaseShift(s11, jnp.arange(1)+1, p)]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.ControlledPhaseShift(s, w, p), ans)
+
 if __name__ == "__main__":
     unittest.main()
