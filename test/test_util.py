@@ -33,5 +33,16 @@ class TestSample(unittest.TestCase):
         np.testing.assert_allclose(diffq.sample(key, p, (4,)),
                                    [1, 1, 1, 1])
 
+
+class TestExpVal(unittest.TestCase):
+    def test_expval(self):
+        p = jnp.asarray([0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
+        np.testing.assert_allclose(diffq.expval(p, 0), 0.4)
+
+    def test_jit(self):
+        p = jnp.asarray([0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
+        np.testing.assert_allclose(jax.jit(diffq.expval, static_argnums=1)(p, 0), 0.4)
+
+
 if __name__ == "__main__":
     unittest.main()
