@@ -592,6 +592,65 @@ class TestU2(unittest.TestCase):
                 np.testing.assert_allclose(dense.U2(s, w, p, d),
                                            jnp.asarray(ans)/jnp.sqrt(2), atol=1e-7)
 
+class TestU3(unittest.TestCase):
+    def test_000(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        for name, s, ans in [["s0", s0, [1, 0]],
+                             ["s1", s1, [0, 1]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U3(s, w, 0, 0, 0), ans, atol=1e-7)
+
+    def test_t00(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        t = jnp.pi / 6
+        for name, s, ans in [["s0", s0, [jnp.cos(0.5*t), jnp.sin(0.5*t)]],
+                             ["s1", s1, [-jnp.sin(0.5*t), jnp.cos(0.5*t)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U3(s, w, t, 0, 0), ans, atol=1e-7)
+
+    def test_tp0(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        t = jnp.pi
+        p = jnp.pi * 1.5
+        for name, s, ans in [["s0", s0, [0, jnp.exp(1j*p)]],
+                             ["s1", s1, [-1, 0]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U3(s, w, t, p, 0), ans, atol=1e-7)
+
+    def test_t0d(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        t = jnp.pi
+        d = jnp.pi * 1.5
+        for name, s, ans in [["s0", s0, [0, 1]],
+                             ["s1", s1, [-jnp.exp(1j*d), 0]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U3(s, w, t, 0, d), ans, atol=1e-7)
+
+    def test_tpd(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        t = jnp.pi
+        p = jnp.pi / 4
+        d = jnp.pi * 1.5
+        for name, s, ans in [["s0", s0, [0, jnp.exp(1j*p)]],
+                             ["s1", s1, [-jnp.exp(1j*d), 0]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U3(s, w, t, p, d), ans, atol=1e-7)
+
 
 if __name__ == "__main__":
     unittest.main()
