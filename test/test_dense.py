@@ -408,5 +408,28 @@ class TestRZ(unittest.TestCase):
                 np.testing.assert_allclose(dense.to_state(dense.RZ(s, w, z)), ans,
                                            atol=1e-7)
 
+class TestPhaseShift(unittest.TestCase):
+    def test_0(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        for name, s, ans in [["s0", s0, [1, 0]],
+                             ["s1", s1, [0, 1]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.PhaseShift(s, w, 0)),
+                                           ans)
+    def test_p(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        p = jnp.pi
+        for name, s, ans in [["s0", s0, [1, 0]],
+                             ["s1", s1, [0, jnp.exp(1j*p)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.PhaseShift(s, w, p)),
+                                           ans)
+
 if __name__ == "__main__":
     unittest.main()
