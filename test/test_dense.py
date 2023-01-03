@@ -525,5 +525,23 @@ class TestCRZ(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.CRZ(s, w, p), ans)
 
+class TestCRot(unittest.TestCase):
+    def test_CRot(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.arange(1)+1)
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s11 = dense.PauliX(s01, jnp.arange(1))
+
+        p = jnp.pi * 1.5
+        t = jnp.pi / 8
+        o = jnp.pi / 6
+        for name, s, ans in [["s00", s00, s00],
+                             ["s01", s01, s01],
+                             ["s10", s10, dense.Rot(s10, jnp.arange(1)+1, p, t, o)],
+                             ["s11", s11, dense.Rot(s11, jnp.arange(1)+1, p, t, o)]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.CRot(s, w, p, t, o), ans)
+
 if __name__ == "__main__":
     unittest.main()
