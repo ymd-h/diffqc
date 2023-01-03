@@ -75,14 +75,14 @@ def op2(c, wires, op):
 def op3(c, wires, op):
     assert wires.shape == (3,), BUG.format(3, wires.shape)
     i = (wires.at[0].get(), wires.at[1].get(), wires.at[2].get())
-    op2x3 = jnp.reshape(op, (2,2,2,2,2))
-    return jnp.moveaxis(jnp.tensordot(op2x3, c, axes=((2,3,4), i)), (0,1,2), i)
+    op2x3 = jnp.reshape(op, (2,2,2,2,2,2))
+    return jnp.moveaxis(jnp.tensordot(op2x3, c, axes=((3,4,5), i)), (0,1,2), i)
 
 def control_op2(op):
     return jnp.identity(4, dtype=op.dtype).at[2:,2:].set(op)
 
 def control_op3(op2):
-    return jnp.identity(8, dtype=op.dtype).at[4:,4:].set(op2)
+    return jnp.identity(8, dtype=op2.dtype).at[4:,4:].set(op2)
 
 # Quantum Operators
 def Hadamard(c, wires):
