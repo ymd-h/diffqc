@@ -8,13 +8,13 @@ __all__ = [
 ]
 
 
-def prob(state, dtype=jnp.float64):
+def prob(state, dtype=jnp.float32):
     return jnp.asarray(jnp.square(jnp.abs(state)), dtype=dtype)
 
 
 def marginal_prob(probs, integrage_wires):
     p = jnp.reshape(probs, (2,) * int(jnp.log2(probs.shape[0])))
-    return jnp.sum(p, axis=integrage_wires)
+    return jnp.reshape(jnp.sum(p, axis=integrage_wires), (-1,))
 
 
 def sample(key, probs, shape):
