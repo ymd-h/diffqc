@@ -5,6 +5,7 @@ __all__ = [
     "prob",
     "marginal_prob",
     "sample",
+    "expval"
 ]
 
 
@@ -22,3 +23,8 @@ def sample(key, probs, shape):
                              jnp.arange(probs.shape[0]),
                              shape=shape,
                              p=probs)
+
+
+def expval(probs, wire):
+    p = jnp.reshape(probs, (2,) * int(jnp.log2(probs.shape[0])))
+    return jnp.sum(jnp.take(p, (1,), axis=wire))
