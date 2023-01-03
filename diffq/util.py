@@ -22,9 +22,9 @@ def prob(state, dtype=jnp.float32):
     return jnp.asarray(jnp.square(jnp.abs(state)), dtype=dtype)
 
 
-def marginal_prob(probs, integrage_wires):
+def marginal_prob(probs, integrate_wires):
     p = _qubit_shape(probs)
-    return jnp.reshape(jnp.sum(p, axis=integrage_wires), (-1,))
+    return jnp.reshape(jnp.sum(p, axis=integrate_wires), (-1,))
 
 
 def sample(key, probs, shape):
