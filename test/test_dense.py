@@ -169,5 +169,25 @@ class TestCY(unittest.TestCase):
         cy = dense.CY(o, w)
         np.testing.assert_allclose(cy, dense.PauliY(o, jnp.ones((1,), dtype=jnp.int32)))
 
+class TestSWAP(unittest.TestCase):
+    def test_SWAP(self):
+        w = jnp.arange(2)
+        z = dense.zero(2, jnp.complex64)
+        s = dense.SWAP(z, w)
+        np.testing.assert_allclose(s, z)
+
+    def test_1(self):
+        w = jnp.arange(2)
+        z = dense.zero(2, jnp.complex64)
+        o = dense.PauliX(z, jnp.arange(1))
+        s = dense.SWAP(o, w)
+        np.testing.assert_allclose(s, dense.PauliX(z, jnp.ones((1,), dtype=jnp.int32)))
+
+    def test_twice(self):
+        w = jnp.arange(2)
+        o = dense.PauliX(dense.zero(2, jnp.complex64), jnp.arange(1))
+        ss = dense.SWAP(dense.SWAP(o, w), w)
+        np.testing.assert_allclose(ss, o)
+
 if __name__ == "__main__":
     unittest.main()
