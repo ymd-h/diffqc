@@ -447,7 +447,7 @@ class TestControlledPhaseShift(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.ControlledPhaseShift(s, w, p), ans)
 
-class TestCPhaseShift00(unittest.TestCase):
+class TestCPhaseShift(unittest.TestCase):
     def test_cps(self):
         w = jnp.arange(2)
         s00 = dense.zero(2, jnp.complex64)
@@ -460,8 +460,22 @@ class TestCPhaseShift00(unittest.TestCase):
                              ["s01", s01, s01],
                              ["s10", s10, s10],
                              ["s11", s11, s11]]:
-            with self.subTest(state=name):
+            with self.subTest(mode = "00", state=name):
                 np.testing.assert_allclose(dense.CPhaseShift00(s, w, p), ans)
+
+        for name, s, ans in [["s00", s00, s00],
+                             ["s01", s01, s01 * jnp.exp(1j*p)],
+                             ["s10", s10, s10],
+                             ["s11", s11, s11]]:
+            with self.subTest(mode = "01", state=name):
+                np.testing.assert_allclose(dense.CPhaseShift01(s, w, p), ans)
+
+        for name, s, ans in [["s00", s00, s00],
+                             ["s01", s01, s01],
+                             ["s10", s10, s10 * jnp.exp(1j*p)],
+                             ["s11", s11, s11]]:
+            with self.subTest(mode = "10", state=name):
+                np.testing.assert_allclose(dense.CPhaseShift10(s, w, p), ans)
 
 if __name__ == "__main__":
     unittest.main()
