@@ -651,6 +651,35 @@ class TestU3(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.U3(s, w, t, p, d), ans, atol=1e-7)
 
+class TestPSWAP(unittest.TestCase):
+    def test_0(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.arange(1)+1)
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s11 = dense.PauliX(s01, jnp.arange(1))
+
+        for name, s, ans in [["s00", s00, dense.SWAP(s00, w)],
+                             ["s01", s01, dense.SWAP(s01, w)],
+                             ["s10", s10, dense.SWAP(s10, w)],
+                             ["s11", s11, dense.SWAP(s11, w)]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.PSWAP(s, w, 0), ans)
+
+    def test_p(self):
+        w = jnp.arange(2)
+        s00 = dense.zero(2, jnp.complex64)
+        s01 = dense.PauliX(s00, jnp.arange(1)+1)
+        s10 = dense.PauliX(s00, jnp.arange(1))
+        s11 = dense.PauliX(s01, jnp.arange(1))
+
+        p = jnp.pi * 1.5
+        for name, s, ans in [["s00", s00, dense.SWAP(s00, w)],
+                             ["s01", s01, dense.SWAP(s01, w) * jnp.exp(1j*p)],
+                             ["s10", s10, dense.SWAP(s10, w) * jnp.exp(1j*p)],
+                             ["s11", s11, dense.SWAP(s11, w)]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.PSWAP(s, w, p), ans)
 
 if __name__ == "__main__":
     unittest.main()
