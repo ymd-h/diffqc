@@ -286,5 +286,56 @@ class TestRot(unittest.TestCase):
                 np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, 0, 0, 0)),
                                            ans)
 
+    def test_0y0(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        y = 0.25 * jnp.pi
+        for name, s, ans in [["s0", s0, [ jnp.cos(0.5*y), jnp.sin(0.5*y)]],
+                             ["s1", s1, [-jnp.sin(0.5*y), jnp.cos(0.5*y)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, 0, y, 0)),
+                                           ans)
+
+    def test_z00(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        z = jnp.pi / 8
+        for name, s, ans in [["s0", s0, [jnp.exp(-0.5j*z), 0]],
+                             ["s1", s1, [0, jnp.exp(0.5j*z)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, z, 0, 0)),
+                                           ans, atol=1e-7)
+
+    def test_00z(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        z = jnp.pi * 0.75
+        for name, s, ans in [["s0", s0, [jnp.exp(-0.5j*z), 0]],
+                             ["s1", s1, [0, jnp.exp(0.5j*z)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, 0, 0, z)),
+                                           ans, atol=1e-7)
+
+    def test_zyz(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        z1 = jnp.pi * 1.5
+        y = jnp.pi
+        z2 = jnp.pi / 8
+
+        for name, s, ans in [["s0", s0, [0, jnp.exp(-0.5j*(z1-z2))]],
+                             ["s1", s1, [-jnp.exp(0.5j*(z1-z2)), 0]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.Rot(s, w, z1, y, z2)),
+                                           ans, atol=1e-7)
+
 if __name__ == "__main__":
     unittest.main()
