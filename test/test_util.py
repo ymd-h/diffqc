@@ -19,6 +19,12 @@ class TestMarginalProb(unittest.TestCase):
         np.testing.assert_allclose(diffq.marginal_prob(p, 2),
                                    [0.4, 0.2, 0.2, 0.2])
 
+    def test_jit(self):
+        p = jnp.asarray([0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
+        np.testing.assert_allclose(jax.jit(diffq.marginal_prob,
+                                           static_argnums=1)(p, 2),
+                                   [0.4, 0.2, 0.2, 0.2])
+
 
 class TestSample(unittest.TestCase):
     def test_sample(self):
