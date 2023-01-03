@@ -251,5 +251,15 @@ class TestSISWAP(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.to_state(dense.SISWAP(s, w)), ans)
 
+class TestCSWAP(unittest.TestCase):
+    def test_CSWAP(self):
+        w = jnp.arange(3)
+        s001 = dense.PauliX(dense.zero(3, jnp.complex64), jnp.arange(1)+2)
+        np.testing.assert_allclose(dense.CSWAP(s001, w), s001)
+
+        s101 = dense.PauliX(s001, jnp.arange(1))
+        np.testing.assert_allclose(dense.CSWAP(s101, w),
+                                   dense.SWAP(s101, jnp.arange(2)+1))
+
 if __name__ == "__main__":
     unittest.main()
