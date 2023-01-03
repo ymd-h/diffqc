@@ -384,5 +384,29 @@ class TestRY(unittest.TestCase):
                 np.testing.assert_allclose(dense.to_state(dense.RY(s, w, y)), ans,
                                            atol=1e-7)
 
+class TestRZ(unittest.TestCase):
+    def test_0(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        for name, s, ans in [["s0", s0, [1, 0]],
+                             ["s1", s1, [0, 1]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.RZ(s, w, 0)), ans,
+                                           atol=1e-7)
+
+    def test_z(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        z = jnp.pi
+        for name, s, ans in [["s0", s0, [jnp.exp(-0.5j*z), 0]],
+                             ["s1", s1, [0,  jnp.exp(0.5j*z)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.to_state(dense.RZ(s, w, z)), ans,
+                                           atol=1e-7)
+
 if __name__ == "__main__":
     unittest.main()
