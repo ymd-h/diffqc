@@ -9,12 +9,20 @@ __all__ = [
 ]
 
 
+def _qubit_shape(s):
+    if s.shape[0] <= 2:
+        return s
+
+    s = jnp.reshape(s, (2, -1))
+    return jax.vmap(_qubit_shape)(s)
+
+
 def prob(state, dtype=jnp.float32):
     return jnp.asarray(jnp.square(jnp.abs(state)), dtype=dtype)
 
 
 def marginal_prob(probs, integrage_wires):
-    p = jnp.reshape(probs, (2,) * int(jnp.log2(probs.shape[0])))
+    p = _qubit_shape(probs)
     return jnp.reshape(jnp.sum(p, axis=integrage_wires), (-1,))
 
 
@@ -26,5 +34,5 @@ def sample(key, probs, shape):
 
 
 def expval(probs, wire):
-    p = jnp.reshape(probs, (2,) * int(jnp.log2(probs.shape[0])))
+    p = _qubit_shape(probs)
     return jnp.sum(jnp.take(p, (1,), axis=wire))
