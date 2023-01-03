@@ -125,7 +125,7 @@ def ECR(c, wires):
     return op2(c, wires, _op.ECR(c.dtype))
 
 def SISWAP(c, wires):
-    return op2(c, wires, _op.SISWAP)
+    return op2(c, wires, _op.SISWAP(c.dtype))
 
 SQISWAP = SISWAP
 
