@@ -543,5 +543,55 @@ class TestCRot(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.CRot(s, w, p, t, o), ans)
 
+class TestU2(unittest.TestCase):
+    def test_00(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        for name, s, ans in [["s0", s0, [ 1, 1]],
+                             ["s1", s1, [-1, 1]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U2(s, w, 0, 0),
+                                           jnp.asarray(ans)/jnp.sqrt(2))
+
+    def test_p0(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        p = jnp.pi * 1.5
+        for name, s, ans in [["s0", s0, [ 1, jnp.exp(1j*p)]],
+                             ["s1", s1, [-1, jnp.exp(1j*p)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U2(s, w, p, 0),
+                                           jnp.asarray(ans)/jnp.sqrt(2))
+
+    def test_0d(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        d = jnp.pi * 1.5
+        for name, s, ans in [["s0", s0, [ 1, 1]],
+                             ["s1", s1, [-jnp.exp(1j*d), jnp.exp(1j*d)]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U2(s, w, 0, d),
+                                           jnp.asarray(ans)/jnp.sqrt(2))
+
+    def test_pd(self):
+        w = jnp.arange(1)
+        s0 = dense.zero(1, jnp.complex64)
+        s1 = dense.PauliX(s0, w)
+
+        p = jnp.pi * 1.5
+        d = jnp.pi / 4
+        for name, s, ans in [["s0", s0, [ 1, jnp.exp(1j*p)]],
+                             ["s1", s1, [-jnp.exp(1j*d), jnp.exp(1j*(p+d))]]]:
+            with self.subTest(state=name):
+                np.testing.assert_allclose(dense.U2(s, w, p, d),
+                                           jnp.asarray(ans)/jnp.sqrt(2), atol=1e-7)
+
+
 if __name__ == "__main__":
     unittest.main()
