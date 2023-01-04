@@ -62,21 +62,18 @@ def to_state(x):
 BUG = "BUG: {} quantum operation is called with wrong wires: {}"
 
 def op1(c, wires, op):
-    assert wires.shape == (1,), BUG.format(1, wires.shape)
-    i = wires.at[0].get()
-    return jnp.moveaxis(jnp.tensordot(op, c, ((1,), (i,))), 0, i)
+    assert len(wires) == 1, BUG.format(1, len(wires))
+    return jnp.moveaxis(jnp.tensordot(op, c, ((1,), wires)), (0,), wires)
 
 def op2(c, wires, op):
-    assert wires.shape == (2,), BUG.format(2, wires.shape)
-    i = (wires.at[0].get(), wires.at[1].get())
+    assert len(wires) == 2, BUG.format(2, len(wires))
     op2x2 = jnp.reshape(op, (2,2,2,2))
-    return jnp.moveaxis(jnp.tensordot(op2x2, c, axes=((2,3), i)), (0,1), i)
+    return jnp.moveaxis(jnp.tensordot(op2x2, c, axes=((2,3), wires)), (0,1), wires)
 
 def op3(c, wires, op):
-    assert wires.shape == (3,), BUG.format(3, wires.shape)
-    i = (wires.at[0].get(), wires.at[1].get(), wires.at[2].get())
+    assert len(wires) == 3, BUG.format(3, len(wires))
     op2x3 = jnp.reshape(op, (2,2,2,2,2,2))
-    return jnp.moveaxis(jnp.tensordot(op2x3, c, axes=((3,4,5), i)), (0,1,2), i)
+    return jnp.moveaxis(jnp.tensordot(op2x3, c, axes=((3,4,5), wires)),(0,1,2), wires)
 
 def control_op2(op):
     return jnp.identity(4, dtype=op.dtype).at[2:,2:].set(op)
