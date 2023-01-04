@@ -1,3 +1,6 @@
+"""
+Example 00: Circuit Basics
+"""
 import jax
 import jax.numpy as jnp
 import numpy as np
