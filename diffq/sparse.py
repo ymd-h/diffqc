@@ -69,7 +69,7 @@ def to_state(x):
         c = c.at[:].add(ps(idx))
         return c, None
 
-    state, _ = jax.lax.scan(f, jnp.zeros(2 ** n), x)
+    state, _ = jax.lax.scan(f, jnp.zeros(2 ** n, dtype=x.dtype), x)
     return state
 
 
