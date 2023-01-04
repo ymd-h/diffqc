@@ -5,7 +5,7 @@ from . import _operators as _op
 
 __all__ = [
     # Util
-    "zero",
+    "zeros",
     "to_state",
 
     # Non-Parametric Operation
@@ -49,7 +49,7 @@ __all__ = [
 ]
 
 # StateVec Shape: [possibility, nqubit, qubit]
-def zero(nqubits, dtype):
+def zeros(nqubits, dtype):
     return jnp.zeros((1, nqubits, 2), dtype=dtype).at[:,:,0].set(1)
 
 def to_state(x):

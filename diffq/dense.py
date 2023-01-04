@@ -5,7 +5,7 @@ from . import _operators as _op
 
 __all__ = [
     # Util
-    "zero",
+    "zeros",
     "to_state",
 
     # Non-Parametric Operation
@@ -49,7 +49,7 @@ __all__ = [
 ]
 
 # StateVec Shape: [qubits...]
-def zero(nqubits, dtype):
+def zeros(nqubits, dtype):
     size = 2 ** nqubits
     shape = (2,) * nqubits
     return jnp.reshape(jnp.zeros(size, dtype=dtype).at[0].set(1), shape)

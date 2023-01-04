@@ -10,7 +10,7 @@ def main():
 
     @jax.jit
     def circuit(params):
-        x = op.zero(nqubits, jnp.complex64)
+        x = op.zeros(nqubits, jnp.complex64)
 
         for i in range(nqubits):
             x = op.Hadamard(x, (i,))

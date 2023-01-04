@@ -6,16 +6,16 @@ import jax.numpy as jnp
 
 from diffq import dense
 
-class TestZero(unittest.TestCase):
-    def test_zero(self):
-        z = dense.zero(2, jnp.complex64)
+class TestZeros(unittest.TestCase):
+    def test_zeros(self):
+        z = dense.zeros(2, jnp.complex64)
         np.testing.assert_allclose(z.shape, (2, 2))
         self.assertEqual(z[0, 0], 1+0j)
         self.assertEqual(jnp.sum(z), 1+0j)
 
 class TestToState(unittest.TestCase):
     def test_to_state(self):
-        z = dense.zero(3, jnp.complex64)
+        z = dense.zeros(3, jnp.complex64)
         s = dense.to_state(z)
         np.testing.assert_allclose(s.shape, (8,))
         self.assertEqual(s[0], 1+0j)
@@ -24,181 +24,181 @@ class TestToState(unittest.TestCase):
 class TestHadamard(unittest.TestCase):
     def test_H(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         h = dense.Hadamard(z, w)
         np.testing.assert_allclose(h, [1/jnp.sqrt(2), 1/jnp.sqrt(2)])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         h = dense.Hadamard(o, w)
         np.testing.assert_allclose(h, [1/jnp.sqrt(2), -1/jnp.sqrt(2)])
 
     def test_twice(self):
         w = (0,)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         zz = dense.Hadamard(dense.Hadamard(z, w), w)
         np.testing.assert_allclose(z, zz)
 
 class TestPauliX(unittest.TestCase):
     def test_pauliX(self):
         w = (0,)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         x = dense.PauliX(z, w)
         np.testing.assert_allclose(x[:, 0], [0+0j, 1+0j])
 
     def test_twice(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         xx = dense.PauliX(dense.PauliX(z, w), w)
         np.testing.assert_allclose(z, xx)
 
 class TestPauliY(unittest.TestCase):
     def test_pauliY(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         y = dense.PauliY(z, w)
         np.testing.assert_allclose(y, [0+0j, 0+1j])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         y = dense.PauliY(o, w)
         np.testing.assert_allclose(y, [-1j, 0])
 
     def test_twice(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         yy = dense.PauliY(dense.PauliY(z, w), w)
         np.testing.assert_allclose(yy, z)
 
 class TestPauliZ(unittest.TestCase):
     def test_pauliZ(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         x = dense.PauliZ(z, w)
         np.testing.assert_allclose(x, [1, 0])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         x = dense.PauliZ(o, w)
         np.testing.assert_allclose(x, [0, -1])
 
     def test_twice(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         zz = dense.PauliZ(dense.PauliZ(z, w), w)
         np.testing.assert_allclose(zz, z)
 
 class TestS(unittest.TestCase):
     def test_S(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         s = dense.S(z, w)
         np.testing.assert_allclose(s, [1, 0])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         s = dense.S(o, w)
         np.testing.assert_allclose(s, [0, 1j])
 
 class TestT(unittest.TestCase):
     def test_T(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         t = dense.T(z, w)
         np.testing.assert_allclose(t, [1, 0])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         t = dense.T(o, w)
         np.testing.assert_allclose(t, [0, jnp.exp(0.25j * jnp.pi)])
 
 class TestSX(unittest.TestCase):
     def test_SX(self):
         w = (0,)
-        z = dense.zero(1, jnp.complex64)
+        z = dense.zeros(1, jnp.complex64)
         sx = dense.SX(z, w)
         np.testing.assert_allclose(sx, [0.5*(1+1j), 0.5*(1-1j)])
 
     def test_1(self):
         w = (0,)
-        o = dense.zero(1, jnp.complex64).at[:].set([0, 1])
+        o = dense.zeros(1, jnp.complex64).at[:].set([0, 1])
         sx = dense.SX(o, w)
         np.testing.assert_allclose(sx, [0.5*(1-1j), 0.5*(1+1j)])
 
 class TestCNOT(unittest.TestCase):
     def test_CNOT(self):
         w = (0, 1)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         cn = dense.CNOT(z, w)
         np.testing.assert_allclose(cn, z)
 
     def test_1(self):
         w = (0, 1)
-        o = dense.PauliX(dense.zero(2, jnp.complex64), (0,))
+        o = dense.PauliX(dense.zeros(2, jnp.complex64), (0,))
         cn = dense.CNOT(o, w)
         np.testing.assert_allclose(cn, dense.PauliX(o, (1,)))
 
 class TestCZ(unittest.TestCase):
     def test_CZ(self):
         w = (0, 1)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         cz = dense.CZ(z, w)
         np.testing.assert_allclose(cz, z)
 
     def test_1(self):
         w = (0, 1)
-        o = dense.PauliX(dense.zero(2, jnp.complex64), (0,))
+        o = dense.PauliX(dense.zeros(2, jnp.complex64), (0,))
         cz = dense.CZ(o, w)
         np.testing.assert_allclose(cz, dense.PauliZ(o, (1,)))
 
 class TestCY(unittest.TestCase):
     def test_CY(self):
         w = (0, 1)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         cy = dense.CY(z, w)
         np.testing.assert_allclose(cy, z)
 
     def test_1(self):
         w = (0, 1)
-        o = dense.PauliX(dense.zero(2, jnp.complex64), (0,))
+        o = dense.PauliX(dense.zeros(2, jnp.complex64), (0,))
         cy = dense.CY(o, w)
         np.testing.assert_allclose(cy, dense.PauliY(o, (1,)))
 
 class TestSWAP(unittest.TestCase):
     def test_SWAP(self):
         w = (0, 1)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         s = dense.SWAP(z, w)
         np.testing.assert_allclose(s, z)
 
     def test_1(self):
         w = (0, 1)
-        z = dense.zero(2, jnp.complex64)
+        z = dense.zeros(2, jnp.complex64)
         o = dense.PauliX(z, (0,))
         s = dense.SWAP(o, w)
         np.testing.assert_allclose(s, dense.PauliX(z, (1,)))
 
     def test_twice(self):
         w = (0, 1)
-        o = dense.PauliX(dense.zero(2, jnp.complex64), (0,))
+        o = dense.PauliX(dense.zeros(2, jnp.complex64), (0,))
         ss = dense.SWAP(dense.SWAP(o, w), w)
         np.testing.assert_allclose(ss, o)
 
 class TestISWAP(unittest.TestCase):
     def test_00(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s = dense.ISWAP(s00, w)
         np.testing.assert_allclose(s, s00)
 
     def test_01(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s = dense.ISWAP(s01, w)
@@ -206,7 +206,7 @@ class TestISWAP(unittest.TestCase):
 
     def test_10(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s = dense.ISWAP(s10, w)
@@ -214,7 +214,7 @@ class TestISWAP(unittest.TestCase):
 
     def test_11(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s11 = dense.PauliX(dense.PauliX(s00, (0,)),
                            (1,))
         s = dense.ISWAP(s11, w)
@@ -223,7 +223,7 @@ class TestISWAP(unittest.TestCase):
 class TestECR(unittest.TestCase):
     def test_ECR(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -239,7 +239,7 @@ class TestECR(unittest.TestCase):
 class TestSISWAP(unittest.TestCase):
     def test_SISWAP(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -254,7 +254,7 @@ class TestSISWAP(unittest.TestCase):
 class TestCSWAP(unittest.TestCase):
     def test_CSWAP(self):
         w = (0, 1, 2)
-        s001 = dense.PauliX(dense.zero(3, jnp.complex64), (2,))
+        s001 = dense.PauliX(dense.zeros(3, jnp.complex64), (2,))
         np.testing.assert_allclose(dense.CSWAP(s001, w), s001)
 
         s101 = dense.PauliX(s001, (0,))
@@ -264,7 +264,7 @@ class TestCSWAP(unittest.TestCase):
 class TestToffoli(unittest.TestCase):
     def test_Toffoli(self):
         w = (0, 1, 2)
-        s001 = dense.PauliX(dense.zero(3, jnp.complex64), (2,))
+        s001 = dense.PauliX(dense.zeros(3, jnp.complex64), (2,))
         np.testing.assert_allclose(dense.Toffoli(s001, w), s001)
 
         s011 = dense.PauliX(s001, (1,))
@@ -277,7 +277,7 @@ class TestToffoli(unittest.TestCase):
 class TestRot(unittest.TestCase):
     def test_000(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -288,7 +288,7 @@ class TestRot(unittest.TestCase):
 
     def test_0y0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         y = 0.25 * jnp.pi
@@ -300,7 +300,7 @@ class TestRot(unittest.TestCase):
 
     def test_z00(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         z = jnp.pi / 8
@@ -312,7 +312,7 @@ class TestRot(unittest.TestCase):
 
     def test_00z(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         z = jnp.pi * 0.75
@@ -324,7 +324,7 @@ class TestRot(unittest.TestCase):
 
     def test_zyz(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         z1 = jnp.pi * 1.5
@@ -340,7 +340,7 @@ class TestRot(unittest.TestCase):
 class TestRX(unittest.TestCase):
     def test_0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -350,7 +350,7 @@ class TestRX(unittest.TestCase):
 
     def test_x(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         x = jnp.pi
@@ -363,7 +363,7 @@ class TestRX(unittest.TestCase):
 class TestRY(unittest.TestCase):
     def test_0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -374,7 +374,7 @@ class TestRY(unittest.TestCase):
 
     def test_y(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         y = jnp.pi
@@ -387,7 +387,7 @@ class TestRY(unittest.TestCase):
 class TestRZ(unittest.TestCase):
     def test_0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -398,7 +398,7 @@ class TestRZ(unittest.TestCase):
 
     def test_z(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         z = jnp.pi
@@ -411,7 +411,7 @@ class TestRZ(unittest.TestCase):
 class TestPhaseShift(unittest.TestCase):
     def test_0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -421,7 +421,7 @@ class TestPhaseShift(unittest.TestCase):
                                            ans)
     def test_p(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         p = jnp.pi
@@ -434,7 +434,7 @@ class TestPhaseShift(unittest.TestCase):
 class TestControlledPhaseShift(unittest.TestCase):
     def test_CPS(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -450,7 +450,7 @@ class TestControlledPhaseShift(unittest.TestCase):
 class TestCPhaseShift(unittest.TestCase):
     def test_cps(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -480,7 +480,7 @@ class TestCPhaseShift(unittest.TestCase):
 class TestCRX(unittest.TestCase):
     def test_CRX(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -496,7 +496,7 @@ class TestCRX(unittest.TestCase):
 class TestCRY(unittest.TestCase):
     def test_CRY(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -512,7 +512,7 @@ class TestCRY(unittest.TestCase):
 class TestCRZ(unittest.TestCase):
     def test_CRZ(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -528,7 +528,7 @@ class TestCRZ(unittest.TestCase):
 class TestCRot(unittest.TestCase):
     def test_CRot(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -546,7 +546,7 @@ class TestCRot(unittest.TestCase):
 class TestU2(unittest.TestCase):
     def test_00(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [ 1, 1]],
@@ -557,7 +557,7 @@ class TestU2(unittest.TestCase):
 
     def test_p0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         p = jnp.pi * 1.5
@@ -569,7 +569,7 @@ class TestU2(unittest.TestCase):
 
     def test_0d(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         d = jnp.pi * 1.5
@@ -581,7 +581,7 @@ class TestU2(unittest.TestCase):
 
     def test_pd(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         p = jnp.pi * 1.5
@@ -595,7 +595,7 @@ class TestU2(unittest.TestCase):
 class TestU3(unittest.TestCase):
     def test_000(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         for name, s, ans in [["s0", s0, [1, 0]],
@@ -605,7 +605,7 @@ class TestU3(unittest.TestCase):
 
     def test_t00(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         t = jnp.pi / 6
@@ -616,7 +616,7 @@ class TestU3(unittest.TestCase):
 
     def test_tp0(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         t = jnp.pi
@@ -628,7 +628,7 @@ class TestU3(unittest.TestCase):
 
     def test_t0d(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         t = jnp.pi
@@ -640,7 +640,7 @@ class TestU3(unittest.TestCase):
 
     def test_tpd(self):
         w = (0,)
-        s0 = dense.zero(1, jnp.complex64)
+        s0 = dense.zeros(1, jnp.complex64)
         s1 = dense.PauliX(s0, w)
 
         t = jnp.pi
@@ -654,7 +654,7 @@ class TestU3(unittest.TestCase):
 class TestPSWAP(unittest.TestCase):
     def test_0(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
@@ -668,7 +668,7 @@ class TestPSWAP(unittest.TestCase):
 
     def test_p(self):
         w = (0, 1)
-        s00 = dense.zero(2, jnp.complex64)
+        s00 = dense.zeros(2, jnp.complex64)
         s01 = dense.PauliX(s00, (1,))
         s10 = dense.PauliX(s00, (0,))
         s11 = dense.PauliX(s01, (0,))
