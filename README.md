@@ -21,7 +21,7 @@ requires exponentially large memory when `nqubits` is large.
 
 ### 2.2 `sparse` operation
 
-> **Warning**
+> **Warning**  
 > `sparse` module is under depelopment, and is not ready to use.
 
 In `sparse` operation, only neccessary states are traced. This might
@@ -31,7 +31,7 @@ computationally inefficient.
 
 ### 2.3 PennyLane Plugin
 
-> **Warning**
+> **Warning**  
 > PennyLane plugin is planned, but is still under development, and is not ready yet.
 
 [PennyLane](https://pennylane.ai/) is a quantum machine learning
