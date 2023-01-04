@@ -62,7 +62,7 @@ def to_state(x):
         def ps(i):
             @jax.vmap
             def p(q):
-                return xi.at[q, (i >> (n-1-q)) % 2]
+                return xi.at[q, (i >> (n-1-q)) % 2].get()
 
             return jnp.prod(p(qubit))
 
