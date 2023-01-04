@@ -75,10 +75,14 @@ def to_state(x):
 
 # Internal Functions
 def op1(c, wires, op):
-    i = wires.at[0].get()
-    q = c.at[i, :]
-    c = q.set(op @ q.get())
-    return c
+    assert len(wires) == 1
+    i = wires[0]
+    @jax.vmap
+    def set(ci):
+        q = ci.at[i, :]
+        ci = q.set(op @ q.get())
+        return ci
+    return set(c)
 
 def opN(c, wires, opf):
     @jax.vmap
@@ -114,31 +118,24 @@ def entangle_op2(op):
 
 
 # Quantum Operators
-@jax.vmap
 def Hadamard(c, wires):
     return op1(c, wires, _op.H(c.dtype))
 
-@jax.vmap
 def PauliX(c, wires):
     return op1(c, wires, _op.sigmaX(c.dtype))
 
-@jax.vmap
 def PauliY(c, wires):
     return op1(c, wires, _op.sigmaY(c.dtype))
 
-@jax.vmap
 def PauliZ(c, wires):
     return op1(c, wires, _op.sigmaZ(c.dtype))
 
-@jax.vmap
 def S(c, wires):
     return op1(c, wires, _op.phaseS(c.dtype))
 
-@jax.vmap
 def T(c, wires):
     return op1(c, wires, _op.phaseT(c.dtype))
 
-@jax.vmap
 def SX(c, wires):
     return op1(c, wires, _op.sqrtX(c.dtype))
 
@@ -192,23 +189,18 @@ def Toffoli(c, wires):
     return opN(c, wires, toffoli)
 
 
-@jax.vmap
 def Rot(c, wires, phi, theta, omega):
     return op1(c, wires, _op.Rot(c.dtype, phi, theta, omega))
 
-@jax.vmap
 def RX(c, wires, phi):
     return op1(c, wires, _op.RX(c.dtype, phi))
 
-@jax.vmap
 def RY(c, wires, phi):
     return op1(c, wires, _op.RY(c.dtype, phi))
 
-@jax.vmap
 def RZ(c, wires, phi):
     return op1(c, wires, _op.RZ(c.dtype, phi))
 
-@jax.vmap
 def PhaseShift(c, wires, phi):
     return op1(c, wires, _op.phaseShift(c.dtype, phi))
 
@@ -240,11 +232,9 @@ def CRot(c, wires, phi, theta, omega):
 
 U1 = PhaseShift
 
-@jax.vmap
 def U2(c, wires, phi, delta):
     return op1(c, wires, _op.U2(c.dtype, phi, delta))
 
-@jax.vmap
 def U3(c, wires, theta, phi, delta):
     return op1(c, wires, _op.U3(c.dtype, theta, phi, delta))
 
