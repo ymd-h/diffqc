@@ -38,8 +38,8 @@ def circuit(n_qubits, depth, features, weights):
 
     for idx in range(n_qubits):
         i = idx % features.shape[0]
-        q = op.RZ(q, (idx,), jnp.arccos(features.at[i].get() ** 2))
         q = op.RY(q, (idx,), jnp.arcsin(features.at[i].get()))
+        q = op.RZ(q, (idx,), jnp.arccos(features.at[i].get() ** 2))
 
     for k in range(depth):
         for idx in range(0, n_qubits-1):
