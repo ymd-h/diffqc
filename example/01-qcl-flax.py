@@ -37,13 +37,12 @@ def circuit(n_qubits, depth, features, weights):
     q = op.zeros(n_qubits, jnp.complex64)
 
     for idx in range(n_qubits):
-        q = op.Hadamard(q, (idx,))
-
-    for idx in range(features.shape[0]):
-        q = op.RY(q, (idx,), features.at[idx].get())
+        i = idx % features.shape[0]
+        q = op.RZ(q, (idx,), jnp.arccos(features.at[i].get() ** 2))
+        q = op.RY(q, (idx,), jnp.arcsin(features.at[i].get()))
 
     for k in range(depth):
-        for idx in range(0, n_qubits-1, 2):
+        for idx in range(0, n_qubits-1):
             q = op.CNOT(q, (idx, idx+1))
         for idx in range(n_qubits):
             q = op.RY(q, (idx,), weights.at[k, idx].get())
@@ -63,7 +62,7 @@ class QCL(nn.Module):
 
     @nn.compact
     def __call__(self, inputs):
-        x = inputs * jnp.pi / 2.0
+        x = inputs
 
         w = self.param("circuit", self.circuit_init, (self.depth, self.n_qubits))
 
@@ -133,7 +132,7 @@ def eval_step(params, x, y, n_qubits, depth, output_dim):
 
 def main():
     # Circuit
-    n_qubits = 3
+    n_qubits = 4
     depth = 2
 
     # Learning
