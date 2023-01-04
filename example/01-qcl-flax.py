@@ -41,6 +41,8 @@ def circuit(n_qubits, depth, features, weights):
         q = op.RY(q, (idx,), jnp.arcsin(features.at[i].get()))
         q = op.RZ(q, (idx,), jnp.arccos(features.at[i].get() ** 2))
 
+    # Note: We use much simpler circuit than that of the original paper,
+    #       however, it seems fine for this easy task.
     for k in range(depth):
         for idx in range(0, n_qubits-1):
             q = op.CNOT(q, (idx, idx+1))
