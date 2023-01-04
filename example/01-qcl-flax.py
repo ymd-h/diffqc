@@ -58,7 +58,7 @@ class QCL(nn.Module):
     n_qubits: int
     depth: int
     output_dim: int
-    circuit_init: Callable = nn.initializers.normal()
+    circuit_init: Callable = nn.initializers.uniform(2 * jnp.pi)
 
     @nn.compact
     def __call__(self, inputs):
