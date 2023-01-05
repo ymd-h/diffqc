@@ -1,8 +1,8 @@
-# diffq: Differentiable Quantum Simulator for Quantum Machine Learning
+# diffq: Differentiable Quantum Circuit Simulator for Quantum Machine Learning
 
 ## 1. Overview
 
-diffq is a python package providing differentiable quantum simulator.
+diffq is a python package providing differentiable quantum circuit simulator.
 The main target is quantum machine learning.
 
 diffq is built on [JAX](https://jax.readthedocs.io/en/latest/), so
