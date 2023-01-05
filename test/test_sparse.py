@@ -21,6 +21,15 @@ class TestToState(unittest.TestCase):
         self.assertEqual(s[0], 1+0j)
         self.assertEqual(jnp.sum(s), 1+0j)
 
+    def test_entangled(self):
+        s000 = sparse.zeros(3, jnp.complex64)
+        s111 = s000.copy().at[:,:].set([0, 1])
+        s = sparse.to_state(jnp.concatenate((s000.at[:,0].divide(jnp.sqrt(2)),
+                                             s111.at[:,0].divide(jnp.sqrt(2))),
+                                            axis=0))
+        np.testing.assert_allclose(s, ([1/jnp.sqrt(2), 0, 0, 0,
+                                        0, 0, 0, 1/jnp.sqrt(2)]))
+
 class TestHadamard(unittest.TestCase):
     def test_0(self):
         w = (0,)
