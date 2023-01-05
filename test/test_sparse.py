@@ -49,5 +49,18 @@ class TestHadamard(unittest.TestCase):
         zz = sparse.Hadamard(sparse.Hadamard(z, w), w)
         np.testing.assert_allclose(zz, z)
 
+class TestPauliX(unittest.TestCase):
+    def test_pauliX(self):
+        w = (0,)
+        s0 = sparse.zeros(2, jnp.complex64)
+        x = sparse.PauliX(s0, w)
+        np.testing.assert_allclose(sparse.to_state(x), [0,0,1,0])
+
+    def test_twice(self):
+        w = (0,)
+        s0 = sparse.zeros(2, jnp.complex64)
+        xx = sparse.PauliX(sparse.PauliX(s0, w), w)
+        np.testing.assert_allclose(xx, s0)
+
 if __name__ == "__main__":
     unittest.main()
