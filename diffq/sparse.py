@@ -53,6 +53,10 @@ def zeros(nqubits, dtype):
     return jnp.zeros((1, nqubits, 2), dtype=dtype).at[:,:,0].set(1)
 
 def to_state(x):
+    if x.shape[0] > (2 ** x.shape[1]):
+        print("Warning: This circuit used required more memory than `dense` does. " +
+              "Please consider to use `dense` instead.")
+
     n = x.shape[1]
     idx = jnp.arange(2 ** n)
     qubit = jnp.arange(n)
