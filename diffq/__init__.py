@@ -1,2 +1,2 @@
-from . import sparse, dense
+from . import sparse, dense, lib
 from .util import *
