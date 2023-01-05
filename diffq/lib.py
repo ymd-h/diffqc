@@ -31,3 +31,30 @@ def GHZ(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
         c = op.CNOT(c, (wires[i], wires[i+1]))
 
     return c
+
+
+def QFT(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
+    """
+    Quantum Fourier Transform
+
+    Parameters
+    ----------
+    op
+        `dense` or `sparse` module
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wire to apply.
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state
+    """
+    for i in range(len(wires)):
+        c = op.Hadamard(c, (i,))
+
+        for j in range(i+1, len(wires)):
+            c = op.ControlledPhaseShift(c, (j, i), 2 * jnp.pi / (2 ** (j-i+1)))
+
+    return c
