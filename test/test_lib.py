@@ -15,7 +15,9 @@ class TestGHZ(unittest.TestCase):
         p = diffq.prob(s)
         np.testing.assert_allclose(p,
                                    jnp.zeros_like(p)
-                                   .at[(0, p.shape[0]-1):]
+                                   .at[0]
+                                   .set(1/jnp.sqrt(2))
+                                   .at[p.shape[0]-1]
                                    .set(1/jnp.sqrt(2)))
 
     def test_dense(self):
