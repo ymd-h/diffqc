@@ -11,7 +11,7 @@ from diffq import lib
 
 
 class TestGHZ(unittest.TestCase):
-    def _check(s):
+    def _check(self, s):
         p = diffq.to_state(s)
         np.testing.assert_allclose(p,
                                    jnp.zeros_like(p)
