@@ -9,6 +9,7 @@ setup(name="diffq",
       extras_require = {
           "pennylane": ["pennylane"],
           "test": ["numpy"],
+          "example": ["flax", "optax", "scikit-learn"],
       },
       entry_points = {
           "pennylane.plugins": [
