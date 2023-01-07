@@ -121,6 +121,20 @@ class TestSX(unittest.TestCase):
         sx = sparse.SX(s1, w)
         np.testing.assert_allclose(sx, [[[0.5*(1-1j), 0.5*(1+1j)]]])
 
+class TestCNOT(unittest.TestCase):
+    def test_0(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        cn = sparse.CNOT(s00, w)
+        np.testing.assert_allclose(sparse.to_state(cn), sparse.to_state(s00))
+
+    def test_1(self):
+        w = (0, 1)
+        s10 = sparse.PauliX(sparse.zeros(2, jnp.complex64), (0,))
+        cn = sparse.CNOT(s10, w)
+        np.testing.assert_allclose(sparse.to_state(cn),
+                                   sparse.to_state(sparse.PauliX(s10, (1,))))
+
 
 if __name__ == "__main__":
     unittest.main()
