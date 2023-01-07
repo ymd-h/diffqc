@@ -62,5 +62,26 @@ class TestPauliX(unittest.TestCase):
         xx = sparse.PauliX(sparse.PauliX(s0, w), w)
         np.testing.assert_allclose(xx, s0)
 
+class TestPauliY(unittest.TestCase):
+    def test_pauliY(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        y = sparse.PauliY(s0, w)
+        np.testing.assert_allclose(sparse.to_state(y), [0+0j, 0+1j])
+
+    def test_1(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+        y = sparse.PauliY(s1, w)
+        np.testing.assert_allclose(sparse.to_state(y), [-1j, 0])
+
+    def test_twice(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        yy = sparse.PauliY(sparse.PauliY(s0, w), w)
+        np.testing.assert_allclose(sparse.to_state(yy), sparse.to_state(s0))
+
+
 if __name__ == "__main__":
     unittest.main()
