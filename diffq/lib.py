@@ -50,6 +50,10 @@ def QFT(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     -------
     jnp.ndarray
         applied qubits state
+
+    Warnings
+    --------
+    This QFT doesn't swap wires, so that endian is inverted.
     """
     for i in range(len(wires)):
         c = op.Hadamard(c, (wires[i],))
