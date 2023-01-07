@@ -52,9 +52,12 @@ def QFT(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
         applied qubits state
     """
     for i in range(len(wires)):
-        c = op.Hadamard(c, (i,))
+        c = op.Hadamard(c, (wires[i],))
 
         for j in range(i+1, len(wires)):
-            c = op.ControlledPhaseShift(c, (j, i), 2 * jnp.pi / (2 ** (j-i+1)))
+            c = op.ControlledPhaseShift(c,
+                                        (wires[j], wires[i]),
+                                        2 * jnp.pi / (2 ** (j-i+1)))
 
     return c
+
