@@ -12,7 +12,7 @@ from diffq import lib
 
 class TestGHZ(unittest.TestCase):
     def _check(self, s):
-        p = diffq.to_state(s)
+        p = diffq.prob(s)
         np.testing.assert_allclose(p,
                                    jnp.zeros_like(p)
                                    .at[(0, p.shape[0]-1):]
