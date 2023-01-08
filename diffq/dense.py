@@ -48,6 +48,10 @@ __all__ = [
     "U2",
     "U3",
     "PSWAP",
+
+    # General Matrix Operation
+    "QubitUnitary",
+    "ControlledQubitUnitary",
 ]
 
 # StateVec Shape: [qubits...]
@@ -731,3 +735,58 @@ def PSWAP(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
         applied qubits state
     """
     return op2(c, wires, _op.PSWAP(c.dtype, phi))
+
+
+def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
+                 U: jnp.ndarray) -> jnp.ndarray:
+    """
+    Unitary Gate
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wire to apply. ``len(wires)`` must be ``log2(U.ndim)``.
+    U : jnp.ndarray
+        square unitary matrix
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state
+    """
+    nqubits = int(jnp.log2(U.ndim))
+    assert len(wires) == nqubits, BUG.format(nqubits, wires)
+
+    a = (i for i in len(wires))
+    b = (i + len(wires) for i in len(wires))
+    return jnp.moveaxis(jnp.tensordot(U, c, axes=(b, wires)), a, wires)
+
+
+def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
+                           U: jnp.ndarray) -> jnp.ndarray:
+    """
+    Controlled Unitary Gate
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wire to apply. ``len(wires)`` must be ``1 + log2(U.ndim)``.
+    U : jnp.ndarray
+        square unitary matrix
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state
+    """
+    nqubits = 1 + int(jnp.log2(U.ndim))
+    assert len(wires) == nqubits, BUG.format(nqubits, wires)
+
+    CU = jnp.identity(U.ndim * 2, dtype=c.dtype).at[U.ndim:, U.ndim:].set(U)
+    CU = jnp.reshape(U, (2, 2) * len(wires))
+
+    return QubitUnitary(c, wires, CU)
