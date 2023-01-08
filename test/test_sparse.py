@@ -138,5 +138,20 @@ class TestCNOT(unittest.TestCase):
                                    sparse.to_state(sparse.PauliX(s10, (1,))))
 
 
+class TestCZ(unittest.TestCase):
+    def test_0(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        cz = sparse.CZ(s00, w)
+        np.testing.assert_allclose(sparse.to_state(cz), sparse.to_state(s00))
+
+    def test_1(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s10 = sparse.PauliZ(s00, (0,))
+        s11 = sparse.PauliZ(s10, (1,))
+        cz = sparse.CZ(s10, w)
+        np.testing.assert_allclose(sparse.to_state(cz), sparse.to_state(s11))
+
 if __name__ == "__main__":
     unittest.main()
