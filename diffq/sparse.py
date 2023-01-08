@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import jax
 import jax.numpy as jnp
 
@@ -46,6 +48,10 @@ __all__ = [
     "U2",
     "U3",
     "PSWAP",
+
+    # General Matrix Operation
+    "QubitUnitary",
+    "ControlledQubitUnitary",
 ]
 
 # StateVec Shape: [possibility, nqubit, qubit]
@@ -256,3 +262,55 @@ def U3(c, wires, theta, phi, delta):
 
 def PSWAP(c, wires, phi):
     return opN(c, wires, entangle_op2(_op.PSWAP(c.dtype, phi)))
+
+
+def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
+                 U: jnp.ndarray) -> jnp.ndarray:
+    """
+    Unitary Gate
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wire to apply. ``len(wires)`` must be ``log2(U.ndim)``.
+    U : jnp.ndarray
+        square unitary matrix
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state
+    """
+    nqubits = int(jnp.log2(U.ndim))
+    assert len(wires) == nqubits, BUG.format(nqubits, wires)
+
+
+
+def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
+                           U: jnp.ndarray) -> jnp.ndarray:
+    """
+    Controlled Unitary Gate
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wire to apply. ``len(wires)`` must be ``1 + log2(U.ndim)``.
+    U : jnp.ndarray
+        square unitary matrix
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state
+    """
+    nqubits = 1 + int(jnp.log2(U.ndim))
+    assert len(wires) == nqubits, BUG.format(nqubits, wires)
+
+    CU = jnp.identity(U.ndim * 2, dtype=c.dtype).at[U.ndim:, U.ndim:].set(U)
+    CU = jnp.reshape(U, (2, 2) * len(wires))
+
+    return QubitUnitary(c, wires, CU)
