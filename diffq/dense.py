@@ -1,3 +1,4 @@
+import math
 from typing import Tuple
 
 import jax
@@ -747,7 +748,7 @@ def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``log2(U.ndim)``.
+        wire to apply. ``len(wires)`` must be ``log2(U.shape[0])``.
     U : jnp.ndarray
         square unitary matrix
 
@@ -756,11 +757,13 @@ def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     jnp.ndarray
         applied qubits state
     """
-    nqubits = int(jnp.log2(U.ndim))
+    nqubits = int(math.log2(U.shape[0]))
     assert len(wires) == nqubits, BUG.format(nqubits, wires)
 
-    a = (i for i in len(wires))
-    b = (i + len(wires) for i in len(wires))
+    U = jnp.reshape(U, (2, 2) * len(wires))
+
+    a = tuple(i for i in range(len(wires)))
+    b = tuple(i + len(wires) for i in range(len(wires)))
     return jnp.moveaxis(jnp.tensordot(U, c, axes=(b, wires)), a, wires)
 
 
@@ -774,7 +777,7 @@ def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1 + log2(U.ndim)``.
+        wire to apply. ``len(wires)`` must be ``1 + log2(U.shape[0])``.
     U : jnp.ndarray
         square unitary matrix
 
@@ -783,10 +786,13 @@ def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     jnp.ndarray
         applied qubits state
     """
-    nqubits = 1 + int(jnp.log2(U.ndim))
+    nqubits = 1 + int(math.log2(U.shape[0]))
     assert len(wires) == nqubits, BUG.format(nqubits, wires)
 
-    CU = jnp.identity(U.ndim * 2, dtype=c.dtype).at[U.ndim:, U.ndim:].set(U)
-    CU = jnp.reshape(U, (2, 2) * len(wires))
+    CU = jnp.identity(U.shape[0] * 2,
+                      dtype=c.dtype).at[
+                          U.shape[0]:,
+                          U.shape[1]:
+                      ].set(U)
 
     return QubitUnitary(c, wires, CU)
