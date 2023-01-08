@@ -62,7 +62,7 @@ def ConvLayer(x, w):
         def y_loop(yi):
             return conv3x3cell(jax.lax.dynamic_slice(x, (xi, yi), (3, 3)), w)
         return y_loop(y_idx)
-    x = x_loop(x_idx)    
+    x = x_loop(x_idx)
 
     # pooling
     x = jnp.maximum(x.at[::2,:].get(), x.at[1::2,:].get())
