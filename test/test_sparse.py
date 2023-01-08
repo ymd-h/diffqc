@@ -126,12 +126,14 @@ class TestCNOT(unittest.TestCase):
         w = (0, 1)
         s00 = sparse.zeros(2, jnp.complex64)
         cn = sparse.CNOT(s00, w)
+        np.testing.assert_allclose(cn, [[[1,0],[1,0]],[[0,0],[0,1]]])
         np.testing.assert_allclose(sparse.to_state(cn), sparse.to_state(s00))
 
     def test_1(self):
         w = (0, 1)
         s10 = sparse.PauliX(sparse.zeros(2, jnp.complex64), (0,))
         cn = sparse.CNOT(s10, w)
+        np.testing.assert_allclose(cn, [[[0,0],[1,0]],[[0,1],[0,1]]])
         np.testing.assert_allclose(sparse.to_state(cn),
                                    sparse.to_state(sparse.PauliX(s10, (1,))))
 
