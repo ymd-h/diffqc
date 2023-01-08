@@ -95,7 +95,7 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int], aux: Tuple[int]) -> jnp.ndarray:
 
     for i in range(len(aux)):
         h = len(aux) - i
-        for j in range(i):
+        for j in range(1, i):
             c = op.ControlledPhaseShift(c, (h-j, h),
                                         -2 * jnp.pi * (2 ** (j + 1)))
         c = op.Hadamard(c, (h,))
