@@ -54,8 +54,10 @@ def zeros(nqubits, dtype):
 
 def to_state(x):
     if x.shape[0] > (2 ** x.shape[1]):
-        print("Warning: This circuit used required more memory than `dense` does. " +
-              "Please consider to use `dense` instead.")
+        jax.debug.print(
+            "Warning: This circuit used required more memory than `dense` does. " +
+            "Please consider to use `dense` instead."
+        )
 
     n = x.shape[1]
     idx = jnp.arange(2 ** n)
