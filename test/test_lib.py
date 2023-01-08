@@ -107,7 +107,7 @@ class TestQPE(unittest.TestCase):
                                        [0,1,0,0,0,0,0,0], # |001>
                                        [0,0,1,0,0,0,0,0], # |010>
                                        [0,0,0,1,0,0,0,0], # |011>
-                                   ])
+                                   ], atol=1e-6, rtol=1e-6)
 
     def test_dense(self):
         f = self._f(dense)

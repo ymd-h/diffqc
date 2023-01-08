@@ -79,7 +79,7 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
     wires : tuples of ints
         wires. Eigen vector of U has been encoded.
     U: jnp.ndarray
-        unitary matrix of which eigen value is estimated
+        unitary matrix of which eigen value phase is estimated
     aux : tuple of ints
         auxiliary qubits. These should be |00...0>
 
@@ -88,18 +88,22 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
     jnp.ndarray
         applied qubits state. Phase is encoded at auxiliary qubits.
     """
-    for i in aux:
-        c = op.Hadamard(c, (i,))
+    naux = len(aux)
+    for a in aux:
+        c = op.Hadamard(c, (a,))
 
-    for i in range(len(aux)):
-        for _ in range(2 ** i):
-            c = op.ControlledQubitUnitary(c, (aux[i], *wires), U)
+    for i, a in enumerate(aux):
+        c = op.ControlledQubitUnitary(c, (a, *wires), U)
+        if i != naux - 1:
+            U = U @ U
 
-    for i in range(len(aux)):
-        h = len(aux) - i
-        for j in range(1, i):
-            c = op.ControlledPhaseShift(c, (h-j, h),
-                                        -2 * jnp.pi * (2 ** (j + 1)))
-        c = op.Hadamard(c, (h,))
+    # Inverse QFT
+    for i in range(naux):
+        h = naux - 1 - i
+        for j in range(i):
+            cnt = naux - 1 - j
+            c = op.ControlledPhaseShift(c, (aux[cnt], aux[h]),
+                                        -2 * jnp.pi / (2 ** (abs(h-cnt)+1)))
+        c = op.Hadamard(c, (aux[h],))
 
     return c
