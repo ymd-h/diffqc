@@ -28,8 +28,25 @@ In `sparse` operation, only neccessary states are traced. This might
 reduce memory requirements at large `nqubits` system, but it can be
 computationally inefficient.
 
+### 2.3 Builtin Algorithm `lib`
+Builtin algorithms are implemented at `diffq.lib`. To support both
+`dense` and `sparse` operation, operation module is passed to 1st
+argument.
 
-### 2.3 PennyLane Plugin
+
+* `GHZ(op, c: jnp.ndarray, wires: Tuple[int])`
+  * Create Greenberger-Horne-Zeilinger state [2]
+  * `|00...0>` -> `(|00...0> + |11...1>)/sqrt(2)`
+* `QFT(op, c: jnp.ndarray, wires: Tuple[int])`
+  * Quantum Fourier Transform (without last swap) [3]
+* `QPE(op, c: jnp.ndarray, wires: Tuple[int], U: jnp.ndarray, aux: Tuple[int])`
+  * Quantum Phase Estimation [4]
+  * `wires`: Eigen Vector
+  * `U`: Unitary Matrix
+  * `aux`: Auxiliary qubits. These should be `|00...0>`.
+
+
+### 2.4 PennyLane Plugin
 
 > **Warning**  
 > PennyLane plugin is planned, but is still under development, and is not ready yet.
@@ -67,4 +84,12 @@ independently, and can switch relatively easy.
   - [Repository at GitHub](https://github.com/google/flax)
 - [1] K. Mitarai et al. "Quantum Circuit Learning", Phys. Rev. A 98, 032309 (2018)
   - DOI: https://doi.org/10.1103/PhysRevA.98.032309
-  - ArXiv: https://arxiv.org/abs/1803.00745
+  - arXiv: https://arxiv.org/abs/1803.00745
+- [2] D. M. Greenberger et al., "Going Beyond Bell's Theorem", arXiv:0712.0921
+  - arXiv: https://arxiv.org/abs/0712.0921
+- [3] D. Coppersmith, "An approximate Fourier transform useful in quantum factoring",
+  IBM Research Report RC19642
+  - arXiv: https://arxiv.org/abs/quant-ph/0201067
+- [4] A. Kitaev, "Quantum measurements and the Abelian Stabilizer Problem",
+  arXiv:quant-ph/9511026
+  - arXiv: https://arxiv.org/abs/quant-ph/9511026
