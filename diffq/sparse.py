@@ -79,7 +79,7 @@ def to_state(x):
 
 # Internal Functions
 def op1(c, wires, op):
-    assert len(wires) == 1
+    assert len(wires) == 1, f"BUG: op1 with wron wires: {len(wires)}"
     i = wires[0]
     @jax.vmap
     def set(ci):
@@ -89,24 +89,32 @@ def op1(c, wires, op):
     return set(c)
 
 def opN(c, wires, opf):
+    assert len(wires) > 1, f"BUG: opN with wrong wires: {len(wires)}"
     @jax.vmap
-    def set(xi):
-        return c.copy().at[wires, :].set(xi)
-    return set(opf(c.at[wires, :].get()))
+    def set(ci):
+        assert ci.ndim == 2
+        q = opf(ci.at[wires,:].get())
+        ci = jnp.broadcast_to(ci, (q.shape[0], *ci.shape))
+        ci = ci.at[:, wires, :].set(q)
+        return ci
+    return jnp.reshape(set(c), (-1, *c.shape[1:]))
 
 def control_op(op):
     def COP(q12):
+        assert q12.shape == (2, 2), f"BUG: control_op with wrong shape: {q12.shape}"
         zero = q12.at[0, 0].get()
         one  = q12.at[0, 1].get()
+
         ret = jnp.zeros((2, 2, 2), dtype=q12.dtype)
         ret = ret.at[0, 0, 0].set(zero).at[1, 0, 1].set(one)
-        ret = ret.at[0, 1, :].set(zero * q12.at[1, :].get())
-        ret = ret.at[1, 1, :].set(one * op @ q12.at[1, :].get())
+        ret = ret.at[0, 1, :].set(q12.at[1, :].get())
+        ret = ret.at[1, 1, :].set(op @ q12.at[1, :].get())
         return ret
     return COP
 
 def entangle_op2(op):
     def EOP(q12):
+        assert q12.shape == (2, 2), f"BUG: entangle_op2 with wrong shape: {q12.shape}"
         q = jnp.asarray([q12.at[0, 0].get() * q12.at[1, 0].get(), # |00>
                          q12.at[0, 0].get() * q12.at[1, 1].get(), # |01>
                          q12.at[0, 1].get() * q12.at[1, 0].get(), # |10>
