@@ -44,7 +44,9 @@ independently, and can switch relatively easy.
 - example/00-circuit-basics.py
   - Basic Usage of diffq
 - example/01-qcl-flax.py
-  - QCL[1] Classification of Iris with [Flax](https://flax.readthedocs.io/en/latest/index.html)
+  - QCL[1] Classification of [Iris](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
+- example/02-cnn-like-qcl-flax.py
+  - CNN-like QCL[1] Classification of [Digits](https://scikit-learn.org/stable/datasets/toy_dataset.html#digits-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
 
 
 ## 4. References
