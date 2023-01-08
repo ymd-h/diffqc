@@ -83,9 +83,9 @@ class TestQPE(unittest.TestCase):
     def _f(self, op):
         def f():
             s00 = op.zeros(5, jnp.complex64)
-            s01 = op.PauliZ(s00, (1,))
-            s10 = op.PauliZ(s00, (0,))
-            s11 = op.PauliZ(s10, (1,))
+            s01 = op.PauliX(s00, (1,))
+            s10 = op.PauliX(s00, (0,))
+            s11 = op.PauliX(s10, (1,))
             s = jnp.stack((s00, s01, s10, s11))
 
             U = jnp.asarray([
