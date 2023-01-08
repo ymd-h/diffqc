@@ -681,5 +681,22 @@ class TestPSWAP(unittest.TestCase):
             with self.subTest(state=name):
                 np.testing.assert_allclose(dense.PSWAP(s, w, p), ans)
 
+class TestQubitUnitary(unittest.TestCase):
+    def test_X(self):
+        from diffq import _operators as _op
+        w = (0,)
+        q0 = dense.zeros(1, jnp.complex64)
+        np.testing.assert_allclose(dense.QubitUnitary(q0, w, _op.sigmaX(q0.dtype)),
+                                   dense.PauliX(q0, w))
+
+    def test_H(self):
+        from diffq import _operators as _op
+        w = (0,)
+        q0 = dense.zeros(1, jnp.complex64)
+        np.testing.assert_allclose(dense.QubitUnitary(q0, w, _op.H(q0.dtype)),
+                                   dense.Hadamard(q0, w))
+
+
+
 if __name__ == "__main__":
     unittest.main()
