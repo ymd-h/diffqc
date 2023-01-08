@@ -6,7 +6,7 @@ import jax.numpy as jnp
 
 def GHZ(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     """
-    Create Greenberger–Horne–Zeilinger state from |00...0> state
+    Create Greenberger-Horne-Zeilinger state from |00...0> state
 
     |00...0> -> (|00...0> + |11...1>)/sqrt(2)
 
