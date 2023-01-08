@@ -5,6 +5,17 @@ This example additionally requires followings;
 * Flax: https://flax.readthedocs.io/en/latest/index.html
 * Optax: https://optax.readthedocs.io/en/latest/
 * scikit-learn: https://scikit-learn.org/stable/
+
+Warnings
+--------
+This implementation is different from QCNN[1],
+because the intermediate measurement and reaction are not easy for diffq simulation,
+and because this example implementation needs smaller qubits and shallow circuit.
+
+[1] I. Cong et al., "Quantum Convolutional Neural Networks",
+    Nature Phys. 15 1273-1278 (2019)
+    https://doi.org/10.1038/s41567-019-0648-8
+    https://arxiv.org/abs/1810.03787
 """
 import functools
 import time
