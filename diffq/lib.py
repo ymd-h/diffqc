@@ -65,3 +65,39 @@ def QFT(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
 
     return c
 
+def QPE(op, c: jnp.ndarray, wires: Tuple[int], aux: Tuple[int]) -> jnp.ndarray:
+    """
+    Quantum Phase Estimation
+
+    Parameters
+    ----------
+    op
+        `dense` ir `sparse` module
+    c : jnp.ndarray
+        qubits state
+    wires : tuples of ints
+        wire to estimate
+    aux : tuple of ints
+        auxiliary qubits. These should be |00...0>
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state. Phase is encoded at auxiliary qubits.
+    """
+    for i in aux:
+        c = op.Hadamard(c, (i,))
+
+    for i in range(len(wires)):
+        for j in aux:
+            c = op.ControlledPhaseShift(c, (wires[-i], j),
+                                        2 * jnp.pi * (2 ** (i + 1)))
+
+    for i in range(len(aux)):
+        h = len(aux) - i
+        for j in range(i):
+            c = op.ControlledPhaseShift(c, (h-j, h),
+                                        -2 * jnp.pi * (2 ** (j + 1)))
+        c = op.Hadamard(c, (h,))
+
+    return c
