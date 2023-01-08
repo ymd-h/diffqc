@@ -73,7 +73,7 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
     Parameters
     ----------
     op
-        `dense` ir `sparse` module
+        `dense` or `sparse` module
     c : jnp.ndarray
         qubits state
     wires : tuples of ints
