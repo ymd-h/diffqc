@@ -80,8 +80,10 @@ def to_state(x):
 
 
 # Internal Functions
+BUG = "BUG: {} quantum operation is called with wrong wires: {}"
+
 def op1(c, wires, op):
-    assert len(wires) == 1, f"BUG: op1 with wron wires: {len(wires)}"
+    assert len(wires) == 1, BUG.format(1, wires)
     i = wires[0]
     @jax.vmap
     def set(ci):
