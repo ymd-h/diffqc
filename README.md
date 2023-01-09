@@ -6,8 +6,11 @@ diffq is a python package providing differentiable quantum circuit simulator.
 The main target is quantum machine learning.
 
 diffq is built on [JAX](https://jax.readthedocs.io/en/latest/), so
-that supported environments are limited to those supported by
-JAX. (Ref.
+that it is
+* GPU friendly,
+* easily vectorized,
+* differentiable, but
+* supported environments are limited. (Ref.
 ["Installation" section at JAX README](https://github.com/google/jax#installation))
 
 ## 2. Features
