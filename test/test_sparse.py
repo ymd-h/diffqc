@@ -243,6 +243,27 @@ class TestECR(unittest.TestCase):
 
         np.testing.assert_allclose(ecr(s), ans)
 
+class TestSISWAP(unittest.TestCase):
+    def test_SISWAP(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s10 = sparse.PauliX(s00, (0,))
+        s01 = sparse.PauliX(s00, (1,))
+        s11 = sparse.PauliX(s01, (0,))
+
+        s = jnp.stack((s00, s01, s10, s11))
+        ans = jnp.asarray([
+            [1,              0,              0, 0],
+            [0,  1/jnp.sqrt(2), 1j/jnp.sqrt(2), 0],
+            [0, 1j/jnp.sqrt(2),  1/jnp.sqrt(2), 0],
+            [0,              0,              0, 1],
+        ])
+
+        @jax.vmap
+        def siswap(si):
+            return sparse.to_state(sparse.SISWAP(si, w))
+
+        np.testing.assert_allclose(siswap(s), ans)
 
 if __name__ == "__main__":
     unittest.main()
