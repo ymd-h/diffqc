@@ -494,6 +494,26 @@ class TestPhaseShift(unittest.TestCase):
             return _ps(s)
         np.testing.assert_allclose(ps(angle), ans)
 
+class TestControlledPhaseShift(unittest.TestCase):
+    def test_CPS(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+
+        s = jnp.stack((s00, s01, s10, s11))
+        ans = jnp.asarray([
+            sparse.to_state(s00),
+            sparse.to_state(s01),
+            sparse.to_state(sparse.PhaseShift(s10, (1,), jnp.pi)),
+            sparse.to_state(sparse.PhaseShift(s11, (1,), jnp.pi)),
+        ])
+
+        @jax.vmap
+        def cps(si):
+            return sparse.to_state(sparse.ControlledPhaseShift(si, w, jnp.pi))
+        np.testing.assert_allclose(cps(s), ans)
 
 if __name__ == "__main__":
     unittest.main()
