@@ -169,5 +169,27 @@ class TestCY(unittest.TestCase):
         np.testing.assert_allclose(sparse.to_state(cy), sparse.to_state(s1i))
 
 
+class TestSWAP(unittest.TestCase):
+    def test_0(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s = sparse.SWAP(s00, w)
+        np.testing.assert_allclose(s, s00)
+
+    def test_1(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s10 = sparse.PauliX(s00, (0,))
+        s01 = sparse.PauliX(s00, (1,))
+        s = sparse.SWAP(s10, w)
+        np.testing.assert_allclose(sparse.to_state(s), sparse.to_state(s01))
+
+    def test_twice(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s10 = sparse.PauliX(s00, (0,))
+        ss = sparse.SWAP(sparse.SWAP(s10, w), w)
+        np.testing.assert_allclose(ss, s10)
+
 if __name__ == "__main__":
     unittest.main()
