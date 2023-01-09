@@ -430,6 +430,47 @@ class TestRX(unittest.TestCase):
         np.testing.assert_allclose(rx(angle), ans, atol=1e-7)
 
 
+class TestRY(unittest.TestCase):
+    def test_RY(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+
+        s = jnp.stack((s0, s1))
+        angle = jnp.asarray([0, jnp.pi])
+        ans = jnp.asarray([
+            [[1,0], [ 0,1]],
+            [[0,1], [-1,0]],
+        ])
+
+        @jax.vmap
+        def ry(ang):
+            @jax.vmap
+            def _ry(si):
+                return sparse.to_state(sparse.RY(si, w, ang))
+            return _ry(s)
+        np.testing.assert_allclose(ry(angle), ans, atol=1e-7)
+
+class TestRZ(unittest.TestCase):
+    def test_RZ(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+
+        s = jnp.stack((s0, s1))
+        angle = jnp.asarray([0, jnp.pi])
+        ans = jnp.asarray([
+            [[1,0], [0,1]],
+            [[jnp.exp(-0.5j*jnp.pi), 0],[0, jnp.exp(0.5j*jnp.pi)]],
+        ])
+
+        @jax.vmap
+        def rz(ang):
+            @jax.vmap
+            def _rz(si):
+                return sparse.to_state(sparse.RZ(si, w, ang))
+            return _rz(s)
+        np.testing.assert_allclose(rz(angle), ans, atol=1e-7)
 
 if __name__ == "__main__":
     unittest.main()
