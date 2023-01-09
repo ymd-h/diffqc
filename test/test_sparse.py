@@ -153,5 +153,21 @@ class TestCZ(unittest.TestCase):
         cz = sparse.CZ(s10, w)
         np.testing.assert_allclose(sparse.to_state(cz), sparse.to_state(s11))
 
+class TestCY(unittest.TestCase):
+    def test_0(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        cy = sparse.CY(s00, w)
+        np.testing.assert_allclose(sparse.to_state(cy), sparse.to_state(s00))
+
+    def test_1(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s10 = sparse.PauliX(s00, (0,))
+        s1i = sparse.PauliY(s10, (1,))
+        cy = sparse.CY(s10, w)
+        np.testing.assert_allclose(sparse.to_state(cy), sparse.to_state(s1i))
+
+
 if __name__ == "__main__":
     unittest.main()
