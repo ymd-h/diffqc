@@ -159,12 +159,12 @@ def entangle_op2(op):
                          q12.at[0, 1].get() * q12.at[1, 0].get(), # |10>
                          q12.at[0, 1].get() * q12.at[1, 1].get()],# |11>
                         dtype=q12.dtype)
-        coef = jnp.expand_dims(op @ q, (1, 2))
-        return coef * jnp.asarray([[[1, 0], [1, 0]],
-                                   [[1, 0], [0, 1]],
-                                   [[0, 1], [1, 0]],
-                                   [[0, 1], [0, 1]]],
-                                  dtype=q12.dtype)
+        coef = jnp.expand_dims(op @ q, (1,))
+        return jnp.asarray([[[1, 0], [1, 0]],
+                            [[1, 0], [0, 1]],
+                            [[0, 1], [1, 0]],
+                            [[0, 1], [0, 1]]],
+                           dtype=q12.dtype).at[:,0,:].multiply(coef)
     return EOP
 
 
