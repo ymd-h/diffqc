@@ -324,5 +324,17 @@ class TestSISWAP(unittest.TestCase):
 
         np.testing.assert_allclose(siswap(s), ans)
 
+class TestCSWAP(unittest.TestCase):
+    def test_CSWAP(self):
+        w = (0, 1, 2)
+        s001 = sparse.PauliX(sparse.zeros(3, jnp.complex64), (2,))
+        np.testing.assert_allclose(sparse.to_state(sparse.CSWAP(s001, w)),
+                                   sparse.to_state(s001))
+
+        s101 = sparse.PauliX(s001, (0,))
+        np.testing.assert_allclose(sparse.to_state(sparse.CSWAP(s101, w)),
+                                   sparse.to_state(sparse.SWAP(s101, (1,2))))
+
+
 if __name__ == "__main__":
     unittest.main()
