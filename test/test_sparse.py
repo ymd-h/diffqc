@@ -30,6 +30,65 @@ class TestToState(unittest.TestCase):
         np.testing.assert_allclose(s, ([1/jnp.sqrt(2), 0, 0, 0,
                                         0, 0, 0, 1/jnp.sqrt(2)]))
 
+    def test_vmap(self):
+        s = jnp.asarray([
+            [
+                [[1, 0], [1, 0]]
+            ], # |00>
+            [
+                [[1, 0], [0, 1]]
+            ], # |01>
+            [
+                [[0, 1], [1, 0]]
+            ], # |10>
+            [
+                [[0, 1], [0, 1]]
+            ], # |11>
+            [
+                [[1/jnp.sqrt(2), 1/jnp.sqrt(2)], [1, 0]]
+            ], # |+0>
+            [
+                [[1, 0], [1j, 0]]
+            ], # 1j * |00>
+        ])
+        ans = jnp.asarray([
+            [1,0,0,0],
+            [0,1,0,0],
+            [0,0,1,0],
+            [0,0,0,1],
+            [1/jnp.sqrt(2),0,1/jnp.sqrt(2),0],
+            [1j,0,0,0],
+        ])
+
+        @jax.vmap
+        def to(si):
+            return sparse.to_state(si)
+
+        np.testing.assert_allclose(to(s), ans)
+
+    def test_vmap_entangle(self):
+        s = jnp.asarray([
+            [
+                [[1/jnp.sqrt(2),             0], [1, 0]],
+                [[0            , 1/jnp.sqrt(2)], [0, 1]],
+            ], # (|00> + |11>) / sqrt(2)  (= CX|+0>)
+            [
+                [[1/jnp.sqrt(2),              0], [ 1/jnp.sqrt(2),  1/jnp.sqrt(2)]],
+                [[0             , 1/jnp.sqrt(2)], [1j/jnp.sqrt(2),-1j/jnp.sqrt(2)]],
+            ], # (|0+> + 1j * |1->) / sqrt(2)
+        ])
+        ans = jnp.asarray([
+            [1/jnp.sqrt(2),0,0,1/jnp.sqrt(2)],
+            [0.5, 0.5, 0.5j, -0.5j],
+        ])
+
+        @jax.vmap
+        def to(si):
+            return sparse.to_state(si)
+
+        np.testing.assert_allclose(to(s), ans)
+
+
 class TestHadamard(unittest.TestCase):
     def test_0(self):
         w = (0,)
