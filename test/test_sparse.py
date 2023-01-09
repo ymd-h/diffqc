@@ -407,5 +407,29 @@ class TestRot(unittest.TestCase):
 
         np.testing.assert_allclose(rot(angle), ans, atol=1e-7)
 
+
+class TestRX(unittest.TestCase):
+    def test_RX(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+
+        s = jnp.stack((s0, s1))
+        angle = jnp.asarray([0, jnp.pi])
+        ans = jnp.asarray([
+            [[1, 0], [0, 1]],
+            [[0, -1j], [-1j, 0]],
+        ])
+
+        @jax.vmap
+        def rx(ang):
+            @jax.vmap
+            def _rx(si):
+                return sparse.to_state(sparse.RX(si, w, ang))
+            return _rx(s)
+        np.testing.assert_allclose(rx(angle), ans, atol=1e-7)
+
+
+
 if __name__ == "__main__":
     unittest.main()
