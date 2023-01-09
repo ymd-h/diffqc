@@ -151,6 +151,7 @@ def control_op(op):
     return COP
 
 def entangle_op2(op):
+    assert op.shape == (4, 4), f"BUG: entangle_op2 with wrong op shape: {op.shape}"
     def EOP(q12):
         assert q12.shape == (2, 2), f"BUG: entangle_op2 with wrong shape: {q12.shape}"
         q = jnp.asarray([q12.at[0, 0].get() * q12.at[1, 0].get(), # |00>
