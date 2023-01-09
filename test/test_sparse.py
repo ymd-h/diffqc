@@ -352,5 +352,60 @@ class TestToffoli(unittest.TestCase):
                                    sparse.to_state(sparse.PauliX(s110, (2,))))
 
 
+class TestRot(unittest.TestCase):
+    def test_Rot(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+
+        s = jnp.stack((s0, s1))
+
+        y1 = 0.25 * jnp.pi
+        z1 = jnp.pi / 8
+        z2 = 0.75 * jnp.pi
+        z3 = jnp.pi * 1.5
+        y2 = jnp.pi
+        z4 = jnp.pi / 8
+        angle = jnp.asarray([
+            [ 0,  0,  0],
+            [ 0, y1,  0],
+            [z1,  0,  0],
+            [ 0,  0, z2],
+            [z3, y2, z4],
+        ])
+        ans = jnp.asarray([
+            [
+                [1,0], [0,1]
+            ],
+            [
+                [ jnp.cos(0.5*y1), jnp.sin(0.5*y1)],
+                [-jnp.sin(0.5*y1), jnp.cos(0.5*y1)]
+            ],
+            [
+                [jnp.exp(-0.5j*z1),                0],
+                [0                , jnp.exp(0.5j*z1)]
+            ],
+            [
+                [jnp.exp(-0.5j*z2),                0],
+                [0                , jnp.exp(0.5j*z2)]
+            ],
+            [
+                [                     0, jnp.exp(-0.5j*(z3-z4))],
+                [-jnp.exp(0.5j*(z3-z4)),                      0]
+            ],
+        ])
+
+        @jax.vmap
+        def rot(ang):
+            @jax.vmap
+            def _rot(si):
+                return sparse.to_state(sparse.Rot(si, w,
+                                                  ang.at[0].get(),
+                                                  ang.at[1].get(),
+                                                  ang.at[2].get()))
+            return _rot(s)
+
+        np.testing.assert_allclose(rot(angle), ans, atol=1e-7)
+
 if __name__ == "__main__":
     unittest.main()
