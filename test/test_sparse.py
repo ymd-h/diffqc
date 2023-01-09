@@ -263,7 +263,7 @@ class TestISWAP(unittest.TestCase):
         s01 = sparse.PauliX(s00, (1,))
         s10 = sparse.PauliX(s00, (0,))
         s = sparse.ISWAP(s01, w)
-        np.testing.assert_allclose(sparse.to_state(s), sparse.to_state(1j * s10))
+        np.testing.assert_allclose(sparse.to_state(s), 1j * sparse.to_state(s10))
 
     def test_10(self):
         w = (0, 1)
@@ -271,7 +271,7 @@ class TestISWAP(unittest.TestCase):
         s01 = sparse.PauliX(s00, (1,))
         s10 = sparse.PauliX(s00, (0,))
         s = sparse.ISWAP(s10, w)
-        np.testing.assert_allclose(sparse.to_state(s), sparse.to_state(1j * s01))
+        np.testing.assert_allclose(sparse.to_state(s), 1j * sparse.to_state(s01))
 
     def test_11(self):
         w = (0, 1)
