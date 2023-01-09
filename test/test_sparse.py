@@ -221,6 +221,28 @@ class TestISWAP(unittest.TestCase):
         s = sparse.ISWAP(s11, w)
         np.testing.assert_allclose(sparse.to_state(s), sparse.to_state(s11))
 
+class TestECR(unittest.TestCase):
+    def test_ECR(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+
+        s = jnp.stack((s00, s01, s10, s11))
+        ans = jnp.asarray([
+            [ 0, 0,  1,-1j],
+            [ 0, 0,-1j,  1],
+            [ 1,1j,  0,  0],
+            [1j, 1,  0,  0],
+        ]) / jnp.sqrt(2)
+
+        @jax.vmap
+        def ecr(si):
+            return sparse.to_state(sparse.ECR(si, w))
+
+        np.testing.assert_allclose(ecr(s), ans)
+
 
 if __name__ == "__main__":
     unittest.main()
