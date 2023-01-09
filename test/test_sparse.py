@@ -336,5 +336,21 @@ class TestCSWAP(unittest.TestCase):
                                    sparse.to_state(sparse.SWAP(s101, (1,2))))
 
 
+class TestToffoli(unittest.TestCase):
+    def test_Toffoli(self):
+        w = (0, 1, 2)
+        s001 = sparse.PauliX(sparse.zeros(3, jnp.complex64), (2,))
+        np.testing.assert_allclose(sparse.to_state(sparse.Toffoli(s001, w)),
+                                   sparse.to_state(s001))
+
+        s011 = sparse.PauliX(s001, (1,))
+        np.testing.assert_allclose(sparse.to_state(sparse.Toffoli(s011, w)),
+                                   sparse.to_state(s011))
+
+        s110 = sparse.SWAP(s011, (0, 2))
+        np.testing.assert_allclose(sparse.to_state(sparse.Toffoli(s110, w)),
+                                   sparse.to_state(sparse.PauliX(s110, (2,))))
+
+
 if __name__ == "__main__":
     unittest.main()
