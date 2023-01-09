@@ -472,5 +472,28 @@ class TestRZ(unittest.TestCase):
             return _rz(s)
         np.testing.assert_allclose(rz(angle), ans, atol=1e-7)
 
+
+class TestPhaseShift(unittest.TestCase):
+    def test_PhaseShift(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+
+        s = jnp.stack((s0, s1))
+        angle = jnp.asarray([0, jnp.pi])
+        ans = jnp.asarray([
+            [[1, 0],[0, 1]],
+            [[1, 0],[0, jnp.exp(1j*jnp.pi)]],
+        ])
+
+        @jax.vmap
+        def ps(ang):
+            @jax.vmap
+            def _ps(si):
+                return sparse.to_state(sparse.PhaseShift(si, w, ang))
+            return _ps(s)
+        np.testing.assert_allclose(ps(angle), ans)
+
+
 if __name__ == "__main__":
     unittest.main()
