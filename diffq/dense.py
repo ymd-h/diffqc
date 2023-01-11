@@ -98,6 +98,8 @@ def to_state(x: jnp.ndarray) -> jnp.ndarray:
     """
     return jnp.reshape(x, (-1,))
 
+def _expect(c1, c2):
+    return jnp.real(jnp.dot(jnp.conj(to_state(c1)), to_state(c2)))
 
 def expectX(c: jnp.ndarray, wires: Tuple[int]) -> float:
     """
@@ -110,7 +112,7 @@ def expectX(c: jnp.ndarray, wires: Tuple[int]) -> float:
     wire : tuple of ints
         wires to measure. ``len(wires)`` must be ``1``
     """
-    return jnp.real(jnp.dot(jnp.conj(c), PauliX(c, wires)))
+    return _expect(c, PauliX(c, wires))
 
 def expectY(c: jnp.ndarray, wires: Tuple[int]) -> float:
     """
@@ -123,8 +125,7 @@ def expectY(c: jnp.ndarray, wires: Tuple[int]) -> float:
     wire : tuple of ints
         wires to measure. ``len(wires)`` must be ``1``
     """
-    return jnp.real(jnp.dot(jnp.conj(c), PauliY(c, wires)))
-
+    return _expect(c, PauliY(c, wires))
 
 def expectZ(c: jnp.ndarray, wires: Tuple[int]) -> float:
     """
@@ -137,8 +138,7 @@ def expectZ(c: jnp.ndarray, wires: Tuple[int]) -> float:
     wire : tuple of ints
         wires to measure. ``len(wires)`` must be ``1``
     """
-    return jnp.real(jnp.dot(jnp.conj(c), PauliZ(c, wires)))
-
+    return _expect(c, PauliZ(c, wires))
 
 def expectUnitary(c: jnp.ndarray, wires: Tuple[int], U: jnp.ndarray) -> float:
     """
@@ -153,7 +153,7 @@ def expectUnitary(c: jnp.ndarray, wires: Tuple[int], U: jnp.ndarray) -> float:
     U : jnp.ndarray
         Unitary matrix
     """
-    return jnp.real(jnp.dot(jnp.conj(c), QubitUnitary(c, wires, U)))
+    return _expect(c, QubitUnitary(c, wires, U))
 
 
 # Internal Functions
