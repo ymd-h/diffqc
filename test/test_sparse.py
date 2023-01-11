@@ -88,7 +88,83 @@ class TestToState(unittest.TestCase):
 
         np.testing.assert_allclose(to(s), ans)
 
+class TestExpect(unittest.TestCase):
+    def test_X(self):
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, (0,))
+        sH = sparse.Hadamard(s0, (0,))
+        sY = sparse.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
 
+        @jax.vmap
+        def expect(si):
+            return sparse.expectX(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [0, 0, 1, 0])
+
+    def test_Y(self):
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, (0,))
+        sH = sparse.Hadamard(s0, (0,))
+        sY = sparse.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        @jax.vmap
+        def expect(si):
+            return sparse.expectY(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [0, 0, 0, 1])
+
+    def test_Z(self):
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, (0,))
+        sH = sparse.Hadamard(s0, (0,))
+        sY = sparse.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        @jax.vmap
+        def expect(si):
+            return sparse.expectZ(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [1, -1, 0, 0])
+
+    def test_U(self):
+        s0 = sparse.zeros(2, jnp.complex64)
+        s1 = sparse.PauliX(s0, (0,))
+        sH = sparse.Hadamard(s0, (0,))
+        sY = sparse.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        U = jnp.asarray([
+            [[1,0,0, 0],
+             [0,1,0, 0],
+             [0,0,1, 0],
+             [0,0,0, 1]],
+            [[0,1,0, 0],
+             [1,0,0, 0],
+             [0,0,1, 0],
+             [0,0,0,-1]],
+        ])
+
+        # |00> -> |01>
+        # |10> -> |10>
+        # |+0> -> (|01> + |10>)/sqrt(2)
+        # |i0> -> (|01> +i|10>)/sqrt(2)
+
+        ans = jnp.asarray([
+            [1,1,1,1],
+            [0,1,0.5,0.5],
+        ])
+
+        @jax.vmap
+        def expectAll(u):
+            @jax.vmap
+            def expect(si):
+                return sparse.expectUnitary(si, (0, 1), u)
+            return expect(s)
+
+        np.testing.assert_allclose(expectAll(U), ans)
+        
 class TestHadamard(unittest.TestCase):
     def test_0(self):
         w = (0,)
