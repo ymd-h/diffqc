@@ -4,7 +4,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
-from diffq import dense
+from diffq import dense, util
 
 class TestZeros(unittest.TestCase):
     def test_zeros(self):
@@ -60,6 +60,38 @@ class TestExpect(unittest.TestCase):
             return dense.expectZ(si, (0,))
 
         np.testing.assert_allclose(expect(s), [1, -1, 0, 0])
+
+    def test_U(self):
+        s0 = dense.zeros(2, jnp.complex64)
+        s1 = dense.PauliX(s0, (0,))
+        sH = dense.Hadamard(s0, (0,))
+        sY = dense.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        U = jnp.asarray([
+            [[1,0,0, 0],
+             [0,1,0, 0],
+             [0,0,1, 0],
+             [0,0,0, 1]],
+            [[0,1,0, 0],
+             [1,0,0, 0],
+             [0,0,1, 0],
+             [0,0,0,-1]],
+        ])
+
+        ans = jnp.asarray([
+            [1,1,1,1],
+            [1,0,1,0],
+        ])
+
+        @jax.vmap
+        def expectAll(u):
+            @jax.vmap
+            def expect(si):
+                return dense.expectUnitary(si, (0, 1), u)
+            return expect(s)
+
+        np.testing.assert_allclose(expectAll(U), ans)
 
 
 class TestHadamard(unittest.TestCase):
