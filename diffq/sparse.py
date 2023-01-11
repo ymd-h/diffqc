@@ -10,6 +10,12 @@ __all__ = [
     "zeros",
     "to_state",
 
+    # Expectation
+    "expectX",
+    "expectY",
+    "expectZ",
+    "expectUnitary",
+
     # Non-Parametric Operation
     "Hadamard",
     "PauliX",
@@ -111,6 +117,63 @@ def to_state(x: jnp.ndarray) -> jnp.ndarray:
 
     state, _ = jax.lax.scan(f, jnp.zeros(2 ** n, dtype=x.dtype), x)
     return state
+
+
+def expectX(c: jnp.ndarray, wires: Tuple[int]) -> float:
+    """
+    Expectation of X measurement
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wire : tuple of ints
+        wires to measure. ``len(wires)`` must be ``1``
+    """
+    return jnp.real(jnp.dot(jnp.conj(c), PauliX(c, wires)))
+
+def expectY(c: jnp.ndarray, wires: Tuple[int]) -> float:
+    """
+    Expectation of Y measurement
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wire : tuple of ints
+        wires to measure. ``len(wires)`` must be ``1``
+    """
+    return jnp.real(jnp.dot(jnp.conj(c), PauliY(c, wires)))
+
+
+def expectZ(c: jnp.ndarray, wires: Tuple[int]) -> float:
+    """
+    Expectation of Z measurement
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wire : tuple of ints
+        wires to measure. ``len(wires)`` must be ``1``
+    """
+    return jnp.real(jnp.dot(jnp.conj(c), PauliZ(c, wires)))
+
+
+def expectUnitary(c: jnp.ndarray, wires: Tuple[int], U: jnp.ndarray) -> float:
+    """
+    Expectation of Unitary measurement
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wire : tuple of ints
+        wires to measure.
+    U : jnp.ndarray
+        Unitary matrix
+    """
+    return jnp.real(jnp.dot(jnp.conj(c), QubitUnitary(c, wires, U)))
 
 
 # Internal Functions
