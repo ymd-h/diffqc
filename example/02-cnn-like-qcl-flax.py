@@ -52,9 +52,7 @@ def conv3x3cell(x, w):
         for i in range(9):
             q = op.RY(q, (i,), w.at[k, i].get())
 
-    q = op.PauliZ(q, (0,))
-    p = diffq.prob(op.to_state(q))
-    return diffq.expval(p, 0)
+    return op.expectZ(q, (0,))
 
 
 def ConvLayer(x, w):

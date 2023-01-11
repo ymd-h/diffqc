@@ -49,11 +49,7 @@ def circuit(n_qubits, depth, features, weights):
         for idx in range(n_qubits):
             q = op.RY(q, (idx,), weights.at[k, idx].get())
 
-    for idx in range(n_qubits):
-        q = op.PauliZ(q, (idx,))
-
-    p = diffq.prob(op.to_state(q))
-    return jnp.stack(tuple(diffq.expval(p, idx) for idx in range(n_qubits)))
+    return jnp.stack(tuple(op.expectZ(q, (idx,)) for idx in range(n_qubits)))
 
 
 class QCL(nn.Module):
