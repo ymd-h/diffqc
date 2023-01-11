@@ -21,6 +21,47 @@ class TestToState(unittest.TestCase):
         self.assertEqual(s[0], 1+0j)
         self.assertEqual(jnp.sum(s), 1+0j)
 
+class TestExpect(unittest.TestCase):
+    def test_X(self):
+        s0 = dense.zeros(1, jnp.complex64)
+        s1 = dense.PauliX(s0, (0,))
+        sH = dense.Hadamard(s0, (0,))
+        sY = dense.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        @jax.vmap
+        def expect(si):
+            return dense.expectX(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [0, 0, 1, 0])
+
+    def test_Y(self):
+        s0 = dense.zeros(1, jnp.complex64)
+        s1 = dense.PauliX(s0, (0,))
+        sH = dense.Hadamard(s0, (0,))
+        sY = dense.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        @jax.vmap
+        def expect(si):
+            return dense.expectY(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [0, 0, 0, 1])
+
+    def test_Z(self):
+        s0 = dense.zeros(1, jnp.complex64)
+        s1 = dense.PauliX(s0, (0,))
+        sH = dense.Hadamard(s0, (0,))
+        sY = dense.S(sH, (0,))
+        s = jnp.stack((s0, s1, sH, sY))
+
+        @jax.vmap
+        def expect(si):
+            return dense.expectZ(si, (0,))
+
+        np.testing.assert_allclose(expect(s), [1, -1, 0, 0])
+
+
 class TestHadamard(unittest.TestCase):
     def test_H(self):
         w = (0,)
