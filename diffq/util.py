@@ -32,3 +32,31 @@ def CreatePossibleState(op, nqubits: int, dtype: jnp.dtype) -> jnp.ndarray:
         cs = jnp.concatenate((cs, flip(cs)), axis=0)
 
     return cs
+
+def CreateMatrix(op, nqubits: int, dtype: jnp.dtype,
+                 f: Callable[[jnp.ndarray], jnp.ndarray]) -> jnp.ndarray:
+    """
+    Create Transition Matrix from function
+
+    Parameters
+    ----------
+    op
+        `dense` or `sparse`
+    nqubits : int
+        Number of qubits
+    dtype : jnp.dtype
+        dtype
+    f : Callable[[jnp.ndarray], jnp.ndarray]
+
+    Returns
+    -------
+    jnp.ndarray
+        Transition Matrix
+    """
+    cs = CreatePossibleState(op, nqubits, dtype)
+
+    @jax.vmap
+    def F(c):
+        return op.to_state(f(c))
+
+    return jnp.moveaxis(F(cs), (0,), (1,))
