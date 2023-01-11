@@ -769,6 +769,18 @@ class TestQubitUnitary(unittest.TestCase):
         np.testing.assert_allclose(dense.QubitUnitary(q0, w, _op.H(q0.dtype)),
                                    dense.Hadamard(q0, w))
 
+    def test_2qubit(self):
+        w = (0, 1)
+        q00 = dense.zeros(2, jnp.complex64)
+
+        def f(c):
+            c = dense.PauliX(c, (0,))
+            c = dense.PauliZ(c, (1,))
+            return c
+        U = util.CreateMatrix(dense, 2, jnp.complex64, f)
+        np.testing.assert_allclose(dense.QubitUnitary(q00, w, U),
+                                   dense.PauliZ(dense.PauliX(q00, (0,)), (1,)))
+
 class TestControlledQubitUnitary(unittest.TestCase):
     def test_CX(self):
         from diffq import _operators as _op
