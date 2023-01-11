@@ -29,5 +29,42 @@ class TestCreatePossibleState(unittest.TestCase):
                                        [0,0,0,1],
                                    ]))
 
+class TestCreateMatrix(unittest.TestCase):
+    def test_dense(self):
+        def f(c):
+            c = dense.Hadamard(c, (0,))
+            c = dense.PauliY(c, (1,))
+            c = dense.CNOT(c, (0, 1))
+            return c
+
+        # |00>
+        #   ->  (|0> + |1>)|0>/sqrt(2)
+        #   -> i(|0> + |1>)|1>/sqrt(2)
+        #   -> i(|01> + |10>)/sqrt(2)
+        #
+        # |01>
+        #   ->   (|0> + |1>)|1>/sqrt(2)
+        #   -> -i(|0> + |1>)|0>/sqrt(2)
+        #   -> -i(|00> + |11>)/sqrt(2)
+        #
+        # |10>
+        #   ->  (|0> - |1>)|0>/sqrt(2)
+        #   -> i(|0> - |1>)|1>/sqrt(2)
+        #   -> i(|01> - |10>)/sqrt(2)
+        #
+        # |11>
+        #   ->   (|0> - |1>)|1>/sqrt(2)
+        #   -> -i(|0> - |1>)|0>/sqrt(2)
+        #   -> -i(|00> - |11>)/sqrt(2)
+
+        mat = util.CreateMatrix(dense, 2, jnp.complex64, f)
+        np.testing.assert_allclose(mat,
+                                   jnp.asarray([
+                                       [0 ,-1j, 0 ,-1j],
+                                       [1j, 0 , 1j, 0 ],
+                                       [1j, 0 ,-1j, 0 ],
+                                       [0 ,-1j, 0 , 1j],
+                                   ]) / jnp.sqrt(2))
+
 if __name__ == "__main__":
     unittest.main()
