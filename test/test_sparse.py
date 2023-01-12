@@ -656,7 +656,7 @@ class TestCRX(unittest.TestCase):
 
         @jax.vmap
         def crx(si):
-            return sparse.to_state(sparse.CRX(s, w, jnp.pi))
+            return sparse.to_state(sparse.CRX(si, w, jnp.pi))
 
         np.testing.assert_allclose(crx(s), ans)
 
