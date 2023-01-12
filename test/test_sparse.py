@@ -608,7 +608,7 @@ class TestCPhaseShift(unittest.TestCase):
         def cps00(ci):
             return sparse.to_state(sparse.CPhaseShift00(ci, w, p))
         ans00 = jax.vmap(sparse.to_state)(jnp.asarray([
-            s00 * jnp.exp(1j*p),
+            s00.at[:,0,:].multiply(jnp.exp(1j*p)),
             s01,
             s10,
             s11,
@@ -619,7 +619,7 @@ class TestCPhaseShift(unittest.TestCase):
             return sparse.to_state(sparse.CPhaseShift01(ci, w, p))
         ans01 = jax.vmap(sparse.to_state)(jnp.asarray([
             s00,
-            s01 * jnp.exp(1j*p),
+            s01.at[:,0,:].multiply(jnp.exp(1j*p)),
             s10,
             s11,
         ]))
@@ -630,7 +630,7 @@ class TestCPhaseShift(unittest.TestCase):
         ans10 = jax.vmap(sparse.to_state)(jnp.asarray([
             s00,
             s01,
-            s10 * jnp.exp(1j*p),
+            s10.at[:,0,:].multiply(jnp.exp(1j*p)),
             s11,
         ]))
 
