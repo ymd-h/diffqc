@@ -165,7 +165,7 @@ class TestExpect(unittest.TestCase):
             return expect(s)
 
         np.testing.assert_allclose(expectAll(U), ans)
-        
+
 class TestHadamard(unittest.TestCase):
     def test_0(self):
         w = (0,)
