@@ -592,6 +592,52 @@ class TestControlledPhaseShift(unittest.TestCase):
             return sparse.to_state(sparse.ControlledPhaseShift(si, w, jnp.pi))
         np.testing.assert_allclose(cps(s), ans)
 
+
+class TestCPhaseShift(unittest.TestCase):
+    def test_cps(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        p = jnp.pi
+
+        @jax.vmap
+        def cps00(ci):
+            return sparse.to_state(sparse.CPhaseShift00(ci, w, p))
+        ans00 = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00 * jnp.exp(1j*p),
+            s01,
+            s10,
+            s11,
+        ]))
+
+        @jax.vmap
+        def cps01(ci):
+            return sparse.to_state(sparse.CPhaseShift01(ci, w, p))
+        ans01 = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01 * jnp.exp(1j*p),
+            s10,
+            s11,
+        ]))
+
+        @jax.vmap
+        def cps10(ci):
+            return sparse.to_state(sparse.CPhaseShift10(ci, w, p))
+        ans10 = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01,
+            s10 * jnp.exp(1j*p),
+            s11,
+        ]))
+
+        np.testing.assert_allclose(jnp.stack((cps00(s), cps01(s), cps10(s))),
+                                   jnp.stack((ans00, ans01, ans10)))
+
+
 class TestCRX(unittest.TestCase):
     def test_CRX(self):
         w = (0, 1)
