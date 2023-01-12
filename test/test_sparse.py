@@ -660,5 +660,50 @@ class TestCRX(unittest.TestCase):
 
         np.testing.assert_allclose(crx(s), ans)
 
+class TestCRY(unittest.TestCase):
+    def test_CRY(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01,
+            sparse.RY(s10, (1,), jnp.pi),
+            sparse.RY(s11, (1,), jnp.pi),
+        ]))
+
+        @jax.vmap
+        def cry(si):
+            return sparse.to_state(sparse.CRY(si, w, jnp.pi))
+
+        np.testing.assert_allclose(cry(s), ans)
+
+class TestCRZ(unittest.TestCase):
+    def test_CRZ(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01,
+            sparse.RZ(s10, (1,), jnp.pi),
+            sparse.RZ(s11, (1,), jnp.pi),
+        ]))
+
+        @jax.vmap
+        def crz(si):
+            return sparse.to_state(sparse.CRZ(si, w, jnp.pi))
+
+        np.testing.assert_allclose(crz(s), ans)
+
+
 if __name__ == "__main__":
     unittest.main()
