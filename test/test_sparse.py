@@ -831,5 +831,25 @@ class TestPSWAP(unittest.TestCase):
         np.testing.assert_allclose(pswap(angle), ans)
 
 
+class TestQubitUnitary(unittest.TestCase):
+    def test_Qubit(self):
+        from diffq import _operators as _op
+
+        w = (0,)
+        s = sparse.zeros(1, jnp.complex64)
+        U = jnp.stack((_op.sigmaX(s.dtype), _op.H(s.dtype)))
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            sparse.PauliX(s, w),
+            sparse.Hadamard(s, w),
+        ]))
+
+        @jax.vmap
+        def unitary(u):
+            return sparse.to_state(sparse.QubitUnitary(s, w, u))
+        np.testing.assert_allclose(unitary(U), ans)
+
+
+
 if __name__ == "__main__":
     unittest.main()
