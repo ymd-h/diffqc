@@ -194,7 +194,7 @@ def opN(c, wires, opf):
     assert len(wires) > 1, f"BUG: opN with wrong wires: {len(wires)}"
     @jax.vmap
     def set(ci):
-        assert ci.ndim == 2
+        assert ci.ndim == 2, f"BUG: {ci.ndim}"
         q = opf(ci.at[wires,:].get())
         ci = jnp.broadcast_to(ci, (q.shape[0], *ci.shape))
         ci = ci.at[:, wires, :].set(q)
