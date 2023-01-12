@@ -192,6 +192,7 @@ def op1(c, wires, op):
 
 def opN(c, wires, opf):
     assert len(wires) > 1, f"BUG: opN with wrong wires: {len(wires)}"
+    assert c.ndim == 3, f"BUG: opN with wrong ndim: {c.ndim}"
     @jax.vmap
     def set(ci):
         assert ci.ndim == 2, f"BUG: {ci.ndim}"
