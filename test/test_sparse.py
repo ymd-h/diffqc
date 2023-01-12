@@ -592,5 +592,27 @@ class TestControlledPhaseShift(unittest.TestCase):
             return sparse.to_state(sparse.ControlledPhaseShift(si, w, jnp.pi))
         np.testing.assert_allclose(cps(s), ans)
 
+class TestCRX(unittest.TestCase):
+    def test_CRX(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01,
+            sparse.RX(s10, (1,), jnp.pi),
+            sparse.RX(s11, (1,), jnp.pi),
+        ]))
+
+        @jax.vmap
+        def crx(si):
+            return sparse.to_state(sparse.CRX(s, w, jnp.pi))
+
+        np.testing.assert_allclose(crx(s), ans)
+
 if __name__ == "__main__":
     unittest.main()
