@@ -804,5 +804,32 @@ class TestU3(unittest.TestCase):
         np.testing.assert_allclose(u3(angle), ans, atol=1e-7)
 
 
+class TestPSWAP(unittest.TestCase):
+    def test_pswap(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        swap = jax.vmap(lambda ci: sparse.SWAP(ci, w))(s)
+
+        to = jax.vmap(sparse.to_state)
+        angle = jnp.asarray([0, jnp.pi * 1.5])
+        ans = jnp.asarray([
+            to(swap),
+            to(swap.at[1:3,:,0,:].multiply(jnp.exp(1j*jnp.pi*1.5))),
+        ])
+
+        @jax.vmap
+        def pswap(p):
+            @jax.vmap
+            def _pswap(si):
+                return sparse.to_state(sparse.PSWAP(si, w, p))
+            return _pswap(s)
+        np.testing.assert_allclose(pswap(angle), ans)
+
+
 if __name__ == "__main__":
     unittest.main()
