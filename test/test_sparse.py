@@ -705,5 +705,33 @@ class TestCRZ(unittest.TestCase):
         np.testing.assert_allclose(crz(s), ans)
 
 
+class TestCRot(unittest.TestCase):
+    def test_CRot(self):
+        w = (0, 1)
+        s00 = sparse.zeros(2, jnp.complex64)
+        s01 = sparse.PauliX(s00, (1,))
+        s10 = sparse.PauliX(s00, (0,))
+        s11 = sparse.PauliX(s01, (0,))
+        s = jnp.stack((s00, s01, s10, s11))
+
+        p = jnp.pi * 1.5
+        t = jnp.pi / 8
+        o = jnp.pi / 6
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            s00,
+            s01,
+            sparse.Rot(s10, (1,), p, t, o),
+            sparse.Rot(s11, (1,), p, t, o)
+        ]))
+
+        @jax.vmap
+        def crot(ci):
+            return sparse.to_state(sparse.CRot(ci, w, p, t, o))
+
+        np.testing.assert_allclose(crot(s), ans)
+
+
+
 if __name__ == "__main__":
     unittest.main()
