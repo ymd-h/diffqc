@@ -766,5 +766,43 @@ class TestU2(unittest.TestCase):
         np.testing.assert_allclose(u2(angle), ans, atol=1e-7)
 
 
+class TestU3(unittest.TestCase):
+    def test_u3(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+        s = jnp.stack((s0, s1))
+
+        t = jnp.pi
+        p = jnp.pi * 1.5
+        d = jnp.pi / 4
+        angle = jnp.asarray([
+            [0, 0, 0],
+            [t, 0, 0],
+            [t, p, 0],
+            [t, 0, d],
+            [t, p, d],
+        ])
+
+        ans = jnp.asarray([
+            [[1             ,              0], [0              ,              1]],
+            [[jnp.cos(0.5*t), jnp.sin(0.5*t)], [-jnp.sin(0.5*t), jnp.cos(0.5*t)]],
+            [[0             ,  jnp.exp(1j*p)], [-1             ,              0]],
+            [[0             ,              1], [-jnp.exp(1j*d) ,              0]],
+            [[0             ,  jnp.exp(1j*p)], [-jnp.exp(1j*d) ,              0]],
+        ])
+
+        @jax.vmap
+        def u3(ang):
+            _p = ang.at[0].get()
+            _t = ang.at[1].get()
+            _d = ang.at[2].get()
+            @jax.vmap
+            def _u3(si):
+                return sparse.to_state(sparse.U3(si, w, _p, _t, _d))
+            return _u3(s)
+        np.testing.assert_allclose(u3(angle), ans, atol=1e-7)
+
+
 if __name__ == "__main__":
     unittest.main()
