@@ -732,6 +732,39 @@ class TestCRot(unittest.TestCase):
         np.testing.assert_allclose(crot(s), ans)
 
 
+class TestU2(unittest.TestCase):
+    def test_U2(self):
+        w = (0,)
+        s0 = sparse.zeros(1, jnp.complex64)
+        s1 = sparse.PauliX(s0, w)
+        s = jnp.stack((s0, s1))
+
+        p = jnp.pi * 1.5
+        d = jnp.pi / 4
+        angle = jnp.asarray([
+            [0, 0],
+            [p, 0],
+            [0, d],
+            [p, d],
+        ])
+
+        ans = jnp.asarray([
+            [[1,             1], [-1,                             1]],
+            [[1, jnp.exp(1j*p)], [-1,             jnp.exp(1j*p)    ]],
+            [[1,             1], [-jnp.exp(1j*d), jnp.exp(1j*d)    ]],
+            [[1, jnp.exp(1j*p)], [-jnp.exp(1j*d), jnp.exp(1j*(p+d))]],
+        ]) / jnp.sqrt(2)
+
+        @jax.vmap
+        def u2(ang):
+            _p = ang.at[0].get()
+            _d = ang.at[1].get()
+            @jax.vmap
+            def _u2(si):
+                return sparse.to_state(sparse.U2(si, w, _p, _d))
+            return _u2(s)
+        np.testing.assert_allclose(u2(angle), ans, atol=1e-7)
+
 
 if __name__ == "__main__":
     unittest.main()
