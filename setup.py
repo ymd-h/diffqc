@@ -8,8 +8,8 @@ setup(name="diffq",
       install_requires=["jax", "jaxlib"],
       extras_require = {
           "pennylane": ["pennylane"],
-          "test": ["numpy"],
-          "example": ["flax", "optax", "scikit-learn"],
+          "test": ["coverage", "unittest-xml-reporting", "numpy"],
+          "example": ["flax", "optax", "scikit-learn", "tqdm"],
       },
       entry_points = {
           "pennylane.plugins": [
