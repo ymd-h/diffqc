@@ -879,23 +879,26 @@ def PSWAP(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
 
 def mat_opf(c, U):
     assert c.ndim == 3
+    nqubits = int(math.log2(U.shape[0]))
+    assert c.shape[1] == nqubits
 
     q = U @ to_state(c)
-    nqubits = int(math.log2(U.shape[0]))
 
     c1 = jnp.asarray([[1, 0],
                       [0, 1]], dtype=c.dtype)
     c = jnp.expand_dims(c1.copy(), 1)
+    assert c.shape == (2, 1, 2)
 
     for i in range(nqubits-1):
         @jax.vmap
         def stack(ci):
-            ci = jnp.reshape(ci, (1, 1, 2))
+            ci = jnp.broadcast_to(jnp.reshape(ci, (1, 1, 2)), (c.shape[0], 1, 2))
             return jnp.concatenate((ci, c), axis=1)
 
-        c = stack(c1)
+        c = jnp.reshape(stack(c1), (-1, i+2, 2))
+        assert c.shape == (2**(i+2), i+2, 2), f"BUG: i: {i}, shape: {c.shape}"
 
-    c = c.at[:,0,:].multiply(q)
+    c = c.at[:,0,:].multiply(jnp.expand_dims(q, 1))
 
     assert c.shape == (U.shape[0], nqubits, 2)
     return c
