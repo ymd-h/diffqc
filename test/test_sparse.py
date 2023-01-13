@@ -850,6 +850,26 @@ class TestQubitUnitary(unittest.TestCase):
         np.testing.assert_allclose(unitary(U), ans)
 
 
+class TestControlledQubitUnitary(unittest.TestCase):
+    def test_CX(self):
+        from diffq import _operators as _op
+        w = (0, 1)
+        q00 = sparse.zeros(2, jnp.complex64)
+        q10 = sparse.PauliX(q00, (0,))
+        q = jnp.stack((q00, q10))
+
+        ans = jax.vmap(sparse.to_state)(jnp.asarray([
+            sparse.CNOT(q00, w),
+            sparse.CNOT(q10, w),
+        ]))
+
+        @jax.vmap
+        def cqux(qi):
+            return sparse.to_state(
+                sparse.ControlledQubitUnitary(qi, w, _op.sigmaX(qi.dtype))
+            )
+        np.testing.assert_allclose(cqux(q), ans)
+
 
 if __name__ == "__main__":
     unittest.main()
