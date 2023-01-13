@@ -926,6 +926,9 @@ def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     assert len(wires) == nqubits, BUG.format(nqubits, wires)
     assert c.ndim == 3
 
+    if len(wires) == 1:
+        return op1(c, wires, U)
+
     if c.shape[1] == nqubits:
         return mat_opf(c, U)
 
