@@ -866,6 +866,23 @@ class TestQubitUnitary(unittest.TestCase):
             return sparse.to_state(sparse.QubitUnitary(s, w, u))
         np.testing.assert_allclose(unitary(U), ans)
 
+    def test_2qubit(self):
+        from diffq import _operators as _op
+
+        w = (0, 1)
+        s = sparse.zeros(2, jnp.complex64)
+        U = jnp.stack((_op.SWAP(s.dtype), _op.ISWAP(s.dtype)))
+
+        ans = jnp.asarray([
+            sparse.to_state(sparse.SWAP(s, w)),
+            sparse.to_state(sparse.ISWAP(s, w)),
+        ])
+
+        @jax.vmap
+        def unitary(u):
+            return sparse.to_state(sparse.QubitUnitary(s, w, u))
+        np.testing.assert_allclose(unitary(U), ans)
+
 
 
 class TestControlledQubitUnitary(unittest.TestCase):
