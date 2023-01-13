@@ -128,7 +128,6 @@ class TestExpect(unittest.TestCase):
 
         np.testing.assert_allclose(expect(s), [1, -1, 0, 0])
 
-    @unittest.skip("Not Implemented yet")
     def test_U(self):
         s0 = sparse.zeros(2, jnp.complex64)
         s1 = sparse.PauliX(s0, (0,))
