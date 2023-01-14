@@ -1,0 +1,55 @@
+FROM python:3.8 AS test3.8
+WORKDIR /diffq-ci
+COPY setup.py .
+COPY diffq diffq
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
+COPY test test
+WORKDIR test
+RUN coverage run -m xmlrunner discover . && \
+    coverage report && \
+    mkdir -p /coverage && cp *.xml /coverage && \
+    rm -rf /diffq-ci/test
+
+FROM python:3.9 AS test3.9
+WORKDIR /diffq-ci
+COPY setup.py .
+COPY diffq diffq
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
+COPY test test
+WORKDIR test
+RUN coverage run -m xmlrunner discover . && \
+    coverage report && \
+    mkdir -p /coverage && cp *.xml /coverage && \
+    rm -rf /diffq-ci/test
+
+FROM python:3.10 AS test3.10
+WORKDIR /diffq-ci
+COPY setup.py .
+COPY diffq diffq
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
+COPY test test
+WORKDIR test
+RUN coverage run -m xmlrunner discover . && \
+    coverage report && \
+    mkdir -p /coverage && cp *.xml /coverage && \
+    rm -rf /diffq-ci/test
+
+FROM python:3.11 AS test3.11
+WORKDIR /diffq-ci
+COPY setup.py .
+COPY diffq diffq
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
+COPY test test
+WORKDIR test
+RUN coverage run -m xmlrunner discover . && \
+    coverage report && \
+    mkdir -p /coverage && cp *.xml /coverage && \
+    rm -rf /diffq-ci/test
+
+
+FROM scratch AS result
+COPY --from=test3.8 /coverage /coverage
+COPY --from=test3.9 /coverage /coverage
+COPY --from=test3.10 /coverage /coverage
+COPY --from=test3.11 /coverage /coverage
+CMD [""]
