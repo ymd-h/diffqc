@@ -8,6 +8,7 @@ WORKDIR test
 RUN coverage run -m xmlrunner discover . && \
     coverage report && \
     mkdir -p /coverage && cp *.xml /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest \
     rm -rf /diffq-ci/test
 
 FROM python:3.9 AS test3.9
@@ -19,7 +20,8 @@ COPY test test
 WORKDIR test
 RUN coverage run -m xmlrunner discover . && \
     coverage report && \
-    mkdir -p /coverage && cp *.xml /coverage && \
+    mkdir -p /coverage && cp .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest \
     rm -rf /diffq-ci/test
 
 FROM python:3.10 AS test3.10
@@ -31,7 +33,8 @@ COPY test test
 WORKDIR test
 RUN coverage run -m xmlrunner discover . && \
     coverage report && \
-    mkdir -p /coverage && cp *.xml /coverage && \
+    mkdir -p /coverage && cp .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest \
     rm -rf /diffq-ci/test
 
 FROM python:3.11 AS test3.11
@@ -43,13 +46,25 @@ COPY test test
 WORKDIR test
 RUN coverage run -m xmlrunner discover . && \
     coverage report && \
-    mkdir -p /coverage && cp *.xml /coverage && \
+    mkdir -p /coverage && cp .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest \
     rm -rf /diffq-ci/test
 
 
-FROM scratch AS result
+FROM python:latest AS combine
+WORKDIR /coverage
+RUN --mount=type=cache,target=/root/.cache/pip pip install coverage
 COPY --from=test3.8 /coverage /coverage
 COPY --from=test3.9 /coverage /coverage
 COPY --from=test3.10 /coverage /coverage
 COPY --from=test3.11 /coverage /coverage
+RUN mkdir -p /html && coverage combine && coverage html -d /html
+
+
+FROM scratch AS results
+COPY --from=test3.8 /unittest /unittest
+COPY --from=test3.9 /unittest /unittest
+COPY --from=test3.10 /unittest /unittest
+COPY --from=test3.11 /unittest /unittest
+COPY --from=combine /html /coverage
 CMD [""]
