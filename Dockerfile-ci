@@ -56,9 +56,10 @@ COPY --from=test3.9 /coverage /coverage
 COPY --from=test3.10 /coverage /coverage
 COPY --from=test3.11 /coverage /coverage
 RUN coverage combine && \
-    coverage report && \
-    mkdir -p /coverage/html && coverage html -d /coverage/html && \
-    mkdir -p /coverage/xml && coverage xml -o /coverage/xml/coverage.xml
+    echo "## Test Coverage\n```\n" >> summary.md && \
+    coverage report | tee -a summary.md && \
+    echo "\n```\n" >> summary.md && \
+    mkdir -p /coverage/html && coverage html -d /coverage/html
 
 
 FROM scratch AS results
@@ -67,5 +68,5 @@ COPY --from=test3.9 /unittest /unittest/3.9
 COPY --from=test3.10 /unittest /unittest/3.10
 COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /coverage/html /coverage/html
-COPY --from=combine /coverage/xml /coverage/xml
+COPY --from=combine /coverage/summary.md /coverage/summary.md
 CMD [""]
