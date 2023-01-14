@@ -24,6 +24,10 @@ jobs:
         with:
           name: coverage
           path: coverage
+      - uses: actions/upload-artifact@v3
+        with:
+          name: unittest
+          path: unittest
       - uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           xunit_files: "unittest/*.xml"
