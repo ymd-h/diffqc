@@ -56,10 +56,9 @@ COPY --from=test3.9 /coverage /coverage
 COPY --from=test3.10 /coverage /coverage
 COPY --from=test3.11 /coverage /coverage
 RUN coverage combine && \
-    echo "## Test Coverage" >> summary.md && \
-    echo "```" >> && \
+    echo "## Test Coverage\n\`\`\`\n" >> summary.md && \
     coverage report | tee -a summary.md && \
-    echo "```" >> summary.md && \
+    echo "\n\`\`\`" >> summary.md && \
     mkdir -p /coverage/html && coverage html -d /coverage/html
 
 
