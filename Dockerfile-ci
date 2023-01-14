@@ -66,5 +66,6 @@ COPY --from=test3.8 /unittest /unittest/3.8
 COPY --from=test3.9 /unittest /unittest/3.9
 COPY --from=test3.10 /unittest /unittest/3.10
 COPY --from=test3.11 /unittest /unittest/3.11
-COPY --from=combine /coverage /coverage
+COPY --from=combine /coverage/html /coverage/html
+COPY --from=combine /coverage/xml /coverage/xml
 CMD [""]
