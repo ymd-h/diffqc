@@ -4,12 +4,11 @@ COPY setup.py .
 COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
-WORKDIR test
-RUN coverage run -m xmlrunner discover . && \
-    coverage report && \
-    mkdir -p /coverage && cp *.xml /coverage && \
-    mkdir -p /unittest && cp *.xml /unittest \
-    rm -rf /diffq-ci/test
+COPY .coveragerc .coveragerc
+RUN coverage run -m xmlrunner discover test
+RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest
+
 
 FROM python:3.9 AS test3.9
 WORKDIR /diffq-ci
@@ -17,12 +16,11 @@ COPY setup.py .
 COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
-WORKDIR test
-RUN coverage run -m xmlrunner discover . && \
-    coverage report && \
-    mkdir -p /coverage && cp .coverage.* /coverage && \
-    mkdir -p /unittest && cp *.xml /unittest \
-    rm -rf /diffq-ci/test
+COPY .coveragerc .coveragerc
+RUN coverage run -m xmlrunner discover test
+RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest
+
 
 FROM python:3.10 AS test3.10
 WORKDIR /diffq-ci
@@ -30,12 +28,11 @@ COPY setup.py .
 COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
-WORKDIR test
-RUN coverage run -m xmlrunner discover . && \
-    coverage report && \
-    mkdir -p /coverage && cp .coverage.* /coverage && \
-    mkdir -p /unittest && cp *.xml /unittest \
-    rm -rf /diffq-ci/test
+COPY .coveragerc .coveragerc
+RUN coverage run -m xmlrunner discover test
+RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
+    mkdir -p /unittest && cp *.xml /unittest
+
 
 FROM python:3.11 AS test3.11
 WORKDIR /diffq-ci
@@ -43,22 +40,24 @@ COPY setup.py .
 COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
-WORKDIR test
-RUN coverage run -m xmlrunner discover . && \
-    coverage report && \
-    mkdir -p /coverage && cp .coverage.* /coverage && \
-    mkdir -p /unittest && cp *.xml /unittest \
-    rm -rf /diffq-ci/test
+COPY .coveragerc .coveragerc
+RUN coverage run -m xmlrunner discover test
+RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
+    mkdir -p /unittest && cp -v *.xml /unittest
 
 
 FROM python:latest AS combine
 WORKDIR /coverage
 RUN --mount=type=cache,target=/root/.cache/pip pip install coverage
+COPY diffq /diffq-ci/diffq
+COPY .coveragerc .coveragerc
 COPY --from=test3.8 /coverage /coverage
 COPY --from=test3.9 /coverage /coverage
 COPY --from=test3.10 /coverage /coverage
 COPY --from=test3.11 /coverage /coverage
-RUN mkdir -p /html && coverage combine && coverage html -d /html
+RUN coverage combine && \
+    coverage report && \
+    mkdir -p /html && coverage html -d /html
 
 
 FROM scratch AS results

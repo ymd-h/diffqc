@@ -1,2 +1,7 @@
 [run]
+branch = True
 parallel = True
+source = diffq
+
+[report]
+show_missing = True
