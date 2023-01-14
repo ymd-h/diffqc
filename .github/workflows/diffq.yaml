@@ -44,4 +44,6 @@ jobs:
           recreate: true
           path: code-coverage-results.md
       - name: Write to Job Summary
-        run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo "# Test Coverage" >> $GITHUB_STEP_SUMMARY
+          cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
