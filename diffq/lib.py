@@ -107,3 +107,47 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
         c = op.Hadamard(c, (aux[h],))
 
     return c
+
+
+def HHL(op, c: jnp.ndarray, wires: Tuple[int],
+        U: jnp.ndarray, aux: Tuple[int], anc: int) -> jnp.ndarray:
+    """
+    Solving Linear Equation with Harrow-Hassidim-Lloyd Algorithm
+
+    Solve A|x> = |b> and get |x> = A^(-1)|b>.
+
+    Parameters
+    ----------
+    op
+        `dense` or `sparse` module
+    c : jnp.ndarray
+        qubits state
+    wires : tuple of ints
+        wires. |b>
+    U : jnp.ndarray
+        unitary matrix of exp(iA)
+    aux : tuple of ints
+        auxiliary qubits for QPE. These should be |00...0>
+    anc : int
+        ancilla qubits for HHL
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubits state.
+    """
+    c = QPE(op, c, wires, U, aux)
+
+    for i, a in enumerate(aux):
+        # Lambda = 2pi / (2^(i+1))
+        # C = 2^(-len(aux))
+        C_over_lambda = (2 ** (i+1 - len(aux))) / (2 * jnp.pi)
+        c = op.CRY(c, (a, anc), 2 * jnp.arcsin(C_over_lambda))
+
+    # Uncompute QPE
+    c = QFT(op, c, wires)
+    c = op.ControlledQubitUnitary(c, aux, jnp.linalg.inv(U))
+    for i in wires:
+        c = op.Hadamard(c, (i,))
+
+    return c
