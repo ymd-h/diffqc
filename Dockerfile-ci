@@ -62,6 +62,17 @@ RUN coverage combine && \
     mkdir -p /coverage/html && coverage html -d /coverage/html
 
 
+FROM python:3.8 AS build
+WORKDIR /build
+RUN --mount=type=cache,target=/root/.cache/pip pip install wheel
+COPY LICENSE LICENSE
+COPY setup.py setup.py
+COPY README.md README.md
+COPY diffq diffq
+RUN pip wheel --no-deps -w /dist .
+RUN python setup.py sdist -d /dist
+
+
 FROM scratch AS results
 COPY --from=test3.8 /unittest /unittest/3.8
 COPY --from=test3.9 /unittest /unittest/3.9
@@ -69,4 +80,5 @@ COPY --from=test3.10 /unittest /unittest/3.10
 COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /coverage/html /coverage/html
 COPY --from=combine /coverage/summary.md /coverage/summary.md
+COPY --from=build /dist /dist
 CMD [""]
