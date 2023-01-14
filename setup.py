@@ -1,8 +1,17 @@
+import os
 from setuptools import setup, find_packages
 
 
+desc = {}
+if os.path.exists("README.md"):
+    desc = {
+        "long_description": open("README.md").read(),
+        "long_description_content_type": "text/markdown",
+    }
+
 setup(name="diffq",
       description="Diiferentiable Quantum Simulator",
+      **desc,
       version="0.0.0",
       packages=find_packages(),
       classifiers = [
