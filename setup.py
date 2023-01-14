@@ -13,6 +13,10 @@ setup(name="diffq",
       description="Diiferentiable Quantum Simulator",
       **desc,
       version="0.0.0",
+      url = "https://github.com/ymd-h/diffq",
+      project_urls = {
+          "Bug Report & QA": "https://github.com/ymd-h/diffq/discussions",
+      },
       packages=find_packages(),
       classifiers = [
           "License :: OSI Approved :: MIT License",
