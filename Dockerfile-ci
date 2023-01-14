@@ -61,9 +61,9 @@ RUN coverage combine && \
 
 
 FROM scratch AS results
-COPY --from=test3.8 /unittest /unittest
-COPY --from=test3.9 /unittest /unittest
-COPY --from=test3.10 /unittest /unittest
-COPY --from=test3.11 /unittest /unittest
+COPY --from=test3.8 /unittest /unittest/3.8
+COPY --from=test3.9 /unittest /unittest/3.9
+COPY --from=test3.10 /unittest /unittest/3.10
+COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /html /coverage
 CMD [""]
