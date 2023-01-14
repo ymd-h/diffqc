@@ -2,6 +2,7 @@
 branch = True
 parallel = True
 source = diffq
+relative_files = True
 
 [report]
 show_missing = True
