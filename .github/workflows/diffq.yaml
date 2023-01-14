@@ -19,7 +19,6 @@ jobs:
           docker create --name results diffq/results:latest
           docker cp results:/coverage/. coverage/
           docker cp results:/unittest/. unittest/
-          docker cp results:/dist/. dist/
         name: Extract Results
       - uses: actions/upload-artifact@v3
         with:
@@ -29,10 +28,6 @@ jobs:
         with:
           name: unittest
           path: unittest
-      - uses: actions/upload-artifact@v3
-        with:
-          name: wheel
-          path: dist
       - uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           junit_files: "unittest/**/*.xml"

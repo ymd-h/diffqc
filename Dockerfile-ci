@@ -62,14 +62,6 @@ RUN coverage combine && \
     mkdir -p /coverage/html && coverage html -d /coverage/html
 
 
-FROM quay.io/pypa/manylinux2014_x86_64 AS manylinux
-COPY setup.py setup.py
-COPY README.md README.md
-COPY diffq diffq
-RUN for PIP in /opt/python/cp3{8..11}*/bin/pip; do ${PIP} wheel . -w wheelhouse/ --no-deps; done
-RUN for WHL in wheelhouse/diffq-*.whl; do auditwheel repair ${WHL} -w /dist; done
-
-
 FROM scratch AS results
 COPY --from=test3.8 /unittest /unittest/3.8
 COPY --from=test3.9 /unittest /unittest/3.9
@@ -77,5 +69,4 @@ COPY --from=test3.10 /unittest /unittest/3.10
 COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /coverage/html /coverage/html
 COPY --from=combine /coverage/summary.md /coverage/summary.md
-COPY --from=manylinux /dist /dist
 CMD [""]
