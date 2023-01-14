@@ -30,4 +30,4 @@ jobs:
           path: unittest
       - uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          xunit_files: "unittest/**/*.xml"
+          junit_files: "unittest/**/*.xml"
