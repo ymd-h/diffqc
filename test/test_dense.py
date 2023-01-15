@@ -802,6 +802,57 @@ class TestControlledQubitUnitary(unittest.TestCase):
             dense.CNOT(q10, w)
         )
 
+class TestR2(unittest.TestCase):
+    def test_RXX(self):
+        s = util.CreatePossibleState(dense, 2, jnp.complex64)
+        theta = jnp.pi / 6
+        ans = jnp.asarray([
+            [jnp.cos(theta), 0, 0, -1j * jnp.sin(theta)],
+            [0, jnp.cos(theta), -1j * jnp.sin(theta), 0],
+            [0, -1j * jnp.sin(theta), jnp.cos(theta), 0],
+            [-1j * jnp.sin(theta), 0, 0, jnp.cos(theta)],
+        ])
+
+        @jax.vmap
+        def rxx(si):
+            return dense.to_state(dense.RXX(si, (0, 1), theta))
+        np.testing.assert_allclose(rxx(s), ans)
+
+    def test_RYY(self):
+        s = util.CreatePossibleState(dense, 2, jnp.complex64)
+        theta = jnp.pi / 6
+        ans = jnp.asarray([
+            [jnp.cos(theta), 0, 0, 1j * jnp.sin(theta)],
+            [0, jnp.cos(theta), 1j * jnp.sin(theta), 0],
+            [0, 1j * jnp.sin(theta), jnp.cos(theta), 0],
+            [1j * jnp.sin(theta), 0, 0, jnp.cos(theta)],
+        ])
+
+        @jax.vmap
+        def ryy(si):
+            return dense.to_state(dense.RYY(si, (0, 1), theta))
+        np.testing.assert_allclose(ryy(s), ans)
+
+    def test_RZZ(self):
+        s = util.CreatePossibleState(dense, 2, jnp.complex64)
+        theta = jnp.pi / 6
+        ans = jnp.asarray([
+            [jnp.exp( 0.5j * theta), 0, 0, 0],
+            [0, jnp.exp(-0.5j * theta), 0, 0],
+            [0, 0, jnp.exp(-0.5j * theta), 0],
+            [0, 0, 0, jnp.exp( 0.5j * theta)],
+        ])
+
+        @jax.vmap
+        def rzz(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), theta))
+        np.testing.assert_allclose(rzz(s), ans)
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+
+
+
