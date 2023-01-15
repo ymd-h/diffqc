@@ -805,54 +805,104 @@ class TestControlledQubitUnitary(unittest.TestCase):
 class TestR2(unittest.TestCase):
     def test_RXX(self):
         s = util.CreatePossibleState(dense, 2, jnp.complex64)
-        theta = jnp.pi / 6
-        ans = jnp.asarray([
-            [jnp.cos(theta), 0, 0, -1j * jnp.sin(theta)],
-            [0, jnp.cos(theta), -1j * jnp.sin(theta), 0],
-            [0, -1j * jnp.sin(theta), jnp.cos(theta), 0],
-            [-1j * jnp.sin(theta), 0, 0, jnp.cos(theta)],
-        ])
+
+        to = jax.vmap(dense.to_state)
 
         @jax.vmap
-        def rxx(si):
-            return dense.to_state(dense.RXX(si, (0, 1), theta))
-        np.testing.assert_allclose(rxx(s), ans)
+        def rxx_0(si):
+            return dense.to_state(dense.RXX(si, (0, 1), 0))
+        np.testing.assert_allclose(rxx_0(s), to(s))
+
+        @jax.vmap
+        def rxx_pi(si):
+            return dense.to_state(dense.RXX(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rxx_pi(s),
+            1j * to(jax.vmap(lambda si: dense.PauliX(dense.PauliX(si, (0,)), (1,)))(s))
+        )
+
+        @jax.vmap
+        def rxx_halfpi(si):
+            return dense.to_state(dense.RXX(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            rxx_halfpi(s),
+            to(jax.vmap(lambda si: dense.QubitUnitary(si, (0, 1),
+                                                      jnp.asarray([
+                                                          [ 1 , 0 , 0 ,-1j],
+                                                          [ 0 , 1 ,-1j, 0 ],
+                                                          [ 0 ,-1j, 1 , 0 ],
+                                                          [-1j, 0 , 0 , 1 ]
+                                                      ]) / jnp.sqrt(2)))(s))
+        )
 
     def test_RYY(self):
         s = util.CreatePossibleState(dense, 2, jnp.complex64)
-        theta = jnp.pi / 6
-        ans = jnp.asarray([
-            [jnp.cos(theta), 0, 0, 1j * jnp.sin(theta)],
-            [0, jnp.cos(theta), 1j * jnp.sin(theta), 0],
-            [0, 1j * jnp.sin(theta), jnp.cos(theta), 0],
-            [1j * jnp.sin(theta), 0, 0, jnp.cos(theta)],
-        ])
+
+        to = jax.vmap(dense.to_state)
 
         @jax.vmap
-        def ryy(si):
-            return dense.to_state(dense.RYY(si, (0, 1), theta))
-        np.testing.assert_allclose(ryy(s), ans)
+        def ryy_0(si):
+            return dense.to_state(dense.RYY(si, (0, 1), 0))
+        np.testing.assert_allclose(ryy_0(s), to(s))
+
+        @jax.vmap
+        def ryy_pi(si):
+            return dense.to_state(dense.RYY(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            ryy_pi(s),
+            1j * to(jax.vmap(lambda si: dense.PauliY(dense.PauliY(si, (0,)), (1,)))(s))
+        )
+
+        @jax.vmap
+        def ryy_halfpi(si):
+            return dense.to_state(dense.RYY(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            ryy_halfpi(s),
+            to(jax.vmap(lambda si: dense.QubitUnitary(si, (0, 1),
+                                                      jnp.asarray([
+                                                          [1 , 0 , 0 , 1j],
+                                                          [0 , 1 ,-1j, 0 ],
+                                                          [0 ,-1j, 1 , 0 ],
+                                                          [1j, 0 , 0 , 1 ]
+                                                      ]) / jnp.sqrt(2)))(s))
+        )
 
     def test_RZZ(self):
         s = util.CreatePossibleState(dense, 2, jnp.complex64)
-        theta = jnp.pi / 6
-        ans = jnp.asarray([
-            [jnp.exp( 0.5j * theta), 0, 0, 0],
-            [0, jnp.exp(-0.5j * theta), 0, 0],
-            [0, 0, jnp.exp(-0.5j * theta), 0],
-            [0, 0, 0, jnp.exp( 0.5j * theta)],
-        ])
+
+        to = jax.vmap(dense.to_state)
 
         @jax.vmap
-        def rzz(si):
-            return dense.to_state(dense.RZZ(si, (0, 1), theta))
-        np.testing.assert_allclose(rzz(s), ans)
+        def rzz_0(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), 0))
+        np.testing.assert_allclose(rzz_0(s), to(s))
+
+        @jax.vmap
+        def rzz_2pi(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), 2 * jnp.pi))
+        np.testing.assert_allclose(rzz_2pi(s), -to(s))
+
+        @jax.vmap
+        def rzz_pi(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rzz_pi(s),
+            -to(jax.vmap(lambda si: dense.PauliZ(dense.PauliZ(si, (0,)), (1,)))(s))
+        )
+
+        @jax.vmap
+        def rzz_halfpi(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            rzz_halfpi(s),
+            to(jax.vmap(lambda si: dense.QubitUnitary(si, (0, 1),
+                                                      jnp.asarray([
+                                                          [1-1j, 0   , 0   , 0   ],
+                                                          [0   , 1+1j, 0   , 0   ],
+                                                          [0   , 0   , 1+1j, 0   ],
+                                                          [0   , 0   , 0   , 1-1j]
+                                                      ]) / jnp.sqrt(2)))(s))
+        )
 
 if __name__ == "__main__":
     unittest.main()
-
-
-
-
-
-
