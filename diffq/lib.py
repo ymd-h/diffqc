@@ -145,7 +145,7 @@ def HHL(op, c: jnp.ndarray, wires: Tuple[int],
 
     # Uncompute QPE
     c = QFT(op, c, wires)
-    c = op.ControlledQubitUnitary(c, aux, jnp.linalg.inv(U))
+    c = op.ControlledQubitUnitary(c, aux, jnp.conj(jnp.transpose(U)))
     for i in wires:
         c = op.Hadamard(c, (i,))
 
