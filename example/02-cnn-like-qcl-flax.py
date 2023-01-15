@@ -58,23 +58,15 @@ def ConvLayer(x, w):
     # [0, 1) -> [-pi/2, pi/2)
     x = jnp.arcsin(2 *(x - 0.5))
 
-    # padding
-    x = jnp.zeros((x.shape[0]+2, x.shape[1]+2), dtype=x.dtype).at[1:-1, 1:-1].set(x)
-
     # convolution
-    x_idx = jnp.arange(x.shape[0]-2)
-    y_idx = jnp.arange(x.shape[1]-2)
-    @jax.vmap
-    def x_loop(xi):
-        @jax.vmap
-        def y_loop(yi):
-            return conv3x3cell(jax.lax.dynamic_slice(x, (xi, yi), (3, 3)), w)
-        return y_loop(y_idx)
-    x = x_loop(x_idx)
+    F = diffq.util.Convolution(op, conv3x3cell,
+                               kernel_shape = (3, 3),
+                               slide = (1, 1),
+                               padding = (1, 1))
+    x = F(x, w)
 
     # pooling
-    x = jnp.maximum(x.at[::2,:].get(), x.at[1::2,:].get())
-    x = jnp.maximum(x.at[:,::2].get(), x.at[:,1::2].get())
+    x = diffq.util.MaxPooling(x, (2, 2))
 
     return x
 
