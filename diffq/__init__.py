@@ -1,2 +1,2 @@
-from . import sparse, dense, lib
+from . import sparse, dense, lib, util
 from .common import *
