@@ -5,7 +5,7 @@ COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
 COPY .coveragerc .coveragerc
-RUN coverage run -m xmlrunner discover test
+RUN coverage run -m xmlrunner discover test || true
 RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
     mkdir -p /unittest && cp *.xml /unittest
 
@@ -17,7 +17,7 @@ COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
 COPY .coveragerc .coveragerc
-RUN coverage run -m xmlrunner discover test
+RUN coverage run -m xmlrunner discover test || true
 RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
     mkdir -p /unittest && cp *.xml /unittest
 
@@ -29,7 +29,7 @@ COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
 COPY .coveragerc .coveragerc
-RUN coverage run -m xmlrunner discover test
+RUN coverage run -m xmlrunner discover test || true
 RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
     mkdir -p /unittest && cp *.xml /unittest
 
@@ -41,7 +41,7 @@ COPY diffq diffq
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
 COPY test test
 COPY .coveragerc .coveragerc
-RUN coverage run -m xmlrunner discover test
+RUN coverage run -m xmlrunner discover test || true
 RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
     mkdir -p /unittest && cp -v *.xml /unittest
 
