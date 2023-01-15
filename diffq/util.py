@@ -89,10 +89,15 @@ def Convolution(op,
     Callable
         convoluted funcion of ``F(x, w)``
     """
-    p0 = padding[0]
-    p1 = padding[1]
+    assert (
+        len(kernel_shape) == len(slide) == len(padding) == 2
+    ), f"BUG: k: {kernel_shape}, s: {slide}, p: {padding}"
+    k0 = kernel_shape[0]
+    k1 = kernel_shape[1]
     s0 = slide[0]
     s1 = slide[1]
+    p0 = padding[0]
+    p1 = padding[1]
 
     def F(x, w):
         x0 = x.shape[0]
@@ -104,17 +109,21 @@ def Convolution(op,
             dtype=x.dtype
         ).at[p0:-p0, p1:-p1].set(x)
 
-        x0_idx = jnp.arange(0, x0 + 2 * p0 - s0, s0)
-        x1_idx = jnp.arange(0, x1 + 2 * p1 - s1, s1)
+        x0_idx = jnp.arange(0, x0 + 2 * p0 - k0, s0)
+        x1_idx = jnp.arange(0, x1 + 2 * p1 - k1, s1)
 
         @jax.vmap
         def x0_loop(_x0):
             @jax.vmap
             def x1_loop(_x1):
-                return kernel_func(jax.lax.dynamic_slice(X, (_x0, _x1), (s0, s1)), w)
+                return kernel_func(jax.lax.dynamic_slice(X, (_x0, _x1), (k0, k1)), w)
             return x1_loop(x1_idx)
 
         x = x0_loop(x0_idx)
+        assert (
+            x.shape[:2] == ((x0 + 2 * p0 - k0) / s0,
+                            (x1 + 2 * p1 - k1) / s1)
+        ), f"BUG: Output Shape: {x.shape}"
         return x
 
     return F
