@@ -110,8 +110,8 @@ def Convolution(op,
             (X0, X1, *x.shape[2:]), dtype=x.dtype
         ).at[p0:X0-p0, p1:X1-p1].set(x)
 
-        x0_idx = jnp.arange(0, x0 + 2 * p0 - k0, s0)
-        x1_idx = jnp.arange(0, x1 + 2 * p1 - k1, s1)
+        x0_idx = jnp.arange(0, X0 - k0 + 1, s0)
+        x1_idx = jnp.arange(0, X0 - k1 + 1, s1)
 
         @jax.vmap
         def x0_loop(_x0):
@@ -122,8 +122,8 @@ def Convolution(op,
 
         x = x0_loop(x0_idx)
         assert (
-            x.shape[:2] == ((x0 + 2 * p0 - k0) / s0,
-                            (x1 + 2 * p1 - k1) / s1)
+            x.shape[:2] == ((X0 - k0 + 1) // s0,
+                            (X1 - k1 + 1) // s1)
         ), f"BUG: Output Shape: {x.shape}"
         return x
 
