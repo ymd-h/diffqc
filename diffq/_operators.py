@@ -130,10 +130,10 @@ def RZZ(dtype, theta):
     exp = jnp.exp(0.5j*theta)
     nexp = 1/exp
     return (jnp.zeros((4, 4), dtype=dtype)
-            .at[0, 0].set(exp)
-            .at[1, 1].set(nexp)
-            .at[2, 2].set(nexp)
-            .at[3, 3].set(exp))
+            .at[0, 0].set(nexp)
+            .at[1, 1].set(exp)
+            .at[2, 2].set(exp)
+            .at[3, 3].set(nexp))
 
 def RXX(dtype, theta):
     cos = jnp.cos(0.5*theta)
