@@ -14,7 +14,6 @@ import functools
 import time
 from typing import Callable
 
-import diffq
 from diffq import dense as op
 
 from flax import linen as nn
