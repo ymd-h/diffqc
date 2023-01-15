@@ -104,10 +104,12 @@ def Convolution(op,
         x1 = x.shape[1]
 
         # X: Padded x
+        X0 = x0 + 2 * p0
+        X1 = x1 + 2 * p1
         X = jnp.zeros(
-            (x0 + 2 * p0, x1 + 2 * p1, *x.shape[2:]),
-            dtype=x.dtype
-        ).at[p0:-p0, p1:-p1].set(x)
+            (X0, X1, *x.shape[2:]), dtype=x.dtype
+        ).at[
+            p0:X0-p0, p1:X1-p1].set(x)
 
         x0_idx = jnp.arange(0, x0 + 2 * p0 - k0, s0)
         x1_idx = jnp.arange(0, x1 + 2 * p1 - k1, s1)
