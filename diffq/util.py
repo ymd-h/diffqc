@@ -60,3 +60,61 @@ def CreateMatrix(op, nqubits: int, dtype: jnp.dtype,
         return op.to_state(f(c))
 
     return jnp.moveaxis(F(cs), (0,), (1,))
+
+
+def Convolution(op,
+                kernel_func: Callable[[jnp.ndarray, jnp.ndarray], jnp.ndarray],
+                kernel_shape: Tuple[int],
+                slide: Tuple[int],
+                padding: Tuple[int],
+                ) -> Callable[[jnp.ndarray, jnp.ndarray], jnp.ndarray]:
+    """
+    Create Convolution Function
+
+    Parameters
+    ----------
+    op
+        `dense` or `sparse`
+    kernel_func : Callable
+        kernel function of ``f(x, w)``
+    kernel_shape : tuple of ints
+        kernel shape. ``len(kernel_shape) == 2``.
+    slide : tuple of ints
+        slides. ``len(slide) == 2``.
+    padding : tuple of ints
+        padding. ``len(padding) == 2``
+
+    Returns
+    -------
+    Callable
+        convoluted funcion of ``F(x, w)``
+    """
+    p0 = padding[0]
+    p1 = padding[1]
+    s0 = slide[0]
+    s1 = slide[1]
+
+    def F(x, w):
+        x0 = x.shape[0]
+        x1 = x.shape[1]
+
+        # X: Padded x
+        X = jnp.zeros(
+            (x0 + 2 * p0, x1 + 2 * p1, *x.shape[2:]),
+            dtype=x.dtype
+        ).at[p0:-p0, p1:-p1].set(x)
+
+        x0_idx = jnp.arange(0, x0 + 2 * p0 - s0, s0)
+        x1_idx = jnp.arange(0, x1 + 2 * p1 - s1, s1)
+
+        @jax.vmap
+        def x0_loop(_x0):
+            @jax.vmap
+            def x1_loop(_x1):
+                return kernel_func(jax.lax.dynamic_slice(X, (_x0, _x1), (s0, s1)), w)
+            return x1_loop(x1_idx)
+
+        x = x0_loop(x0_idx)
+        return x
+
+    return F
