@@ -126,4 +126,31 @@ def PSWAP(dtype, phi):
             .at[2, 1].set(exp)
             .at[3, 3].set(1))
 
+def RZZ(dtype, theta):
+    exp = jnp.exp(0.5j*theta)
+    nexp = 1/exp
+    return (jnp.zeros((4, 4), dtype=dtype)
+            .at[0, 0].set(exp)
+            .at[1, 1].set(nexp)
+            .at[2, 2].set(nexp)
+            .at[3, 3].set(exp))
 
+def RXX(dtype, theta):
+    cos = jnp.cos(theta)
+    nisin = -jnp.sin(theta)
+    return jnp.asarray([
+        [  cos,     0,     0, nisin],
+        [    0,   cos, nisin,     0],
+        [    0, nisin,   cos,     0],
+        [nisin,     0,     0,   cos],
+    ], dtype=dtype)
+
+def RYY(dtype, theta):
+    cos = jnp.cos(theta)
+    isin = jnp.sin(theta)
+    return jnp.asarray([
+        [ cos,     0,     0, isin],
+        [   0,   cos, -isin,    0],
+        [   0, -isin,   cos,    0],
+        [isin,     0,     0,  cos],
+    ], dtype=dtype)
