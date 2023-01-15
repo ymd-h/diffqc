@@ -59,14 +59,14 @@ def ConvLayer(x, w):
     x = jnp.arcsin(2 *(x - 0.5))
 
     # convolution
-    F = diffq.util.Convolution(op, conv3x3cell,
-                               kernel_shape = (3, 3),
-                               slide = (1, 1),
-                               padding = (1, 1))
+    F = diffq.nn.Convolution(op, conv3x3cell,
+                             kernel_shape = (3, 3),
+                             slide = (1, 1),
+                             padding = (1, 1))
     x = F(x, w)
 
     # pooling
-    x = diffq.util.MaxPooling(x, (2, 2))
+    x = diffq.nn.MaxPooling(x, (2, 2))
 
     return x
 
