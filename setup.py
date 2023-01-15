@@ -4,8 +4,11 @@ from setuptools import setup, find_packages
 
 desc = {}
 if os.path.exists("README.md"):
+    with open("README.md") as f:
+        readme = f.read()
+
     desc = {
-        "long_description": open("README.md").read(),
+        "long_description": readme,
         "long_description_content_type": "text/markdown",
     }
 
