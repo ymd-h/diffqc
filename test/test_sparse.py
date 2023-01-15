@@ -4,7 +4,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
-from diffq import sparse
+from diffq import sparse, util
 
 class TestZeros(unittest.TestCase):
     def test_zeros(self):
@@ -920,6 +920,125 @@ class TestControlledQubitUnitary(unittest.TestCase):
                 sparse.ControlledQubitUnitary(qi, w, _op.sigmaX(qi.dtype))
             )
         np.testing.assert_allclose(cqux(q), ans)
+
+class TestR2(unittest.TestCase):
+    def test_RXX(self):
+        s = util.CreatePossibleState(sparse, 2, jnp.complex64)
+
+        to = jax.vmap(sparse.to_state)
+
+        @jax.vmap
+        def rxx_0(si):
+            return sparse.to_state(sparse.RXX(si, (0, 1), 0))
+        np.testing.assert_allclose(rxx_0(s), to(s))
+
+        @jax.vmap
+        def rxx_halfpi(si):
+            return sparse.to_state(sparse.RXX(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            rxx_halfpi(s),
+            to(jax.vmap(lambda si: sparse.QubitUnitary(si, (0, 1),
+                                                       jnp.asarray([
+                                                           [ 1 , 0 , 0 ,-1j],
+                                                           [ 0 , 1 ,-1j, 0 ],
+                                                           [ 0 ,-1j, 1 , 0 ],
+                                                           [-1j, 0 , 0 , 1 ]
+                                                       ]) / jnp.sqrt(2)))(s))
+        )
+
+        # RXX(pi) = -i(X x X)
+        # Some web sites say: RXX(pi) = i(X x X), but it is probably wrong.
+        @jax.vmap
+        def rxx_pi(si):
+            return sparse.to_state(sparse.RXX(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rxx_pi(s),
+            -1j * to(jax.vmap(
+                lambda si: sparse.PauliX(sparse.PauliX(si, (0,)), (1,))
+            )(s)),
+            atol = 1e-7
+        )
+
+
+    def test_RYY(self):
+        s = util.CreatePossibleState(sparse, 2, jnp.complex64)
+
+        to = jax.vmap(sparse.to_state)
+
+        @jax.vmap
+        def ryy_0(si):
+            return sparse.to_state(sparse.RYY(si, (0, 1), 0))
+        np.testing.assert_allclose(ryy_0(s), to(s))
+
+        @jax.vmap
+        def ryy_halfpi(si):
+            return sparse.to_state(sparse.RYY(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            ryy_halfpi(s),
+            to(jax.vmap(lambda si: sparse.QubitUnitary(si, (0, 1),
+                                                       jnp.asarray([
+                                                           [1 , 0 , 0 , 1j],
+                                                           [0 , 1 ,-1j, 0 ],
+                                                           [0 ,-1j, 1 , 0 ],
+                                                           [1j, 0 , 0 , 1 ]
+                                                       ]) / jnp.sqrt(2)))(s))
+        )
+
+        # RYY(pi) = -i(Y x Y)
+        # Some web sites say: RYY(pi) = i(Y x Y), but it is probably wrong.
+        @jax.vmap
+        def ryy_pi(si):
+            return sparse.to_state(sparse.RYY(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            ryy_pi(s),
+            -1j * to(jax.vmap(
+                lambda si: sparse.PauliY(sparse.PauliY(si, (0,)), (1,))
+            )(s)),
+            atol = 1e-7
+        )
+
+
+    def test_RZZ(self):
+        s = util.CreatePossibleState(sparse, 2, jnp.complex64)
+
+        to = jax.vmap(sparse.to_state)
+
+        @jax.vmap
+        def rzz_0(si):
+            return sparse.to_state(sparse.RZZ(si, (0, 1), 0))
+        np.testing.assert_allclose(rzz_0(s), to(s))
+
+        @jax.vmap
+        def rzz_2pi(si):
+            return sparse.to_state(sparse.RZZ(si, (0, 1), 2 * jnp.pi))
+        np.testing.assert_allclose(rzz_2pi(s), -to(s))
+
+        @jax.vmap
+        def rzz_halfpi(si):
+            return sparse.to_state(sparse.RZZ(si, (0, 1), 0.5*jnp.pi))
+        np.testing.assert_allclose(
+            rzz_halfpi(s),
+            to(jax.vmap(lambda si: sparse.QubitUnitary(si, (0, 1),
+                                                       jnp.asarray([
+                                                           [1-1j, 0   , 0   , 0   ],
+                                                           [0   , 1+1j, 0   , 0   ],
+                                                           [0   , 0   , 1+1j, 0   ],
+                                                           [0   , 0   , 0   , 1-1j]
+                                                       ]) / jnp.sqrt(2)))(s))
+        )
+
+        # RZZ(pi) = -i(Z x Z)
+        # Some web sites say: RZZ(pi) = -(Z x Z), but it is probably wrong.
+        @jax.vmap
+        def rzz_pi(si):
+            return sparse.to_state(sparse.RZZ(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rzz_pi(s),
+            -1j * to(jax.vmap(
+                lambda si: sparse.PauliZ(sparse.PauliZ(si, (0,)), (1,))
+            )(s)),
+            atol = 1e-7
+        )
 
 
 if __name__ == "__main__":
