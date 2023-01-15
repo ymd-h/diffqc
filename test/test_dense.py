@@ -814,14 +814,6 @@ class TestR2(unittest.TestCase):
         np.testing.assert_allclose(rxx_0(s), to(s))
 
         @jax.vmap
-        def rxx_pi(si):
-            return dense.to_state(dense.RXX(si, (0, 1), jnp.pi))
-        np.testing.assert_allclose(
-            rxx_pi(s),
-            1j * to(jax.vmap(lambda si: dense.PauliX(dense.PauliX(si, (0,)), (1,)))(s))
-        )
-
-        @jax.vmap
         def rxx_halfpi(si):
             return dense.to_state(dense.RXX(si, (0, 1), 0.5*jnp.pi))
         np.testing.assert_allclose(
@@ -835,6 +827,18 @@ class TestR2(unittest.TestCase):
                                                       ]) / jnp.sqrt(2)))(s))
         )
 
+        # RXX(pi) = -i(X x X)
+        # Some web sites say: RXX(pi) = i(X x X), but it is probably wrong.
+        @jax.vmap
+        def rxx_pi(si):
+            return dense.to_state(dense.RXX(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rxx_pi(s),
+            -1j*to(jax.vmap(lambda si: dense.PauliX(dense.PauliX(si, (0,)), (1,)))(s)),
+            atol = 1e-7
+        )
+
+
     def test_RYY(self):
         s = util.CreatePossibleState(dense, 2, jnp.complex64)
 
@@ -844,14 +848,6 @@ class TestR2(unittest.TestCase):
         def ryy_0(si):
             return dense.to_state(dense.RYY(si, (0, 1), 0))
         np.testing.assert_allclose(ryy_0(s), to(s))
-
-        @jax.vmap
-        def ryy_pi(si):
-            return dense.to_state(dense.RYY(si, (0, 1), jnp.pi))
-        np.testing.assert_allclose(
-            ryy_pi(s),
-            1j * to(jax.vmap(lambda si: dense.PauliY(dense.PauliY(si, (0,)), (1,)))(s))
-        )
 
         @jax.vmap
         def ryy_halfpi(si):
@@ -866,6 +862,18 @@ class TestR2(unittest.TestCase):
                                                           [1j, 0 , 0 , 1 ]
                                                       ]) / jnp.sqrt(2)))(s))
         )
+
+        # RYY(pi) = -i(Y x Y)
+        # Some web sites say: RYY(pi) = i(Y x Y), but it is probably wrong.
+        @jax.vmap
+        def ryy_pi(si):
+            return dense.to_state(dense.RYY(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            ryy_pi(s),
+            -1j*to(jax.vmap(lambda si: dense.PauliY(dense.PauliY(si, (0,)), (1,)))(s)),
+            atol = 1e-7
+        )
+
 
     def test_RZZ(self):
         s = util.CreatePossibleState(dense, 2, jnp.complex64)
@@ -883,14 +891,6 @@ class TestR2(unittest.TestCase):
         np.testing.assert_allclose(rzz_2pi(s), -to(s))
 
         @jax.vmap
-        def rzz_pi(si):
-            return dense.to_state(dense.RZZ(si, (0, 1), jnp.pi))
-        np.testing.assert_allclose(
-            rzz_pi(s),
-            -to(jax.vmap(lambda si: dense.PauliZ(dense.PauliZ(si, (0,)), (1,)))(s))
-        )
-
-        @jax.vmap
         def rzz_halfpi(si):
             return dense.to_state(dense.RZZ(si, (0, 1), 0.5*jnp.pi))
         np.testing.assert_allclose(
@@ -903,6 +903,18 @@ class TestR2(unittest.TestCase):
                                                           [0   , 0   , 0   , 1-1j]
                                                       ]) / jnp.sqrt(2)))(s))
         )
+
+        # RZZ(pi) = -i(Z x Z)
+        # Some web sites say: RZZ(pi) = -(Z x Z), but it is probably wrong.
+        @jax.vmap
+        def rzz_pi(si):
+            return dense.to_state(dense.RZZ(si, (0, 1), jnp.pi))
+        np.testing.assert_allclose(
+            rzz_pi(s),
+            -1j*to(jax.vmap(lambda si: dense.PauliZ(dense.PauliZ(si, (0,)), (1,)))(s)),
+            atol = 1e-7
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
