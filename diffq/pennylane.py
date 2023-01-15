@@ -98,7 +98,7 @@ class JaxQubitDevice(qml.QubitDevice):
                 continue
 
             if op.name in ["IsingXX", "IsingYY", "IsingZZ"]:
-                opf = {"IsingXX": op.RXX, "IsingYY": op.RYY, "IsingZZ": op.ZZ}
+                opf = {"IsingXX": op.RXX, "IsingYY": op.RYY, "IsingZZ": op.RZZ}
             else:
                 opf = getattr(self.op, op.name)
 
