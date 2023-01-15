@@ -55,6 +55,9 @@ __all__ = [
     "U2",
     "U3",
     "PSWAP",
+    "RXX",
+    "RYY",
+    "RZZ",
 
     # General Matrix Operation
     "QubitUnitary",
@@ -964,3 +967,60 @@ def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
                       ].set(U)
 
     return QubitUnitary(c, wires, CU)
+
+
+def RXX(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
+    """
+    Rotate XX (exp(-iXX * thta))
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wires : tuple of ints
+        wires to apply. ``len(wires)`` must be ``2``.
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubit state
+    """
+    return opN(c, wires, entangle_op2(_op.RXX(c.dtype, float)))
+
+
+def RYY(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
+    """
+    Rotate YY (exp(-iYY * thta))
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wires : tuple of ints
+        wires to apply. ``len(wires)`` must be ``2``.
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubit state
+    """
+    return opN(c, wires, entangle_op2(_op.RYY(c.dtype, float)))
+
+
+def RZZ(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
+    """
+    Rotate ZZ (exp(-iZZ * thta))
+
+    Parameters
+    ----------
+    c : jnp.ndarray
+        qubit state
+    wires : tuple of ints
+        wires to apply. ``len(wires)`` must be ``2``.
+
+    Returns
+    -------
+    jnp.ndarray
+        applied qubit state
+    """
+    return opN(c, wires, entangle_op2(_op.RZZ(c.dtype, float)))
