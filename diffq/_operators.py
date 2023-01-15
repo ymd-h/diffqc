@@ -136,8 +136,8 @@ def RZZ(dtype, theta):
             .at[3, 3].set(exp))
 
 def RXX(dtype, theta):
-    cos = jnp.cos(theta)
-    nisin = -1j * jnp.sin(theta)
+    cos = jnp.cos(0.5*theta)
+    nisin = -1j * jnp.sin(0.5*theta)
     return jnp.asarray([
         [  cos,     0,     0, nisin],
         [    0,   cos, nisin,     0],
@@ -146,8 +146,8 @@ def RXX(dtype, theta):
     ], dtype=dtype)
 
 def RYY(dtype, theta):
-    cos = jnp.cos(theta)
-    isin = 1j * jnp.sin(theta)
+    cos = jnp.cos(0.5*theta)
+    isin = 1j * jnp.sin(0.5*theta)
     return jnp.asarray([
         [ cos,     0,     0, isin],
         [   0,   cos, -isin,    0],
