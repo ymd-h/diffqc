@@ -129,3 +129,36 @@ def Convolution(op,
         return x
 
     return F
+
+
+def MaxPooling(x: jnp.ndarray, shape: Tuple[int]) -> jnp.ndarray:
+    """
+    Max Pooling for 2D
+
+    Parameters
+    ----------
+    x : jnp.ndarray
+        values
+    shape : tuple of ints
+        shape of taking max. ``len(shape) == 2``.
+
+    Returns
+    -------
+    jnp.ndarray
+        maxed values
+    """
+    assert len(shape) == 2, f"Bug: shape: {shape}"
+
+    x0 = jnp.arange(0, x.shape[0], shape[0])
+    x1 = jnp.arange(0, x.shape[1], shape[1])
+
+    @jax.vmap
+    def x0_loop(_x0):
+        @jax.vmap
+        def x1_loop(_x1):
+            # dynamic_slice() is clipped for overrun index.
+            return jnp.max(jax.lax.dynamic_slice(x, (_x0, _x1), shape))
+        return x1_loop(x1)
+
+    x = x0_loop(x0)
+    return x
