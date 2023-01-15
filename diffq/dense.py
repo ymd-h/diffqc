@@ -1,7 +1,6 @@
 import math
 from typing import Tuple
 
-import jax
 import jax.numpy as jnp
 
 from . import _operators as _op
