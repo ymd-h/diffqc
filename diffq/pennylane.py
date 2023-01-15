@@ -58,16 +58,16 @@ class JaxQubitDevice(qml.QubitDevice):
         "U1",
         "U2",
         "U3",
-        #"IsingXX",
+        "IsingXX",
         #"IsingXY",
-        #"IsingYY",
-        #"IsingZZ",
+        "IsingYY",
+        "IsingZZ",
         "PSWAP",
     }
     observables = {
-        "Hadamard",
+        #"Hadamard",
         #"Hermitian",
-        "Identity",
+        #"Identity",
         "PauliX",
         "PauliY",
         "PauliZ",
@@ -97,7 +97,11 @@ class JaxQubitDevice(qml.QubitDevice):
             if op.name == "Identity":
                 continue
 
-            opf = getattr(self.op, op.name)
+            if op.name in ["IsingXX", "IsingYY", "IsingZZ"]:
+                opf = {"IsingXX": op.RXX, "IsingYY": op.RYY, "IsingZZ": op.ZZ}
+            else:
+                opf = getattr(self.op, op.name)
+
             f = lambda: opf(f(),
                             jnp.asarray(op.wires),
                             *tuple(jnp.asarray(p) for p in op.parameters))
