@@ -3,7 +3,6 @@ Example 00: Circuit Basics
 """
 import jax
 import jax.numpy as jnp
-import numpy as np
 
 import diffq
 from diffq import dense as op
