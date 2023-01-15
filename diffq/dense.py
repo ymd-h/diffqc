@@ -879,7 +879,7 @@ def RXX(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     jnp.ndarray
         applied qubit state
     """
-    return op2(c, wires, _op.RXX(c.dtype, float))
+    return op2(c, wires, _op.RXX(c.dtype, theta))
 
 
 def RYY(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
@@ -898,7 +898,7 @@ def RYY(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     jnp.ndarray
         applied qubit state
     """
-    return op2(c, wires, _op.RYY(c.dtype, float))
+    return op2(c, wires, _op.RYY(c.dtype, theta))
 
 
 def RZZ(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
@@ -917,4 +917,4 @@ def RZZ(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     jnp.ndarray
         applied qubit state
     """
-    return op2(c, wires, _op.RZZ(c.dtype, float))
+    return op2(c, wires, _op.RZZ(c.dtype, theta))
