@@ -1,4 +1,4 @@
-name: diffq
+name: diffqc
 on: [push, pull_request]
 jobs:
   ci:
@@ -10,13 +10,13 @@ jobs:
         with:
           context: .
           push: false
-          tags: diffq/results:latest
+          tags: diffqc/results:latest
           cache-to: type=gha,mode=max,scope=${{github.ref_name}}
           cache-from: type=gha,scope=${{github.ref_name}}
           load: true
           file: Dockerfile-ci
       - run: |
-          docker create --name results diffq/results:latest
+          docker create --name results diffqc/results:latest
           docker cp results:/coverage/. coverage/
           docker cp results:/unittest/. unittest/
           docker cp results:/dist/. dist/

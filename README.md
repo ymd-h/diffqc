@@ -1,11 +1,14 @@
-# diffq: Differentiable Quantum Circuit Simulator for Quantum Machine Learning
+# diffqc: Differentiable Quantum Circuit Simulator for Quantum Machine Learning
 
 ## 1. Overview
+> **Note**  
+> This project started as diffq, but because of accidental name conflict,
+> we change name to diffqc.
 
-diffq is a python package providing differentiable quantum circuit simulator.
+diffqc is a python package providing differentiable quantum circuit simulator.
 The main target is quantum machine learning.
 
-diffq is built on [JAX](https://jax.readthedocs.io/en/latest/), so
+diffqc is built on [JAX](https://jax.readthedocs.io/en/latest/), so
 that it is
 * GPU friendly,
 * easily vectorized,
@@ -14,7 +17,7 @@ that it is
 ["Installation" section at JAX README](https://github.com/google/jax#installation))
 
 ## 2. Features
-diffq provides 2 types of operations, `dense` and `sparse`. Both have
+diffqc provides 2 types of operations, `dense` and `sparse`. Both have
 same operations and only internal representations are different.
 
 ### 2.1 `dense` operation
@@ -32,7 +35,7 @@ reduce memory requirements at large `nqubits` system, but it can be
 computationally inefficient.
 
 ### 2.3 Builtin Algorithm `lib`
-Builtin algorithms are implemented at `diffq.lib`. To support both
+Builtin algorithms are implemented at `diffqc.lib`. To support both
 `dense` and `sparse` operation, operation module is passed to 1st
 argument.
 
@@ -62,7 +65,7 @@ independently, and can switch relatively easy.
 
 ## 3. Example Usage
 - example/00-circuit-basics.py
-  - Basic Usage of diffq
+  - Basic Usage of diffqc
 - example/01-qcl-flax.py
   - QCL[1] Classification of [Iris](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
 - example/02-cnn-like-qcl-flax.py

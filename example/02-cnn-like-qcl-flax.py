@@ -9,7 +9,7 @@ This example additionally requires followings;
 Warnings
 --------
 This implementation is different from QCNN[1],
-because the intermediate measurement and reaction are not easy for diffq simulation,
+because the intermediate measurement and reaction are not easy for diffqc simulation,
 and because this example implementation needs smaller qubits and shallow circuit.
 
 [1] I. Cong et al., "Quantum Convolutional Neural Networks",
@@ -21,8 +21,8 @@ import functools
 import time
 from typing import Callable
 
-import diffq
-from diffq import dense as op
+import diffqc
+from diffqc import dense as op
 
 from flax import linen as nn
 from flax.training import train_state
@@ -59,14 +59,14 @@ def ConvLayer(x, w):
     x = jnp.arcsin(2 *(x - 0.5))
 
     # convolution
-    F = diffq.nn.Convolution(op, conv3x3cell,
+    F = diffqc.nn.Convolution(op, conv3x3cell,
                              kernel_shape = (3, 3),
                              slide = (1, 1),
                              padding = (1, 1))
     x = F(x, w)
 
     # pooling
-    x = diffq.nn.MaxPooling(x, (2, 2))
+    x = diffqc.nn.MaxPooling(x, (2, 2))
 
     return x
 
@@ -87,8 +87,8 @@ def DenseLayer(x, w):
     for i in range(x.shape[0]):
         q = op.PauliZ(q, (i,))
 
-    p = diffq.prob(op.to_state(q))
-    return jnp.stack(tuple(diffq.expval(p, i) for i in range(x.shape[0])))
+    p = diffqc.prob(op.to_state(q))
+    return jnp.stack(tuple(diffqc.expval(p, i) for i in range(x.shape[0])))
 
 
 class ConvQCL(nn.Module):

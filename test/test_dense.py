@@ -4,7 +4,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
-from diffq import dense, util
+from diffqc import dense, util
 
 class TestZeros(unittest.TestCase):
     def test_zeros(self):
@@ -761,14 +761,14 @@ class TestPSWAP(unittest.TestCase):
 
 class TestQubitUnitary(unittest.TestCase):
     def test_X(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
         w = (0,)
         q0 = dense.zeros(1, jnp.complex64)
         np.testing.assert_allclose(dense.QubitUnitary(q0, w, _op.sigmaX(q0.dtype)),
                                    dense.PauliX(q0, w))
 
     def test_H(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
         w = (0,)
         q0 = dense.zeros(1, jnp.complex64)
         np.testing.assert_allclose(dense.QubitUnitary(q0, w, _op.H(q0.dtype)),
@@ -788,7 +788,7 @@ class TestQubitUnitary(unittest.TestCase):
 
 class TestControlledQubitUnitary(unittest.TestCase):
     def test_CX(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
         w = (0,1)
         q00 = dense.zeros(2, jnp.complex64)
         np.testing.assert_allclose(

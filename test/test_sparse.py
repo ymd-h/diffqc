@@ -4,7 +4,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
-from diffq import sparse, util
+from diffqc import sparse, util
 
 class TestZeros(unittest.TestCase):
     def test_zeros(self):
@@ -832,7 +832,7 @@ class TestPSWAP(unittest.TestCase):
 
 class TestQubitUnitary(unittest.TestCase):
     def test_Qubit(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
 
         w = (0,)
         s = sparse.zeros(1, jnp.complex64)
@@ -849,7 +849,7 @@ class TestQubitUnitary(unittest.TestCase):
         np.testing.assert_allclose(unitary(U), ans)
 
     def test_partial(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
 
         w = (0,)
         s = sparse.zeros(3, jnp.complex64)
@@ -866,7 +866,7 @@ class TestQubitUnitary(unittest.TestCase):
         np.testing.assert_allclose(unitary(U), ans)
 
     def test_2qubit(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
 
         w = (0, 1)
         s = sparse.zeros(2, jnp.complex64)
@@ -884,7 +884,7 @@ class TestQubitUnitary(unittest.TestCase):
 
 
     def test_2qubit_partial(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
 
         w = (0, 1)
         s = sparse.zeros(4, jnp.complex64)
@@ -903,7 +903,7 @@ class TestQubitUnitary(unittest.TestCase):
 
 class TestControlledQubitUnitary(unittest.TestCase):
     def test_CX(self):
-        from diffq import _operators as _op
+        from diffqc import _operators as _op
         w = (0, 1)
         q00 = sparse.zeros(2, jnp.complex64)
         q10 = sparse.PauliX(q00, (0,))

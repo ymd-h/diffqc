@@ -4,8 +4,8 @@ Example 00: Circuit Basics
 import jax
 import jax.numpy as jnp
 
-import diffq
-from diffq import dense as op
+import diffqc
+from diffqc import dense as op
 
 def main():
     nqubits = 5
@@ -43,10 +43,10 @@ def main():
         s = circuit(params)
 
         # Caluculate probabilities of each state
-        p = diffq.prob(s)
+        p = diffqc.prob(s)
 
         # Expectation of |1> at certain wire.
-        return diffq.expval(p, 4)
+        return diffqc.expval(p, 4)
 
 
     # Define parameters as compatible with JAX pytree.

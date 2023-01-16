@@ -4,8 +4,8 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-import diffq
-from diffq import dense, sparse, util
+import diffqc
+from diffqc import dense, sparse, util
 
 
 class TestCreatePossibleState(unittest.TestCase):

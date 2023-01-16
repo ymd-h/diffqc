@@ -5,14 +5,14 @@ import jax.numpy as jnp
 
 import numpy as np
 
-import diffq
-from diffq import dense, sparse
-from diffq import lib
+import diffqc
+from diffqc import dense, sparse
+from diffqc import lib
 
 
 class TestGHZ(unittest.TestCase):
     def _check(self, s):
-        p = diffq.prob(s)
+        p = diffqc.prob(s)
         np.testing.assert_allclose(p,
                                    jnp.zeros_like(p)
                                    .at[0]
@@ -59,7 +59,7 @@ class TestQFT(unittest.TestCase):
 
     def _check(self, s):
         # QFT: |+++>  -->  |000>
-        p = diffq.prob(s)
+        p = diffqc.prob(s)
         np.testing.assert_allclose(p, jnp.zeros_like(p).at[0].set(1),
                                    atol=1e-7, rtol=1e-6)
 
@@ -100,7 +100,7 @@ class TestQPE(unittest.TestCase):
         return f
 
     def _check(self, s):
-        p = jax.vmap(lambda si: diffq.marginal_prob(diffq.prob(si), (0,1)))(s)
+        p = jax.vmap(lambda si: diffqc.marginal_prob(diffqc.prob(si), (0,1)))(s)
         np.testing.assert_allclose(p,
                                    [
                                        [1,0,0,0,0,0,0,0], # |000>

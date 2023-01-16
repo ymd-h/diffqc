@@ -5,7 +5,7 @@ import jax
 import jax.numpy as jnp
 import pennylane as qml
 
-import diffq
+import diffqc
 
 
 class JaxQubitDevice(qml.QubitDevice):
@@ -84,8 +84,8 @@ class JaxQubitDevice(qml.QubitDevice):
 
         try:
             self.op = {
-                "dense": diffq.dense,
-                "sparse": diffq.sparse,
+                "dense": diffqc.dense,
+                "sparse": diffqc.sparse,
             }[mode]
         except KeyError:
             raise ValueError(f"Unknown mode: {mode}")

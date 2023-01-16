@@ -12,7 +12,7 @@ if os.path.exists("README.md"):
         "long_description_content_type": "text/markdown",
     }
 
-setup(name="diffq",
+setup(name="diffqc",
       description="Diiferentiable Quantum Simulator",
       **desc,
       version="0.0.0",
@@ -34,6 +34,6 @@ setup(name="diffq",
       },
       entry_points = {
           "pennylane.plugins": [
-              "diffq.qubit = diffq.pennylane:JaxQubitDevice",
+              "diffqc.qubit = diffqc.pennylane:JaxQubitDevice",
           ]
       })
