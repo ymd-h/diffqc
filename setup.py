@@ -16,9 +16,9 @@ setup(name="diffqc",
       description="Diiferentiable Quantum Simulator",
       **desc,
       version="0.0.0",
-      url = "https://github.com/ymd-h/diffq",
+      url = "https://github.com/ymd-h/diffqc",
       project_urls = {
-          "Bug Report & QA": "https://github.com/ymd-h/diffq/discussions",
+          "Bug Report & QA": "https://github.com/ymd-h/diffqc/discussions",
       },
       packages=find_packages(),
       classifiers = [
