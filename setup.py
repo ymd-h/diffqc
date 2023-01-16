@@ -15,6 +15,7 @@ if os.path.exists("README.md"):
 setup(name="diffqc",
       description="Diiferentiable Quantum Simulator",
       **desc,
+      author="H. Yamada",
       version="0.0.0",
       url = "https://github.com/ymd-h/diffqc",
       project_urls = {
