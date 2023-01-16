@@ -4,7 +4,6 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-import diffqc
 from diffqc import dense, sparse, util
 
 
