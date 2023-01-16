@@ -1,7 +1,7 @@
 [run]
 branch = True
 parallel = True
-source = diffq
+source = diffqc
 relative_files = True
 
 [report]
