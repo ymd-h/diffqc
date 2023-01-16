@@ -3,7 +3,7 @@
 ## 1. Overview
 > **Note**  
 > This project started as diffq, but because of accidental name conflict,
-> we change name to diffqc.
+> we changed name to diffqc.
 
 diffqc is a python package providing differentiable quantum circuit simulator.
 The main target is quantum machine learning.
