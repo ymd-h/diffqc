@@ -16,7 +16,7 @@ setup(name="diffqc",
       description="Diiferentiable Quantum Simulator",
       **desc,
       author="H. Yamada",
-      version="0.0.0",
+      version="0.0.1",
       url = "https://github.com/ymd-h/diffqc",
       project_urls = {
           "Bug Report & QA": "https://github.com/ymd-h/diffqc/discussions",
