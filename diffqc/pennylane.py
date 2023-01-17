@@ -114,7 +114,6 @@ class diffqcQubitDevice(qml.QubitDevice):
             return s
 
         self._state = f()
-        return np.array(self._state, copy=True)
 
     def analytic_probability(self, wires: Union[None,
                                                 Iterable[Union[int, str]],
