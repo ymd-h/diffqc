@@ -35,6 +35,6 @@ setup(name="diffqc",
       },
       entry_points = {
           "pennylane.plugins": [
-              "diffqc.qubit = diffqc.pennylane:JaxQubitDevice",
+              "diffqc.qubit = diffqc.pennylane:diffqcQubitDevice",
           ]
       })

@@ -8,9 +8,9 @@ import pennylane as qml
 import diffqc
 
 
-class JaxQubitDevice(qml.QubitDevice):
-    name = "PennyLane plugin for JAX"
-    short_name = "jax.qubit"
+class diffqcQubitDevice(qml.QubitDevice):
+    name = "PennyLane plugin for diffqc"
+    short_name = "diffqc.qubit"
     pennylane_requires = ">=0.20.0"
     version = "0.0.0"
     author = "ymd-h"
