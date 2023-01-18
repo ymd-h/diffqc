@@ -3,6 +3,60 @@ from typing import Callable, Tuple
 import jax
 import jax.numpy as jnp
 
+def CircuitCentricBlock(op, c: jnp.ndarray, wires: Tuple[int],
+                        weights: jnp.ndarray) -> jnp.ndarray:
+    """
+    Apply Circuit Centric Block as Parameterized Quantum Circuit (PQC)
+
+    Parameters
+    ----------
+    op
+        `dense` or `sparse`
+    c : jnp.ndarray
+        qubits
+    wires : tuple of ints
+        wires. Usually, `(0, ..., qubits-1)`
+    weights : jnp.ndarray
+        parameters for rotation angle with shape of `(layers, 3 * qubits)`.
+
+    Returns
+    -------
+    jnp.ndarray
+        applied circuit
+
+    Notes
+    -----
+    Code Block with range = 1 described at [1]_.
+    According to [2]_, for middle scale circuit (4, 6, and 8 qubits)
+    three layers have enough expressivity.
+
+    References
+    ----------
+    .. [1] M. Schuld /et al/., "Circuit-centric quantum classifiers",
+       Phys. Rev. A 101, 032308 (2020) (arXiv:1804.00633)
+    .. [2] S. Sim /et al/., "Expressibility and entangling capability of
+       parameterized quantum circuits for hybrid quantum-classical algorithms",
+       Adv. Quantum Technol. 2 (2019) 1900070 (arXiv:1905.10876)
+    """
+    assert (weights.ndim == 2) and (weights.shape[1] == 3 * len(wires))
+
+    n = len(wires)
+    def Layer(ci, w):
+        for i in wires:
+            ci = op.RX(ci, (i,), w.at[i].get())
+            ci = op.RZ(ci, (i,), w.at[i+n].get())
+
+        for i in range(n):
+            ci = op.CRX(ci, (wires[i], wires[(i+1) % n]), w.at[i+2*n].get())
+
+        return ci, None
+
+    c, _ = jax.lax.scan(Layer, c, weights)
+    return c
+
+
+
+
 def Convolution(op,
                 kernel_func: Callable[[jnp.ndarray, jnp.ndarray], jnp.ndarray],
                 kernel_shape: Tuple[int],
