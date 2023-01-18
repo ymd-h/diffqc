@@ -56,7 +56,7 @@ def CircuitCentricBlock(op, c: jnp.ndarray, wires: Tuple[int],
 
 
 def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
-                      weights: jnp.ndarray) -> jnp.ndarray:
+                     weights: jnp.ndarray) -> jnp.ndarray:
     """
     Apply Josephson Sampler as Parameterized Quantum Circuit (PQC)
 
