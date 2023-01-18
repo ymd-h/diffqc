@@ -101,6 +101,7 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
     # => n1 + n2 = 2 * (qubits - 1)
     n  = len(wires)
     n1 = n - (n % 2)
+    n2 = n + (n % 2) - 2
 
     # RY: [   0   ,   n1     )
     # RZ: [  n1   , 2*n1     )
@@ -114,7 +115,7 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
             ci = op.RY(ci, (wires[i+1],), w.at[i+1   ].get())
             ci = op.RZ(ci, (wires[i+1],), w.at[i+1+n1].get())
 
-            ci = op.CX(ci, (wires[i], wires[i+1]))
+            ci = op.CNOT(ci, (wires[i], wires[i+1]))
 
         for i in range(1, n-1, 2):
             ci = op.RY(ci, (wires[i],), w.at[i+2*n1   ].get())
@@ -123,7 +124,7 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
             ci = op.RY(ci, (wires[i+1],), w.at[i+1+2*n1   ].get())
             ci = op.RZ(ci, (wires[i+1],), w.at[i+1+2*n1+n2].get())
 
-            ci = op.CX(ci, (wires[i], wires[i+1]))
+            ci = op.CNOT(ci, (wires[i], wires[i+1]))
 
         return ci, None
 
