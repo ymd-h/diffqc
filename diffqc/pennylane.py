@@ -8,9 +8,9 @@ import pennylane as qml
 import diffqc
 
 
-class JaxQubitDevice(qml.QubitDevice):
-    name = "PennyLane plugin for JAX"
-    short_name = "jax.qubit"
+class diffqcQubitDevice(qml.QubitDevice):
+    name = "PennyLane plugin for diffqc"
+    short_name = "diffqc.qubit"
     pennylane_requires = ">=0.20.0"
     version = "0.0.0"
     author = "ymd-h"
@@ -79,9 +79,11 @@ class JaxQubitDevice(qml.QubitDevice):
     def __init__(self,
                  wires: Union[int, Iterable[Union[int, str]]],
                  shots: Union[None, int, List[int]] = None,
-                 mode: Literal["dense", "sparse"] = "dense"):
+                 mode: Literal["dense", "sparse"] = "dense",
+                 dtype: jnp.dtype = jnp.complex64):
         super().__init__(wires=wires, shots=shots)
 
+        self.dtype = dtype
         try:
             self.op = {
                 "dense": diffqc.dense,
@@ -91,25 +93,27 @@ class JaxQubitDevice(qml.QubitDevice):
             raise ValueError(f"Unknown mode: {mode}")
 
     def apply(self, operations: List[qml.operation.Operation], **kwargs):
-        f = lambda: self.op.zeros(len(self.wires), jnp.complex64)
 
-        for op in operations:
-            if op.name == "Identity":
-                continue
+        @jax.jit
+        def f():
+            c = self.op.zeros(len(self.wires), self.dtype)
 
-            if op.name in ["IsingXX", "IsingYY", "IsingZZ"]:
-                opf = {"IsingXX": op.RXX, "IsingYY": op.RYY, "IsingZZ": op.RZZ}
-            else:
-                opf = getattr(self.op, op.name)
+            for op in operations:
+                if op.name == "Identity":
+                    continue
 
-            f = lambda: opf(f(),
-                            jnp.asarray(op.wires),
-                            *tuple(jnp.asarray(p) for p in op.parameters))
+                if op.name in ["IsingXX", "IsingYY", "IsingZZ"]:
+                    opf = {"IsingXX": op.RXX, "IsingYY": op.RYY, "IsingZZ": op.RZZ}
+                else:
+                    opf = getattr(self.op, op.name)
 
-        f = lambda: self.op.to_state(f())
+                c = opf(c, op.wires.labels,
+                        *tuple(jnp.asarray(p) for p in op.parameters))
 
-        self._state = jax.jit(f)()
-        return np.array(self._state, copy=True)
+            s = self.op.to_state(c)
+            return s
+
+        self._state = f()
 
     def analytic_probability(self, wires: Union[None,
                                                 Iterable[Union[int, str]],
