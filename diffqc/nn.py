@@ -28,7 +28,7 @@ def CircuitCentricBlock(op, c: jnp.ndarray, wires: Tuple[int],
     -----
     Code Block with range = 1 described at [1]_.
     According to [2]_, for middle scale circuit (4, 6, and 8 qubits)
-    three layers have enough expressivity.
+    three layers have enough expressivity. (Circuit 19)
 
     References
     ----------
@@ -80,7 +80,7 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
     -----
     Josephson Sampler circuit described at [1]_.
     According to [2]_, for middle scale circuit (4, 6, and 8 qubits)
-    three layers have enough expressivity.
+    three layers have enough expressivity. (Circuit 11)
 
     References
     ----------
