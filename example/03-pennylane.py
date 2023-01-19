@@ -5,10 +5,6 @@ Ref: https://pennylane.ai/qml/demos/tutorial_jax_transformations.html
 """
 import pennylane as qml
 
-import jax
-import jax.numpy as jnp
-
-
 def main():
     dev = qml.device("diffqc.qubit", wires=2)
 
