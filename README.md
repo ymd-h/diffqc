@@ -70,7 +70,12 @@ independently, and can switch relatively easy.
   - QCL[1] Classification of [Iris](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
 - example/02-cnn-like-qcl-flax.py
   - CNN-like QCL[1] Classification of [Digits](https://scikit-learn.org/stable/datasets/toy_dataset.html#digits-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
-
+- example/04-builtin-variational-cercuit-centric.py
+  - Builtin Variational Circuit: Circuit Centric Block described at [5]
+  - According to [6], this is one of the best circuit.
+- example/05-builtin-variational-josephson-sampler.py
+  - Builtin Variational Circuit: Josephson Sampler described at [7]
+  - According to [6], this is one of the best circuit.
 
 ## 4. References
 - JAX
@@ -99,3 +104,16 @@ independently, and can switch relatively easy.
 - [4] A. Kitaev, "Quantum measurements and the Abelian Stabilizer Problem",
   arXiv:quant-ph/9511026
   - arXiv: https://arxiv.org/abs/quant-ph/9511026
+- [5] M. Schuld et al., "Circuit-centric quantum classifiers",
+  Phys. Rev. A 101, 032308 (2020)
+  - DOI: https://doi.org/10.1103/PhysRevA.101.032308
+  - arXiv: https://arxiv.org/abs/1804.00633
+- [6] S. Sim et al., "Expressibility and entangling capability of
+  parameterized quantum circuits for hybrid quantum-classical algorithms",
+  Adv. Quantum Technol. 2 (2019) 1900070
+  - DOI: https://doi.org/10.1002/qute.201900070
+  - arXiv: https://arxiv.org/abs/1905.10876
+- [7] M. R. Geller, "Sampling and scrambling on a chain of superconducting qubits",
+  Phys. Rev. Applied 10, 024052 (2018)
+  - DOI: https://doi.org/10.1103/PhysRevApplied.10.024052
+  - arXiv: https://arxiv.org/abs/1711.11026
