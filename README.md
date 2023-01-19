@@ -70,6 +70,8 @@ independently, and can switch relatively easy.
   - QCL[1] Classification of [Iris](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
 - example/02-cnn-like-qcl-flax.py
   - CNN-like QCL[1] Classification of [Digits](https://scikit-learn.org/stable/datasets/toy_dataset.html#digits-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
+- example/03-pennylane.py
+  - PennyLane Plugin
 - example/04-builtin-variational-cercuit-centric.py
   - Builtin Variational Circuit: Circuit Centric Block described at [5]
   - According to [6], this is one of the best circuit.
