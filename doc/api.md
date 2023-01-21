@@ -7,7 +7,7 @@ diffqc
 ```
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 4
 
 ./modules.rst
 ```
