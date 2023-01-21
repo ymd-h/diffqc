@@ -86,7 +86,7 @@ COPY README.md README.md
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[doc]
 COPY doc doc
-RUN sphinx-build -b html doc /doc
+RUN sphinx-build -b html doc /html
 
 
 
@@ -98,5 +98,5 @@ COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /coverage/html /coverage/html
 COPY --from=combine /coverage/summary.md /coverage/summary.md
 COPY --from=build /dist /dist
-COPY --from=doc /doc /doc
+COPY --from=doc /html /html
 CMD [""]
