@@ -32,6 +32,7 @@ setup(name="diffqc",
           "pennylane": ["pennylane"],
           "test": ["coverage", "unittest-xml-reporting", "numpy"],
           "example": ["flax", "optax", "scikit-learn", "tqdm"],
+          "doc": ["sphinx", "sphinx-rtd-theme", "sphinx-automodapi", "myst-parser"],
       },
       entry_points = {
           "pennylane.plugins": [
