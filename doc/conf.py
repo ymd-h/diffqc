@@ -5,6 +5,7 @@ copyright = "2023, Hiroyuki Yamada"
 extensions = [
     'sphinx.ext.napoleon',
     "sphinx_automodapi.automodapi",
+    'sphinx_automodapi.smart_resolver',
     'myst_parser'
 ]
 
