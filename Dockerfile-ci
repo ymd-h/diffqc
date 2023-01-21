@@ -86,7 +86,7 @@ COPY LICENSE LICENSE
 COPY setup.py setup.py
 COPY README.md README.md
 COPY diffqc diffqc
-RUN --mount=type=cache,target=/root/.cache/pip pip install .[doc]
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[doc,pennylane]
 COPY doc doc
 RUN sphinx-apidoc -e -o doc diffqc && \
     sphinx-build -W -vvv -b html doc /html
