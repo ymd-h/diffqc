@@ -3,15 +3,12 @@
 ## API reference for diffqc
 
 
-```{autosummary}
----
-toctree: _autosummary
----
-diffqc
-diffqc.dense
-diffqc.sparse
-diffqc.lib
-diffqc.nn
+```{eval_rst}
+.. autosummary
+  :toctree: _autosummary
+  :recursive:
+
+  diffqc
 ```
 
 
