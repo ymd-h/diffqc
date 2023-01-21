@@ -3,9 +3,8 @@ author = "Hiroyuki Yamada"
 copyright = "2023, Hiroyuki Yamada"
 
 extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
     'sphinx.ext.napoleon',
+    "sphinx_automodapi.automodapi",
     'myst_parser'
 ]
 
@@ -19,7 +18,8 @@ napoleon_use_admonition_for_examples = True
 napoleon_use_admonition_for_notes = True
 napoleon_use_admonition_for_references = True
 
-autosummary_generate = False
+numpydoc_show_class_members=False
+
 autodoc_default_options = {
     'member-order': 'bysource',
     'class-doc-from':'both',
