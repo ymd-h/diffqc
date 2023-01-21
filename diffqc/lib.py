@@ -1,5 +1,5 @@
 """
-diffqc.lib
+Builtin Alrotithms
 """
 
 from typing import Tuple

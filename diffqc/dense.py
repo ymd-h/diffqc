@@ -1,5 +1,5 @@
 """
-diffqc.dense
+Dense Operations
 """
 
 import math

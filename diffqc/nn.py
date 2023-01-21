@@ -1,7 +1,5 @@
 """
-diffqc.nn
-
-Neural Network Module
+Builtin Neural Network Modules
 """
 
 from typing import Callable, Tuple

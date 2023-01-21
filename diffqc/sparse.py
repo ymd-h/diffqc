@@ -1,5 +1,5 @@
 """
-diffqc.sparse
+Sparse Operations
 """
 
 import math

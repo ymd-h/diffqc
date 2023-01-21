@@ -1,5 +1,5 @@
 """
-diffqc.util
+Utility Functions
 """
 
 from typing import Callable
