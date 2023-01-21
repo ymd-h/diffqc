@@ -2,5 +2,14 @@
 
 ```{eval-rst}
 .. automodapi:: diffqc
-  :allowed-package-names: dense,sparse,lib,nn,util
+
+.. automodapi:: diffqc.dense
+
+.. automodapi:: diffqc.sparse
+
+.. automodapi:: diffqc.lib
+
+.. automodapi:: diffqc.nn
+
+.. automodapi:: diffqc.util
 ```
