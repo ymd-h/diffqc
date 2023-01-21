@@ -2,5 +2,14 @@
 
 ```{eval-rst}
 .. automodapi:: diffqc
-  :include-all-objects:
+
+.. automodapi:: diffqc.dense
+
+.. automodapi:: diffqc.sparse
+
+.. automodapi:: diffqc.lib
+
+.. automodapi:: diffqc.nn
+
+.. automodapi:: diffqc.util
 ```
