@@ -19,7 +19,7 @@ napoleon_use_admonition_for_examples = True
 napoleon_use_admonition_for_notes = True
 napoleon_use_admonition_for_references = True
 
-autosummary_generate = True
+autosummary_generate = False
 autodoc_default_options = {
     'member-order': 'bysource',
     'class-doc-from':'both',
