@@ -1,3 +1,8 @@
+"""
+diffqc.pennylane
+
+PennyLane plugin
+"""
 from typing import Any, Dict, Iterable, List, Literal, Union
 
 import numpy as np

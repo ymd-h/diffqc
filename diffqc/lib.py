@@ -1,3 +1,7 @@
+"""
+diffqc.lib
+"""
+
 from typing import Tuple
 
 import jax.numpy as jnp

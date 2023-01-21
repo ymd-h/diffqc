@@ -1,3 +1,7 @@
+"""
+diffqc.util
+"""
+
 from typing import Callable
 
 import jax

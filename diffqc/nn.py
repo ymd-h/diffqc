@@ -1,3 +1,9 @@
+"""
+diffqc.nn
+
+Neural Network Module
+"""
+
 from typing import Callable, Tuple
 
 import jax
