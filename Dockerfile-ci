@@ -78,7 +78,6 @@ WORKDIR /ci
 RUN --mount=type=cache,target=/root/.cache/pip pip install \
     sphinx \
     sphinx-rtd-theme \
-    sphinx-automodapi \
     myst-parser
 COPY LICENSE LICENSE
 COPY setup.py setup.py

@@ -3,8 +3,14 @@
 ## API reference for diffqc
 
 
-```{eval_rst}
-.. automodapi:: diffqc
+```{autosummary}
+:toctree: _autosummary
+
+diffqc
+diffqc.dense
+diffqc.sparse
+diffqc.lib
+diffqc.nn
 ```
 
 
