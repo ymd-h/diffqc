@@ -2,5 +2,7 @@
 
 
 ```{toctree}
+:caption: Contents
+
 ./api.md
 ```
