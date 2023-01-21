@@ -27,7 +27,7 @@ def prob(state: jnp.ndarray, dtype: jnp.dtype = jnp.float32) -> jnp.ndarray:
     Parameters
     ----------
     state : 1d jnp.ndarray
-        n-qubit state e.g. [|000>, |001>, |010>, ..., |111>]
+        n-qubit state e.g. ``[|000>, |001>, |010>, ..., |111>]``
     dtype : jnp.dtype
         dtype of probabilities. Default is jnp.float32.
 
@@ -78,7 +78,7 @@ def sample(key: jax.random.PRNGKeyArray,
     Returns
     -------
     jnp.ndarray
-        Sampled index. e.g. 0 -> |000>, 1 -> |001> for 3-qubits.
+        Sampled index. e.g. ``0 -> |000>, 1 -> |001>`` for 3-qubits.
     """
     return jax.random.choice(key,
                              jnp.arange(probs.shape[0]),
@@ -88,7 +88,7 @@ def sample(key: jax.random.PRNGKeyArray,
 
 def expval(probs: jnp.ndarray, wire: int):
     """
-    Expectation of |1>
+    Expectation of ``|1>``
 
     Parameters
     ----------
@@ -100,7 +100,7 @@ def expval(probs: jnp.ndarray, wire: int):
     Returns
     -------
     float like
-        Expectation of |1>
+        Expectation of ``|1>``
     """
     p = _qubit_shape(probs)
     return jnp.sum(jnp.take(p, jnp.ones((1,), dtype=jnp.int32), axis=wire))

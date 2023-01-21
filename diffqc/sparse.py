@@ -67,7 +67,7 @@ __all__ = [
 # StateVec Shape: [possibility, nqubit, qubit]
 def zeros(nqubits: int, dtype: jnp.dtype) -> jnp.ndarray:
     """
-    Create |00...0> state
+    Create ``|00...0>`` state
 
     Parameters
     ----------
@@ -79,7 +79,7 @@ def zeros(nqubits: int, dtype: jnp.dtype) -> jnp.ndarray:
     Returns
     -------
     jnp.ndarray
-        Zero state aka. |00...0>
+        Zero state aka. ``|00...0>``
     """
     return jnp.zeros((1, nqubits, 2), dtype=dtype).at[:,:,0].set(1)
 
@@ -95,7 +95,7 @@ def to_state(x: jnp.ndarray) -> jnp.ndarray:
     Returns
     -------
     jnp.ndarray
-        State vector, e.g. [|000>, |001>, |010>, ..., |111>]
+        State vector, e.g. ``[|000>, |001>, |010>, ..., |111>]``
     """
     if x.shape[0] > (2 ** x.shape[1]):
         jax.debug.print(
@@ -247,7 +247,7 @@ def Hadamard(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -265,7 +265,7 @@ def PauliX(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -283,7 +283,7 @@ def PauliY(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -301,7 +301,7 @@ def PauliZ(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -319,7 +319,7 @@ def S(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -337,7 +337,7 @@ def T(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -355,7 +355,7 @@ def SX(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
 
     Returns
     -------
@@ -373,7 +373,7 @@ def CNOT(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -391,7 +391,7 @@ def CZ(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -409,7 +409,7 @@ def CY(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -427,7 +427,7 @@ def SWAP(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -445,7 +445,7 @@ def ISWAP(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -463,7 +463,7 @@ def ECR(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -481,7 +481,7 @@ def SISWAP(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -501,7 +501,7 @@ def CSWAP(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``3``.
+        wire to apply. ``len(wires)`` must be ``3``
 
     Returns
     -------
@@ -527,7 +527,7 @@ def Toffoli(c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``3``.
+        wire to apply. ``len(wires)`` must be ``3``
 
     Returns
     -------
@@ -561,7 +561,7 @@ def Rot(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi, theta, omega : float
         rotation angles
 
@@ -581,7 +581,7 @@ def RX(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi : float
         rotation angle
 
@@ -601,7 +601,7 @@ def RY(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi : float
         rotation angle
 
@@ -621,7 +621,7 @@ def RZ(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi : float
         rotation angle
 
@@ -641,7 +641,7 @@ def PhaseShift(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi : float
         rotation angle
 
@@ -662,7 +662,7 @@ def ControlledPhaseShift(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -677,14 +677,14 @@ CPhase = ControlledPhaseShift
 
 def CPhaseShift00(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     """
-    Apply Phase Shift Gate for |00>
+    Apply Phase Shift Gate for ``|00>``
 
     Parameters
     ----------
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -697,14 +697,14 @@ def CPhaseShift00(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
 
 def CPhaseShift01(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     """
-    Apply Phase Shift Gate for |01>
+    Apply Phase Shift Gate for ``|01>``
 
     Parameters
     ----------
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -717,14 +717,14 @@ def CPhaseShift01(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
 
 def CPhaseShift10(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     """
-    Apply Phase Shift Gate for |10>
+    Apply Phase Shift Gate for ``|10>``
 
     Parameters
     ----------
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -744,7 +744,7 @@ def CRX(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -764,7 +764,7 @@ def CRY(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -784,7 +784,7 @@ def CRZ(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -805,7 +805,7 @@ def CRot(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi, theta, omega : float
         rotation angles
 
@@ -827,7 +827,7 @@ def U2(c: jnp.ndarray, wires: Tuple[int], phi: float, delta: float) -> jnp.ndarr
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     phi, delta : float
         rotation angle
 
@@ -848,7 +848,7 @@ def U3(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1``.
+        wire to apply. ``len(wires)`` must be ``1``
     theta, phi, delta : float
         rotation angle
 
@@ -868,7 +868,7 @@ def PSWAP(c: jnp.ndarray, wires: Tuple[int], phi: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``2``.
+        wire to apply. ``len(wires)`` must be ``2``
     phi : float
         rotation angle
 
@@ -916,7 +916,7 @@ def QubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``log2(U.ndim)``.
+        wire to apply. ``len(wires)`` must be ``log2(U.ndim)``
     U : jnp.ndarray
         square unitary matrix
 
@@ -948,7 +948,7 @@ def ControlledQubitUnitary(c: jnp.ndarray, wires: Tuple[int],
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wire to apply. ``len(wires)`` must be ``1 + log2(U.ndim)``.
+        wire to apply. ``len(wires)`` must be ``1 + log2(U.ndim)``
     U : jnp.ndarray
         square unitary matrix
 
@@ -978,7 +978,7 @@ def RXX(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubit state
     wires : tuple of ints
-        wires to apply. ``len(wires)`` must be ``2``.
+        wires to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -997,7 +997,7 @@ def RYY(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubit state
     wires : tuple of ints
-        wires to apply. ``len(wires)`` must be ``2``.
+        wires to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
@@ -1016,7 +1016,7 @@ def RZZ(c: jnp.ndarray, wires: Tuple[int], theta: float) -> jnp.ndarray:
     c : jnp.ndarray
         qubit state
     wires : tuple of ints
-        wires to apply. ``len(wires)`` must be ``2``.
+        wires to apply. ``len(wires)`` must be ``2``
 
     Returns
     -------
