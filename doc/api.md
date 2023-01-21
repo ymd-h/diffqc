@@ -5,3 +5,7 @@
 
 diffqc
 ```
+
+```{toctree}
+./modules.rst
+```
