@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 
-# jax.jit compatible `jnp.reshape(s, (2,) * int(jnp.log2(s.shape[0])))`
+# jax.jit compatible ``jnp.reshape(s, (2,) * int(jnp.log2(s.shape[0])))``
 def _qubit_shape(s):
     if s.shape[0] <= 2:
         return s
