@@ -4,8 +4,9 @@
 
 
 ```{autosummary}
-:toctree: _autosummary
-
+---
+toctree: _autosummary
+---
 diffqc
 diffqc.dense
 diffqc.sparse
