@@ -78,7 +78,10 @@ WORKDIR /ci
 RUN --mount=type=cache,target=/root/.cache/pip pip install \
     sphinx \
     sphinx-rtd-theme \
-    myst-parser
+    myst-parser \
+    jax \
+    jaxlib \
+    pennylane
 COPY LICENSE LICENSE
 COPY setup.py setup.py
 COPY README.md README.md
