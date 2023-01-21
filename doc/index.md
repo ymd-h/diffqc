@@ -3,7 +3,7 @@
 ## API reference for diffqc
 
 
-```{eval_rst}
+```{eval-rst}
 .. autosummary
   :toctree: _autosummary
   :recursive:
