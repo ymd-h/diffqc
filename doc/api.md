@@ -2,7 +2,7 @@
 
 ```{autosummary}
 :toctree: _autosummary
-:recursive:
+:recursive: True
 
 diffqc
 ```
