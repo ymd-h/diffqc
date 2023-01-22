@@ -19,5 +19,6 @@ that it is
 ./installation.md
 ./getting-started.md
 ./example.md
+./advanced.md
 ./api.md
 ```
