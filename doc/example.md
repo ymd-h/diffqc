@@ -1,7 +1,7 @@
 # Example
 
 ## 00. Basic Usage
-```{literalinclude} ../example/00-circut-basics.py
+```{literalinclude} ../example/00-circuit-basics.py
 :language: python
 ```
 
@@ -11,7 +11,7 @@
 ```
 
 ## 02. CNN-like QCL
-```{literalinclude} ../example/02-cnn-like-qcl.py
+```{literalinclude} ../example/02-cnn-like-qcl-flax.py
 :language: python
 ```
 
