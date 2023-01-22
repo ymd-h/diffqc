@@ -99,6 +99,8 @@ RUN python setup.py sdist -d /dist
 
 FROM python:3.10 AS doc
 WORKDIR /ci
+RUN apt update && apt -y --no-install-recommends install graphviz && \
+    apt clean && rm -rf /var/lib/apt/lists/*
 RUN --mount=type=cache,target=/root/.cache/pip pip install \
     sphinx \
     sphinx-rtd-theme \
