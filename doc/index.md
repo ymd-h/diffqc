@@ -16,5 +16,6 @@ that it is
 :caption: Contents
 :maxdepth: 1
 
+./installation.md
 ./api.md
 ```
