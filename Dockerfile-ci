@@ -115,6 +115,7 @@ COPY README.md README.md
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[doc,pennylane]
 COPY doc doc
+COPY example example
 RUN sphinx-build -W -b html doc /html
 
 
