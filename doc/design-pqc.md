@@ -41,13 +41,15 @@ candidates;
 
 where {math}`n` is number of qubits, {math}`L` is number of layer repetition.
 
-Another research conducted by T Hubregtsen _et al_.[^6] showed these
+Another research conducted by T. Hubregtsen _et al_.[^6] showed these
 circuits worked well for classification of toy dataset.
 
 
 ## Barren Plateaus
-J. R. McClean _et al_.[^7] pointed out there is "barren plateaus" at
-training of PQC.
+J. R. McClean _et al_.[^7] pointed out there was "barren plateaus" at
+training of PQC. That means that the gradient of randomly initialized
+circuit with sufficient depth become exponentially small in the number
+of qubits.
 
 
 
