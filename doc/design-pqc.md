@@ -39,7 +39,12 @@ candidates;
 
 
 
-where {math}`n` is number of qubits, {math}`L` is number of layer repetition.
+where {math}`n` is number of qubits, {math}`L` is number of layer
+repetition.  Generally, if we repeat more layers (with independent
+parameters), expressivity and entangle capability become better,
+however, they saturate at some point. "Saturate" row at the table
+shows saturation number for {math}`n = 4, 6, 8`. (To be honest, it is
+not clear for large circuit like {math}`n = 100`.)
 
 Another research conducted by T. Hubregtsen _et al_.[^6] showed these
 circuits worked well for classification of toy dataset.
