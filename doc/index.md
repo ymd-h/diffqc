@@ -17,5 +17,6 @@ that it is
 :maxdepth: 1
 
 ./installation.md
+./getting-started.md
 ./api.md
 ```
