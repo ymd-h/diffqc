@@ -1,5 +1,11 @@
 """
-Utility Functions
+Utility Functions (:mod:`diffqc.util`)
+======================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
 """
 
 from typing import Callable

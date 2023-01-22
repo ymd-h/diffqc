@@ -1,5 +1,11 @@
 """
-Builtin Alrotithms
+Builtin Algorithms (:mod:`diffqc.lib`)
+======================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
 """
 
 from typing import Tuple

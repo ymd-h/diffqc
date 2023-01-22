@@ -1,5 +1,11 @@
 """
-Builtin Neural Network Modules
+Builtin Neural Network Modules (:mod:`diffqc.nn`)
+=================================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
 """
 
 from typing import Callable, Tuple
