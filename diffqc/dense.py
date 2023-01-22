@@ -1,5 +1,20 @@
 """
-Dense Operations
+Densely Represented Operations (:mod:`diffqc.dense`)
+====================================================
+
+Core operations with internal dense representation.
+
+
+See Also
+--------
+diffqc.sparse : Sparsely Represented Operations
+
+
+Notes
+-----
+Internally probability amplitudes of all possible
+``2**(qubits)`` quantum states are recorded as
+an array with ``(2, 2, ..., 2)`` shape.
 """
 
 import math

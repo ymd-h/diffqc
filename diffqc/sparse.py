@@ -1,5 +1,23 @@
 """
-Sparse Operations
+Sparsely Represented Operations (:mod:`diffqc.sparse`)
+======================================================
+
+Core operations with internal sparse representation.
+
+
+See Also
+--------
+diffqc.dense : Densely Represented Operations
+
+
+Notes
+-----
+Internally probability ampulitudes of possible quantum states
+are recorded as an array with ``(superpositions, qubits, 2)`` shape.
+
+.. warning:: Since JAX requires static shape, we cannot remove
+             zero-amplitude quantum states from superposition.
+             Moreover, same quantum states might be traced separately.
 """
 
 import math
