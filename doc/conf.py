@@ -9,7 +9,7 @@ extensions = [
     'myst_parser'
 ]
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 html_logo = ""
 html_favicon = ""
 html_show_sourcelink = False
