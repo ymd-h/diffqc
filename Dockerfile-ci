@@ -103,7 +103,7 @@ RUN apt update && apt -y --no-install-recommends install graphviz && \
     apt clean && rm -rf /var/lib/apt/lists/*
 RUN --mount=type=cache,target=/root/.cache/pip pip install \
     sphinx \
-    sphinx-rtd-theme \
+    "sphinx-rtd-theme>=1.1.1" \
     sphinx-automodapi \
     myst-parser \
     jax \
