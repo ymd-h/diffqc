@@ -13,19 +13,20 @@ and "entangle capability".
 
 The expressivity is defined as a circuit's ability to generate pure
 states that are well representative of the Hilbert space.
-
 Let's say, if output quantum states are well distributed over all
 bloch spheres when moving parameters, the circuit has good
 expressivity.
-
-For example, arbitary unitary rotation gate has higher expressivity
+For example, arbitary unitary rotation gate has better expressivity
 than RX rotation gate.
 
-The entangle capability is defined by Mayer-Wallach entanglement mesearment[^3].
+The entangle capability is defined by Mayer-Wallach entanglement
+mesearment[^3]. Emprically we know highly entangled circuits can
+capture good representation from data structure even though shallow
+depth.
 
-
-The authors also calculated these metrics of many proposed circuits
-and indicated good candidates;
+The authors also calculated (numerically simulated) these metrics for
+19 circuits which have been proposed before and they indicated good
+candidates;
 
 |               | Josephson Sampler [^4] | Circuit Centric [^5]  |
 |---------------|:----------------------:|:---------------------:|
