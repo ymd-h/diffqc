@@ -9,6 +9,7 @@ extensions = [
     'myst_parser'
 ]
 
+html_title = "diffqc"
 html_theme = "furo"
 html_logo = ""
 html_favicon = ""
