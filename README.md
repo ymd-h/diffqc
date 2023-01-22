@@ -1,5 +1,8 @@
 # diffqc: Differentiable Quantum Circuit Simulator for Quantum Machine Learning
 
+![](https://img.shields.io/pypi/v/diffqc)
+![](https://img.shields.io/pypi/l/diffqc)
+
 ## 1. Overview
 > **Note**  
 > This project started as diffq, but because of accidental name conflict,
