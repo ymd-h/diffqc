@@ -2,18 +2,13 @@
 diffqc: Differentiable Quantum Circuit Simulator
 ================================================
 
-Sub Packages
-------------
-dense
-    Densely Represented Operations
-sparse
-    Sparsely Represented Operations
-lib
-    Builtin Algorithms
-nn
-    Builtin Neural Network Modules
-util
-    Utility Functions
+See Also
+--------
+diffqc.dense : Densely Represented Operations
+diffqc.sparse : Sparsely Represented Operations
+diffqc.lib : Builtin Algorithms
+diffqc.nn : Builtin Neural Network Modules
+diffqc.util : Utility Functions
 
 
 Examples
