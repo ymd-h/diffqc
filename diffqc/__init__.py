@@ -9,6 +9,7 @@ diffqc.sparse : Sparsely Represented Operations
 diffqc.lib : Builtin Algorithms
 diffqc.nn : Builtin Neural Network Modules
 diffqc.util : Utility Functions
+diffqc.pennylane : PennyLane Plugin
 
 
 Examples

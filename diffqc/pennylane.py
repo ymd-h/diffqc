@@ -1,7 +1,24 @@
 """
-diffqc.pennylane
+PennyLane Plugin (:mod:`diffqc.pennylane`)
+==========================================
 
-PennyLane plugin
+PennyLane [1] plugin providing an device with diffqc.
+
+
+Warnings
+--------
+This module is still under development, and missing some features.
+
+
+References
+----------
+.. [1] https://pennylane.ai/
+
+
+Examples
+--------
+>>> import pennylane as qml
+>>> dev = qml.device("diffqc.qubit", wires=2, mode="dense")
 """
 from typing import Any, Dict, Iterable, List, Literal, Union
 
