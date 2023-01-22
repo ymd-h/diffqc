@@ -1,5 +1,11 @@
 FROM python:3.8 AS test3.8
 WORKDIR /diffqc-ci
+RUN --mount=type=cache,target=/root/.cache/pip pip install \
+    coverage \
+    jax \
+    jaxlib \
+    pennylane \
+    unittest-xml-reporting
 COPY setup.py .
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
@@ -12,6 +18,12 @@ RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
 
 FROM python:3.9 AS test3.9
 WORKDIR /diffqc-ci
+RUN --mount=type=cache,target=/root/.cache/pip pip install \
+    coverage \
+    jax \
+    jaxlib \
+    pennylane \
+    unittest-xml-reporting
 COPY setup.py .
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
@@ -24,6 +36,12 @@ RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
 
 FROM python:3.10 AS test3.10
 WORKDIR /diffqc-ci
+RUN --mount=type=cache,target=/root/.cache/pip pip install \
+    coverage \
+    jax \
+    jaxlib \
+    pennylane \
+    unittest-xml-reporting
 COPY setup.py .
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
@@ -36,6 +54,12 @@ RUN mkdir -p /coverage && cp -v .coverage.* /coverage && \
 
 FROM python:3.11 AS test3.11
 WORKDIR /diffqc-ci
+RUN --mount=type=cache,target=/root/.cache/pip pip install \
+    coverage \
+    jax \
+    jaxlib \
+    pennylane \
+    unittest-xml-reporting
 COPY setup.py .
 COPY diffqc diffqc
 RUN --mount=type=cache,target=/root/.cache/pip pip install .[test]
@@ -73,6 +97,28 @@ RUN pip wheel --no-deps -w /dist .
 RUN python setup.py sdist -d /dist
 
 
+FROM python:3.10 AS doc
+WORKDIR /ci
+RUN apt update && apt -y --no-install-recommends install graphviz && \
+    apt clean && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/root/.cache/pip pip install \
+    sphinx \
+    furo \
+    sphinx-automodapi \
+    myst-parser \
+    jax \
+    jaxlib \
+    pennylane
+COPY LICENSE LICENSE
+COPY setup.py setup.py
+COPY README.md README.md
+COPY diffqc diffqc
+RUN --mount=type=cache,target=/root/.cache/pip pip install .[doc,pennylane]
+COPY doc doc
+RUN sphinx-build -W -b html doc /html
+
+
+
 FROM scratch AS results
 COPY --from=test3.8 /unittest /unittest/3.8
 COPY --from=test3.9 /unittest /unittest/3.9
@@ -81,4 +127,5 @@ COPY --from=test3.11 /unittest /unittest/3.11
 COPY --from=combine /coverage/html /coverage/html
 COPY --from=combine /coverage/summary.md /coverage/summary.md
 COPY --from=build /dist /dist
+COPY --from=doc /html /html
 CMD [""]

@@ -20,6 +20,7 @@ jobs:
           docker cp results:/coverage/. coverage/
           docker cp results:/unittest/. unittest/
           docker cp results:/dist/. dist/
+          docker cp results:/html/. html/
         name: Extract Results
       - uses: actions/upload-artifact@v3
         with:
@@ -33,6 +34,10 @@ jobs:
         with:
           name: dist
           path: dist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: html
+          path: html
       - uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           junit_files: "unittest/**/*.xml"
@@ -49,3 +54,24 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_PASS }}
+      - uses: actions/configure-pages@v2
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: html
+  deploy:
+    concurrency:
+      group: diffqc-deploy
+      cancel-in-progress: true
+    if: github.ref_name == 'master'
+    needs: ci
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v1

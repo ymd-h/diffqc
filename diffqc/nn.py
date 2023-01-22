@@ -1,3 +1,13 @@
+"""
+Builtin Neural Network Modules (:mod:`diffqc.nn`)
+=================================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
+"""
+
 from typing import Callable, Tuple
 
 import jax
@@ -11,13 +21,13 @@ def CircuitCentricBlock(op, c: jnp.ndarray, wires: Tuple[int],
     Parameters
     ----------
     op
-        `dense` or `sparse`
+        ``dense`` or ``sparse``
     c : jnp.ndarray
         qubits
     wires : tuple of ints
-        wires. Usually, `(0, ..., qubits-1)`
+        wires. Usually, ``(0, ..., qubits-1)``
     weights : jnp.ndarray
-        parameters for rotation angle with shape of `(layers, 3 * qubits)`.
+        parameters for rotation angle with shape of ``(layers, 3 * qubits)``
 
     Returns
     -------
@@ -26,15 +36,15 @@ def CircuitCentricBlock(op, c: jnp.ndarray, wires: Tuple[int],
 
     Notes
     -----
-    Code Block with range = 1 described at [1]_.
-    According to [2]_, for middle scale circuit (4, 6, and 8 qubits)
+    Code Block with range = 1 described at [CCB1]_.
+    According to [CCB2]_, for middle scale circuit (4, 6, and 8 qubits)
     three layers have enough expressivity. (Circuit 19)
 
     References
     ----------
-    .. [1] M. Schuld /et al/., "Circuit-centric quantum classifiers",
+    .. [CCB1] M. Schuld /et al/., "Circuit-centric quantum classifiers",
        Phys. Rev. A 101, 032308 (2020) (arXiv:1804.00633)
-    .. [2] S. Sim /et al/., "Expressibility and entangling capability of
+    .. [CCB2] S. Sim /et al/., "Expressibility and entangling capability of
        parameterized quantum circuits for hybrid quantum-classical algorithms",
        Adv. Quantum Technol. 2 (2019) 1900070 (arXiv:1905.10876)
     """
@@ -63,13 +73,13 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
     Parameters
     ----------
     op
-        `dense` or `sparse`
+        ``dense`` or ``sparse``
     c : jnp.ndarray
         qubits
     wires : tuple of ints
-        wires. Ususally, `(0, ..., qubits-1)`
+        wires. Ususally, ``(0, ..., qubits-1)``
     weights : jnp.ndarray
-        parameters of rotation with shape of `(layers, )`
+        parameters of rotation with shape of ``(layers, )``
 
     Returns
     -------
@@ -78,15 +88,16 @@ def JosephsonSampler(op, c: jnp.ndarray, wires: Tuple[int],
 
     Notes
     -----
-    Josephson Sampler circuit described at [1]_.
-    According to [2]_, for middle scale circuit (4, 6, and 8 qubits)
+    Josephson Sampler circuit described at [Josephson1]_.
+    According to [Josephson2]_, for middle scale circuit (4, 6, and 8 qubits)
     three layers have enough expressivity. (Circuit 11)
 
     References
     ----------
-    .. [1] M. R. Geller, "Sampling and scrambling on a chain of superconducting
-       qubits", Phys. Rev. Applied 10, 024052 (2018) (arXiv:1711.11026)
-    .. [2] S. Sim /et al/., "Expressibility and entangling capability of
+    .. [Josephson1] M. R. Geller, "Sampling and scrambling on a chain of
+       superconducting qubits", Phys. Rev. Applied 10, 024052 (2018)
+       (arXiv:1711.11026)
+    .. [Josephson2] S. Sim /et al/., "Expressibility and entangling capability of
        parameterized quantum circuits for hybrid quantum-classical algorithms",
        Adv. Quantum Technol. 2 (2019) 1900070 (arXiv:1905.10876)
     """
@@ -144,7 +155,7 @@ def Convolution(op,
     Parameters
     ----------
     op
-        `dense` or `sparse`
+        ``dense`` or ``sparse``
     kernel_func : Callable
         kernel function of ``f(x, w)``
     kernel_shape : tuple of ints

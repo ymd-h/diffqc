@@ -1,3 +1,13 @@
+"""
+Builtin Algorithms (:mod:`diffqc.lib`)
+======================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
+"""
+
 from typing import Tuple
 
 import jax.numpy as jnp
@@ -5,14 +15,14 @@ import jax.numpy as jnp
 
 def GHZ(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     """
-    Create Greenberger-Horne-Zeilinger state from |00...0> state
+    Create Greenberger-Horne-Zeilinger state from ``|00...0>`` state
 
-    |00...0> -> (|00...0> + |11...1>)/sqrt(2)
+    ``|00...0>`` -> ``(|00...0> + |11...1>)/sqrt(2)``
 
     Parameters
     ----------
     op
-        `dense` or `sparse` module
+        ``dense`` or ``sparse`` module
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
@@ -39,7 +49,7 @@ def QFT(op, c: jnp.ndarray, wires: Tuple[int]) -> jnp.ndarray:
     Parameters
     ----------
     op
-        `dense` or `sparse` module
+        ``dense`` or ``sparse`` module
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
@@ -72,7 +82,7 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
     Parameters
     ----------
     op
-        `dense` or `sparse` module
+        ``dense`` or ``sparse`` module
     c : jnp.ndarray
         qubits state
     wires : tuples of ints
@@ -80,7 +90,7 @@ def QPE(op, c: jnp.ndarray, wires: Tuple[int],
     U: jnp.ndarray
         unitary matrix of which eigen value phase is estimated
     aux : tuple of ints
-        auxiliary qubits. These should be |00...0>
+        auxiliary qubits. These should be ``|00...0>``
 
     Returns
     -------
@@ -113,20 +123,20 @@ def HHL(op, c: jnp.ndarray, wires: Tuple[int],
     """
     Solving Linear Equation with Harrow-Hassidim-Lloyd Algorithm
 
-    Solve A|x> = |b> and get |x> = A^(-1)|b>.
+    Solve ``A|x> = |b>`` and get ``|x> = A^(-1)|b>`` .
 
     Parameters
     ----------
     op
-        `dense` or `sparse` module
+        ``dense`` or ``sparse`` module
     c : jnp.ndarray
         qubits state
     wires : tuple of ints
-        wires. |b>
+        wires. ``|b>``
     U : jnp.ndarray
         unitary matrix of exp(iA)
     aux : tuple of ints
-        auxiliary qubits for QPE. These should be |00...0>
+        auxiliary qubits for QPE. These should be ``|00...0>``
     anc : int
         ancilla qubits for HHL
 

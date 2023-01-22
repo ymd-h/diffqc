@@ -1,3 +1,13 @@
+"""
+Utility Functions (:mod:`diffqc.util`)
+======================================
+
+Notes
+-----
+To support multiple internal representations,
+operation module (aka. :mod:`diffqc.dense` or :mod:`diffqc.sparse`) is passed.
+"""
+
 from typing import Callable
 
 import jax
@@ -11,7 +21,7 @@ def CreatePossibleState(op, nqubits: int, dtype: jnp.dtype) -> jnp.ndarray:
     Parameters
     ----------
     op
-        `dense` or `sparse` module
+        ``dense`` or ``sparse`` module
     nqubits : int
         Number of qubits
     dtype : jnp.dtype
@@ -20,7 +30,7 @@ def CreatePossibleState(op, nqubits: int, dtype: jnp.dtype) -> jnp.ndarray:
     Returns
     -------
     jnp.ndarray
-        [|00...0>, |00...1>, ..., |11...1>]
+        ``[|00...0>, |00...1>, ..., |11...1>]``
     """
     cs = jnp.expand_dims(op.zeros(nqubits, dtype), 0)
 
@@ -41,7 +51,7 @@ def CreateMatrix(op, nqubits: int, dtype: jnp.dtype,
     Parameters
     ----------
     op
-        `dense` or `sparse`
+        ``dense`` or ``sparse``
     nqubits : int
         Number of qubits
     dtype : jnp.dtype
