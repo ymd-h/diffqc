@@ -12,4 +12,6 @@
 .. automodapi:: diffqc.nn
 
 .. automodapi:: diffqc.util
+
+.. automodapi:: diffqc.pennylane
 ```
