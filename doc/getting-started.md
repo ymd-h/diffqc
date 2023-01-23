@@ -56,7 +56,9 @@ Expectation value at a wire position can be taken with corresponding
 function;
 
 ```python
-z = op.expectZ(q, (0,))
+x = op.expectX(q, (0,)) # <q|X|q> at wire 0
+y = op.expectY(q, (1,)) # <q|Y|q> at wire 1
+z = op.expectZ(q, (2,)) # <q|Z|q> at wire 2
 ```
 
 

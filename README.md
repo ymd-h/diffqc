@@ -1,5 +1,8 @@
 # diffqc: Differentiable Quantum Circuit Simulator for Quantum Machine Learning
 
+![](https://img.shields.io/pypi/v/diffqc)
+![](https://img.shields.io/pypi/l/diffqc)
+
 ## 1. Overview
 > **Note**  
 > This project started as diffq, but because of accidental name conflict,
@@ -72,7 +75,7 @@ independently, and can switch relatively easy.
   - CNN-like QCL[1] Classification of [Digits](https://scikit-learn.org/stable/datasets/toy_dataset.html#digits-dataset) with [Flax](https://flax.readthedocs.io/en/latest/index.html)
 - example/03-pennylane.py
   - PennyLane Plugin
-- example/04-builtin-variational-cercuit-centric.py
+- example/04-builtin-variational-circuit-centric.py
   - Builtin Variational Circuit: Circuit Centric Block described at [5]
   - According to [6], this is one of the best circuit.
 - example/05-builtin-variational-josephson-sampler.py

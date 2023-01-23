@@ -9,10 +9,28 @@ extensions = [
     'myst_parser'
 ]
 
+html_title = "diffqc"
 html_theme = "furo"
 html_logo = ""
 html_favicon = ""
 html_show_sourcelink = False
+
+html_css_files = [
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css",
+]
+
+html_theme_options = {
+    "footer_icons": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/ymd-h/diffqc",
+            "html": "",
+            "class": "fa-brands fa-github fa-2x",
+        },
+    ],
+}
 
 napoleon_include_init_with_doc = True
 napoleon_use_admonition_for_examples = True
