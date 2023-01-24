@@ -20,5 +20,6 @@ that it is
 ./getting-started.md
 ./example.md
 ./advanced.md
+./develop.md
 ./api.md
 ```
